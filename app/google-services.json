@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "147653343724",
+    "firebase_url": "https://identitasku-dcf12.firebaseio.com",
+    "project_id": "identitasku-dcf12",
+    "storage_bucket": "identitasku-dcf12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147653343724:android:00fccf2b08487d55",
+        "android_client_info": {
+          "package_name": "com.muhammadwahyudin.identitasku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147653343724-kg8mk25ofmjd9r3ptccanfjfls7daeds.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNLqTc88JM8-Yq1Hl2JSQbtAy3tsJP_Mo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
