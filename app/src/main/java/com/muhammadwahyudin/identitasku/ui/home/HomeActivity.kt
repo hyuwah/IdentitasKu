@@ -3,6 +3,7 @@ package com.muhammadwahyudin.identitasku.ui.home
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
@@ -20,6 +21,11 @@ class HomeActivity : BaseActivity(), KodeinAware {
         setContentView(R.layout.activity_home)
 
         initializeUI()
+        initializeRecyclerView()
+    }
+
+    private fun initializeRecyclerView() {
+        rv_data.layoutManager = LinearLayoutManager(this)
     }
 
     private fun initializeUI() {
@@ -34,9 +40,11 @@ class HomeActivity : BaseActivity(), KodeinAware {
         })
 
         btn_test.setOnClickListener {
-            val dataType = DataType(et_name_datatype.text.toString(), false, true)
-            viewModel.addDataType(dataType)
-            et_name_datatype.setText("")
+//            val dataType = DataType(et_name_datatype.text.toString(), false, true)
+//            viewModel.addDataType(dataType)
+//            et_name_datatype.setText("")
+            val bsFragment = AddDataBottomSheet()
+            bsFragment.show(supportFragmentManager, bsFragment.tag)
         }
 
     }
