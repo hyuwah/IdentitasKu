@@ -5,7 +5,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.muhammadwahyudin.identitasku.R
-import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import org.kodein.di.KodeinAware
@@ -15,6 +14,7 @@ import org.kodein.di.generic.instance
 class HomeActivity : BaseActivity(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: HomeViewModelFactory by instance()
+    lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +29,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
     }
 
     private fun initializeUI() {
-        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         viewModel.getAllDataType().observe(this, Observer { dataTypes ->
             val stringBuilder = StringBuilder()
             dataTypes.forEach { dataType ->
