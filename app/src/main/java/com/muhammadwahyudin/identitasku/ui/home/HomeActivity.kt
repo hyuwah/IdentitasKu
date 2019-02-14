@@ -35,13 +35,14 @@ class HomeActivity : BaseActivity(), KodeinAware {
             dataTypes.forEach { dataType ->
                 stringBuilder.append("$dataType\n\n")
             }
-            tv_test.text = stringBuilder.toString()
         })
 
-        btn_test.setOnClickListener {
+
 //            val dataType = DataType(et_name_datatype.text.toString(), false, true)
 //            viewModel.addDataType(dataType)
 //            et_name_datatype.setText("")
+
+        fab_add_data.setOnClickListener {
             val bsFragment = AddDataBottomSheet()
             bsFragment.show(supportFragmentManager, bsFragment.tag)
         }

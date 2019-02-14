@@ -16,6 +16,9 @@ import org.jetbrains.anko.doAsync
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.*
+import timber.log.Timber
+import timber.log.Timber.DebugTree
+
 
 class IdentitasKuApp : MultiDexApplication(), KodeinAware {
     override val kodein: Kodein = Kodein.lazy {
@@ -54,6 +57,10 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (BuildConfig.DEBUG)
+            Timber.plant(DebugTree())
+
 
     }
 }
