@@ -10,41 +10,51 @@ import kotlinx.android.synthetic.main.activity_home.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
+import timber.log.Timber
 
 class HomeActivity : BaseActivity(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: HomeViewModelFactory by instance()
     lateinit var viewModel: HomeViewModel
 
+    lateinit var dataAdapter: DataAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        dataAdapter = DataAdapter(this)
         initializeUI()
         initializeRecyclerView()
     }
 
     private fun initializeRecyclerView() {
         rv_data.layoutManager = LinearLayoutManager(this)
+        rv_data.adapter = dataAdapter
     }
 
     private fun initializeUI() {
+
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-        viewModel.getAllDataType().observe(this, Observer { dataTypes ->
-            val stringBuilder = StringBuilder()
-            dataTypes.forEach { dataType ->
-                stringBuilder.append("$dataType\n\n")
-            }
+        viewModel.getAllDataType().observe(this, Observer { ListOfDataType ->
+            dataAdapter.dataTypes = ListOfDataType
+            Timber.d("data Type size ${ListOfDataType.size}")
         })
 
+        viewModel.getAllData().observe(this, Observer { ListOfData ->
+            dataAdapter.datas = ListOfData
+            Timber.d("data size ${ListOfData.size}")
 
-//            val dataType = DataType(et_name_datatype.text.toString(), false, true)
-//            viewModel.addDataType(dataType)
-//            et_name_datatype.setText("")
+        })
 
         fab_add_data.setOnClickListener {
             val bsFragment = AddDataBottomSheet()
             bsFragment.show(supportFragmentManager, bsFragment.tag)
+        }
+
+        fab_add_data.setOnLongClickListener {
+            viewModel.debugPopulateData()
+            true
         }
 
     }

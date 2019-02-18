@@ -16,11 +16,11 @@ import androidx.room.PrimaryKey
 data class Data(
     @ColumnInfo(name = "type_id") var typeId: Int,
     var value: String,
-    var attr1: String?,
-    var attr2: String?,
-    var attr3: String?,
-    var attr4: String?,
-    var attr5: String?
+    var attr1: String? = "",
+    var attr2: String? = "",
+    var attr3: String? = "",
+    var attr4: String? = "",
+    var attr5: String? = ""
 ) {
 
     @PrimaryKey(autoGenerate = true)

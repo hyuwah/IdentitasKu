@@ -18,4 +18,17 @@ interface DataTypeDao {
     @Query("SELECT * FROM data_type")
     fun getAll(): LiveData<List<DataType>>
 
+    @Query("DElETE FROM data_type")
+    fun deleteAll()
+
+    @Query("DELETE FROM SQLITE_SEQUENCE WHERE name = 'data_type'")
+    fun resetAutoincrementId()
+
+    @Transaction
+    fun reset() {
+        deleteAll()
+        resetAutoincrementId()
+    }
+
+
 }

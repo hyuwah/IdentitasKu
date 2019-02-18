@@ -20,4 +20,7 @@ interface DataDao {
 
     @Query("SELECT * FROM data WHERE type_id == (:type)")
     fun getAllByType(type: Int): LiveData<List<Data>>
+
+    @Query("DElETE FROM data")
+    fun deleteAll()
 }

@@ -8,6 +8,7 @@ import com.muhammadwahyudin.identitasku.data.model.DataType
 import org.jetbrains.anko.doAsync
 
 class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: DataDao) : IAppRepository {
+
     override fun insert(dataType: DataType) {
         doAsync {
             dataTypeDao.insert(dataType)
@@ -23,6 +24,12 @@ class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: D
     override fun delete(dataType: DataType) {
         doAsync {
             dataTypeDao.delete(dataType)
+        }
+    }
+
+    override fun deleteAllDataType() {
+        doAsync {
+            dataTypeDao.deleteAll()
         }
     }
 
@@ -48,11 +55,21 @@ class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: D
         }
     }
 
+    override fun deleteAllData() {
+        doAsync {
+            dataDao.deleteAll()
+        }
+    }
+
     override fun getAllData(): LiveData<List<Data>> {
         return dataDao.getAll()
     }
 
     override fun getAllDataByType(type: Int): LiveData<List<Data>> {
         return dataDao.getAllByType(type)
+    }
+
+    override fun resetDataType() {
+        doAsync { dataTypeDao.reset() }
     }
 }
