@@ -3,6 +3,7 @@ package com.muhammadwahyudin.identitasku.data.repository
 import androidx.lifecycle.LiveData
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
+import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 
 interface IAppRepository {
 
@@ -11,6 +12,8 @@ interface IAppRepository {
         fun delete(dataType: DataType)
         fun deleteAllDataType()
         fun getAllDataType(): LiveData<List<DataType>>
+        fun resetDataType()
+        fun getAllExistingUniqueType(): LiveData<List<DataType>>
 
         fun insert(data: Data)
         fun update(data: Data)
@@ -18,7 +21,8 @@ interface IAppRepository {
         fun deleteAllData()
         fun getAllData(): LiveData<List<Data>>
         fun getAllDataByType(type: Int): LiveData<List<Data>>
-        fun resetDataType()
+        fun getAllDataWithType(): LiveData<List<DataWithDataType>>
+        fun prepopulateData()
 
 
 

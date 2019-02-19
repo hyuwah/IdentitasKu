@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.activity_home.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
-import timber.log.Timber
 
 class HomeActivity : BaseActivity(), KodeinAware {
     override val kodein by closestKodein()
@@ -36,15 +35,8 @@ class HomeActivity : BaseActivity(), KodeinAware {
     private fun initializeUI() {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-        viewModel.getAllDataType().observe(this, Observer { ListOfDataType ->
-            dataAdapter.dataTypes = ListOfDataType
-            Timber.d("data Type size ${ListOfDataType.size}")
-        })
-
-        viewModel.getAllData().observe(this, Observer { ListOfData ->
-            dataAdapter.datas = ListOfData
-            Timber.d("data size ${ListOfData.size}")
-
+        viewModel.getAllDataWithType().observe(this, Observer { ListOfDataWithType ->
+            dataAdapter.datasWithType = ListOfDataWithType
         })
 
         fab_add_data.setOnClickListener {
@@ -54,6 +46,11 @@ class HomeActivity : BaseActivity(), KodeinAware {
 
         fab_add_data.setOnLongClickListener {
             viewModel.debugPopulateData()
+//            viewModel.getAllDataWithType().observe(this@HomeActivity, Observer {
+//                it.forEach { item ->
+//                    Timber.d(item.toString())
+//                }
+//            })
             true
         }
 

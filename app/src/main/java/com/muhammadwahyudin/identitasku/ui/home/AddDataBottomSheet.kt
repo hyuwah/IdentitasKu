@@ -58,10 +58,20 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
         aty.viewModel.getAllDataType().observe(this, Observer {
             it.toCollection(dataType)
             dataTypeStr.clear()
+            Timber.d("All DataType ${it}")
             it.forEach { dataTypeItem ->
                 dataTypeStr.add(dataTypeItem.name)
-                Timber.d("DataType " + dataTypeItem.toString())
+//                Timber.d("DataType " + dataTypeItem.toString())
             }
+            Timber.d("DataType Raw ${dataTypeStr}")
+
+            aty.viewModel.getAllExistingUniqueType().observe(this, Observer { existingUniqueType ->
+                Timber.d("existingUniqueType ${existingUniqueType}")
+                existingUniqueType.forEach { item ->
+                    dataTypeStr.remove(item.name)
+                }
+                Timber.d("DataType Filtered ${dataTypeStr}")
+            })
         })
 
 

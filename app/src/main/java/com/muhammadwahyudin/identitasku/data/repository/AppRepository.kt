@@ -5,6 +5,7 @@ import com.muhammadwahyudin.identitasku.data.db.DataDao
 import com.muhammadwahyudin.identitasku.data.db.DataTypeDao
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
+import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import org.jetbrains.anko.doAsync
 
 class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: DataDao) : IAppRepository {
@@ -71,5 +72,17 @@ class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: D
 
     override fun resetDataType() {
         doAsync { dataTypeDao.reset() }
+    }
+
+    override fun prepopulateData() {
+        doAsync { dataDao.prepopulateData() }
+    }
+
+    override fun getAllDataWithType(): LiveData<List<DataWithDataType>> {
+        return dataDao.getAllWithDataType()
+    }
+
+    override fun getAllExistingUniqueType(): LiveData<List<DataType>> {
+        return dataTypeDao.getAllExistingUniqueType()
     }
 }

@@ -6,18 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.muhammadwahyudin.identitasku.R
-import com.muhammadwahyudin.identitasku.data.model.Data
-import com.muhammadwahyudin.identitasku.data.model.DataType
+import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import kotlinx.android.synthetic.main.item_home_data_list.view.*
 
 class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolder>() {
 
-    var datas: List<Data> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-    var dataTypes: List<DataType> = emptyList()
+    var datasWithType: List<DataWithDataType> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -28,19 +22,19 @@ class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolde
     }
 
     override fun getItemCount(): Int {
-        return datas.size
+        return datasWithType.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var dataTypeName = dataTypes.find { it.id == datas[position].typeId }?.name
-        holder.tv_data_type.text = dataTypeName
-        holder.tv_data_value.text = datas[position].value
+        holder.bind(datasWithType[position])
     }
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tv_data_type = itemView.tv_data_type
-        val tv_data_value = itemView.tv_data_value
+        fun bind(dataWithDataType: DataWithDataType) {
+            itemView.tv_data_type.text = dataWithDataType.typeName
+            itemView.tv_data_value.text = dataWithDataType.value
+        }
     }
 
 }
