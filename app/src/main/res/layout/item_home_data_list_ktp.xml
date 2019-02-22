@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   style="@style/CardView.Home.Row"
+                                   app:cardBackgroundColor="@color/colorAccent"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+                android:text="KARTU TANDA PENDUDUK"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_data_type_ktp"
+                android:textAppearance="@style/Base.TextAppearance.MaterialComponents.Subtitle2"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_data_value_ktp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

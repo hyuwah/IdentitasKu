@@ -3,6 +3,7 @@ package com.muhammadwahyudin.identitasku.ui.home
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
@@ -30,6 +31,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
     private fun initializeRecyclerView() {
         rv_data.layoutManager = LinearLayoutManager(this)
         rv_data.adapter = dataAdapter
+        rv_data.itemAnimator = DefaultItemAnimator()
     }
 
     private fun initializeUI() {

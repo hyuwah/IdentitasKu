@@ -18,6 +18,7 @@ interface IAppRepository {
         fun insert(data: Data)
         fun update(data: Data)
         fun delete(data: Data)
+        fun deleteById(id: Int)
         fun deleteAllData()
         fun getAllData(): LiveData<List<Data>>
         fun getAllDataByType(type: Int): LiveData<List<Data>>

@@ -16,6 +16,9 @@ interface DataDao {
     @Delete
     fun delete(data: Data)
 
+    @Query("DELETE FROM data WHERE id = (:id)")
+    fun deleteById(id: Int)
+
     @Query("SELECT * FROM data")
     fun getAll(): LiveData<List<Data>>
 
