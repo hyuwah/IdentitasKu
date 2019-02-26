@@ -76,6 +76,10 @@ class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: D
         return dataDao.getAllByType(type)
     }
 
+    override fun getDataById(id: Int): LiveData<Data> {
+        return dataDao.getDataById(id)
+    }
+
     override fun resetDataType() {
         doAsync { dataTypeDao.reset() }
     }

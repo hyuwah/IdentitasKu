@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
     tableName = "data",
     foreignKeys = [ForeignKey(
         entity = DataType::class,
-        parentColumns = arrayOf("id"),
+        parentColumns = arrayOf("type_id"),
         childColumns = arrayOf("type_id")
     )]
 )

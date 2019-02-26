@@ -26,7 +26,7 @@ interface DataTypeDao {
     @Query("DELETE FROM SQLITE_SEQUENCE WHERE name = 'data_type'")
     fun resetAutoincrementId()
 
-    @Query("SELECT data_type.id, data_type.name, data_type.is_unique, data_type.is_custom FROM data_type INNER JOIN data ON data_type.id=data.type_id WHERE data_type.is_unique=1")
+    @Query("SELECT data_type.type_id, data_type.name, data_type.is_unique, data_type.is_custom FROM data_type INNER JOIN data ON data_type.type_id=data.type_id WHERE data_type.is_unique=1")
     fun getAllExistingUniqueType(): LiveData<List<DataType>>
 
     @Transaction

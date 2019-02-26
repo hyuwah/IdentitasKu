@@ -11,6 +11,7 @@ data class DataType(
     @ColumnInfo(name = "is_custom") var isCustom: Boolean
 ) {
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "type_id")
     var id: Int = 0
 
     override fun toString(): String {

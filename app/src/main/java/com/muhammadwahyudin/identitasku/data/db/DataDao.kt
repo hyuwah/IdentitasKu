@@ -16,17 +16,20 @@ interface DataDao {
     @Delete
     fun delete(data: Data)
 
-    @Query("DELETE FROM data WHERE id = (:id)")
+    @Query("DELETE FROM data WHERE id = :id")
     fun deleteById(id: Int)
 
     @Query("SELECT * FROM data")
     fun getAll(): LiveData<List<Data>>
 
-    @Query("SELECT * FROM data JOIN data_type ON data.type_id=data_type.id ")
+    @Query("SELECT * FROM data JOIN data_type ON data.type_id=data_type.type_id ")
     fun getAllWithDataType(): LiveData<List<DataWithDataType>>
 
     @Query("SELECT * FROM data WHERE type_id == (:type)")
     fun getAllByType(type: Int): LiveData<List<Data>>
+
+    @Query("SELECT * FROM data WHERE id = :id")
+    fun getDataById(id: Int): LiveData<Data>
 
     @Query("DElETE FROM data")
     fun deleteAll()

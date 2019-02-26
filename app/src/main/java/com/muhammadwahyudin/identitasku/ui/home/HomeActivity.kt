@@ -1,10 +1,12 @@
 package com.muhammadwahyudin.identitasku.ui.home
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import kotlinx.android.synthetic.main.activity_home.*
@@ -32,6 +34,19 @@ class HomeActivity : BaseActivity(), KodeinAware {
         rv_data.layoutManager = LinearLayoutManager(this)
         rv_data.adapter = dataAdapter
         rv_data.itemAnimator = DefaultItemAnimator()
+
+        rv_data.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0 && fab_add_data.visibility == View.VISIBLE) {
+                    fab_add_data.hide()
+                    actionBar?.hide()
+                } else if (dy < 0 && fab_add_data.visibility != View.VISIBLE) {
+                    fab_add_data.show()
+                    actionBar?.show()
+                }
+            }
+        })
     }
 
     private fun initializeUI() {
@@ -48,11 +63,6 @@ class HomeActivity : BaseActivity(), KodeinAware {
 
         fab_add_data.setOnLongClickListener {
             viewModel.debugPopulateData()
-//            viewModel.getAllDataWithType().observe(this@HomeActivity, Observer {
-//                it.forEach { item ->
-//                    Timber.d(item.toString())
-//                }
-//            })
             true
         }
 

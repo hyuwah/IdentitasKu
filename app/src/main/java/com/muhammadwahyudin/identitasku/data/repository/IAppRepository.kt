@@ -23,6 +23,7 @@ interface IAppRepository {
         fun getAllData(): LiveData<List<Data>>
         fun getAllDataByType(type: Int): LiveData<List<Data>>
         fun getAllDataWithType(): LiveData<List<DataWithDataType>>
+        fun getDataById(id: Int): LiveData<Data>
         fun prepopulateData()
 
 

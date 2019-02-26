@@ -5,6 +5,7 @@ import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.data.repository.IAppRepository
 import com.muhammadwahyudin.identitasku.ui._base.BaseViewModel
+import timber.log.Timber
 
 class HomeViewModel(private val appRepository: IAppRepository) : BaseViewModel() {
 
@@ -13,18 +14,8 @@ class HomeViewModel(private val appRepository: IAppRepository) : BaseViewModel()
     fun deleteAllData() = appRepository.deleteAllData()
     fun deleteData(data: Data) = appRepository.delete(data)
     fun deleteData(dataWithDataType: DataWithDataType) {
-//        var data = Data(
-//            dataWithDataType.typeId,
-//            dataWithDataType.value,
-//            dataWithDataType.attr1,
-//            dataWithDataType.attr2,
-//            dataWithDataType.attr3,
-//            dataWithDataType.attr4,
-//            dataWithDataType.attr5
-//            )
-//        data.id = dataWithDataType.id
-//        Timber.d("data = $data")
         appRepository.deleteById(dataWithDataType.id)
+        Timber.d("Delete ${dataWithDataType.id} - ${dataWithDataType.value}")
     }
 
     fun addDataType(dataType: DataType) = appRepository.insert(dataType)

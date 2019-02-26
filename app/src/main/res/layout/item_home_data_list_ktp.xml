@@ -6,28 +6,47 @@
                                    android:layout_width="match_parent"
                                    android:layout_height="wrap_content">
 
-    <LinearLayout
-            android:orientation="vertical"
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:padding="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:text="KARTU TANDA PENDUDUK"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/tv_title_ktp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
         <TextView
+                app:layout_constraintTop_toBottomOf="@id/tv_title_ktp"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:text="TextView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_data_type_ktp"
-                android:textAppearance="@style/Base.TextAppearance.MaterialComponents.Subtitle2"/>
+                android:textAppearance="@style/Base.TextAppearance.MaterialComponents.Subtitle2"
+                app:layout_constraintRight_toLeftOf="@+id/btn_copy_value_ktp"/>
         <TextView
+                app:layout_constraintTop_toBottomOf="@id/tv_data_type_ktp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:text="TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_data_value_ktp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
-    </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_copy_value_ktp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:textColor="@android:color/black"
+                android:text="Copy"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
