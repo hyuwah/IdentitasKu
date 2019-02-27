@@ -2,6 +2,7 @@ package com.muhammadwahyudin.identitasku.ui.home
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import com.muhammadwahyudin.identitasku.R
+import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.ui._views.RoundedBottomSheetDialogFragment
@@ -55,6 +57,7 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
     private fun setupDataTypeSpinner() {
         val dataTypeStr = arrayListOf<String>()
         var dataType = ArrayList<DataType>()
+        // Fetch All data type to spinner
         aty.viewModel.getAllDataType().observe(this, Observer {
             it.toCollection(dataType)
             dataTypeStr.clear()
@@ -65,6 +68,7 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
             }
             Timber.d("DataType Raw ${dataTypeStr}")
 
+            // Filter unique data type that exists on data table
             aty.viewModel.getAllExistingUniqueType().observe(this, Observer { existingUniqueType ->
                 Timber.d("existingUniqueType ${existingUniqueType}")
                 existingUniqueType.forEach { item ->
@@ -73,7 +77,6 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
                 Timber.d("DataType Filtered ${dataTypeStr}")
             })
         })
-
 
         var dataTypeAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, dataTypeStr)
         dataTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -88,6 +91,36 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
                 dataType.find { it -> it.name == dataTypeAdapter.getItem(position) }?.let { selectedDataTypeId = it.id }
                 aty.toast("Selected ${dataTypeAdapter.getItem(position)} \n Id $selectedDataTypeId")
                 btn_save.isEnabled = dataInput.isNotEmpty()
+                updateUIBySelectedType(selectedDataTypeId)
+            }
+        }
+    }
+
+    fun updateUIBySelectedType(type: Int) {
+        // Default
+        til_attr1.visibility = View.GONE
+
+        when (type) {
+            Constants.TYPE_ALAMAT -> {
+                til_default.editText?.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
+            }
+            Constants.TYPE_KTP -> {
+                til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER
+            }
+            Constants.TYPE_EMAIL -> {
+                til_default.editText?.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            }
+            Constants.TYPE_HANDPHONE -> {
+                til_default.editText?.inputType = InputType.TYPE_CLASS_PHONE
+            }
+            Constants.TYPE_REK_BANK -> {
+                til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER
+                til_attr1.visibility = View.VISIBLE
+                til_attr1.hint = "Nama Bank"
+                til_attr1.editText?.inputType = InputType.TYPE_CLASS_TEXT
+            }
+            else -> {
+                til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER
             }
         }
     }

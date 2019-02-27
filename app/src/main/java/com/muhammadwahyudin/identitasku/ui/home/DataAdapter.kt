@@ -24,10 +24,6 @@ class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolde
             notifyDataSetChanged()
         }
 
-    init {
-        setHasStableIds(true)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             Constants.TYPE_KTP -> ViewHolder(
