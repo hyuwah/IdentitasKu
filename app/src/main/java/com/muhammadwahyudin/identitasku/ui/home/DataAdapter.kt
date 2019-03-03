@@ -12,7 +12,9 @@ import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import kotlinx.android.synthetic.main.item_home_data_list.view.*
 import kotlinx.android.synthetic.main.item_home_data_list_ktp.view.*
+import kotlinx.android.synthetic.main.item_home_data_list_rek_bank.view.*
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.appcompat.v7.Appcompat
 import org.jetbrains.anko.toast
 import timber.log.Timber
 
@@ -26,20 +28,30 @@ class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolde
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            Constants.TYPE_KTP -> ViewHolder(
-                LayoutInflater.from(ctx).inflate(
-                    R.layout.item_home_data_list_ktp,
-                    parent,
-                    false
-                )
-            )
-            else -> ViewHolder(LayoutInflater.from(ctx).inflate(R.layout.item_home_data_list, parent, false))
+            Constants.TYPE_KTP -> createViewHolder(R.layout.item_home_data_list_ktp, parent)
+            Constants.TYPE_REK_BANK -> createViewHolder(R.layout.item_home_data_list_rek_bank, parent)
+            else -> createViewHolder(R.layout.item_home_data_list, parent)
         }
+    }
+
+    private fun createViewHolder(layoutId: Int, parent: ViewGroup): ViewHolder {
+        return ViewHolder(LayoutInflater.from(ctx).inflate(layoutId, parent, false))
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (datasWithType[position].typeId) {
-            Constants.TYPE_KTP -> Constants.TYPE_KTP
+            Constants.TYPE_KTP,
+            Constants.TYPE_HANDPHONE,
+            Constants.TYPE_ALAMAT,
+            Constants.TYPE_PLN,
+            Constants.TYPE_PDAM,
+            Constants.TYPE_NPWP,
+            Constants.TYPE_REK_BANK,
+            Constants.TYPE_KK,
+            Constants.TYPE_STNK,
+            Constants.TYPE_CC,
+            Constants.TYPE_BPJS,
+            Constants.TYPE_EMAIL -> datasWithType[position].typeId
             else -> Constants.TYPE_DEFAULT
         }
     }
@@ -54,7 +66,7 @@ class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolde
             Timber.d("Data ${datasWithType[position]}")
         }
         holder.itemView.setOnLongClickListener {
-            ctx.alert("Yakin mau di delete?", "Wait!") {
+            ctx.alert(Appcompat, "Yakin mau di delete?", "Wait!") {
                 positiveButton("Ya") {
                     Timber.d("Delete")
                     (ctx as HomeActivity).viewModel.deleteData(datasWithType[position])
@@ -77,6 +89,11 @@ class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolde
                     itemView.btn_copy_value_ktp.setOnClickListener {
                         copyToClipboard(ctx, dataWithDataType.value)
                     }
+                }
+                Constants.TYPE_REK_BANK -> {
+                    itemView.tv_data_bank.text = dataWithDataType.attr1
+                    itemView.tv_data_value_rek_bank.text = dataWithDataType.value
+                    itemView.btn_copy_value_rek_bank.setOnClickListener { copyToClipboard(ctx, dataWithDataType.value) }
                 }
                 else -> {
                     itemView.tv_data_type.text = dataWithDataType.typeName

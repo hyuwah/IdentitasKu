@@ -23,6 +23,11 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
 
     var selectedDataTypeId: Int = -1
     var dataInput: String = ""
+    var attr1Input: String = ""
+    var attr2Input: String = ""
+    var attr3Input: String = ""
+    var attr4Input: String = ""
+    var attr5Input: String = ""
     lateinit var aty: HomeActivity
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,9 +52,25 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
             dataInput = text.toString()
         }
 
+        til_attr1.editText!!.doOnTextChanged { text, start, count, after -> attr1Input = text.toString() }
+        til_attr2.editText!!.doOnTextChanged { text, start, count, after -> attr2Input = text.toString() }
+        til_attr3.editText!!.doOnTextChanged { text, start, count, after -> attr3Input = text.toString() }
+        til_attr4.editText!!.doOnTextChanged { text, start, count, after -> attr4Input = text.toString() }
+        til_attr5.editText!!.doOnTextChanged { text, start, count, after -> attr5Input = text.toString() }
+
         btn_save.setOnClickListener {
             aty.toast("Data Saved\nType $selectedDataTypeId - $dataInput")
-            aty.viewModel.addData(Data(selectedDataTypeId, dataInput))
+            aty.viewModel.addData(
+                Data(
+                    selectedDataTypeId,
+                    dataInput,
+                    attr1Input,
+                    attr2Input,
+                    attr3Input,
+                    attr4Input,
+                    attr5Input
+                )
+            )
             this@AddDataBottomSheet.dismiss()
         }
     }
