@@ -1,7 +1,10 @@
 package com.muhammadwahyudin.identitasku.data.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class DataWithDataType(
     val id: Int,
     @ColumnInfo(name = "type_id") var typeId: Int,
@@ -14,7 +17,7 @@ data class DataWithDataType(
     @ColumnInfo(name = "name") var typeName: String,
     @ColumnInfo(name = "is_unique") var isUnique: Boolean,
     @ColumnInfo(name = "is_custom") var isCustom: Boolean
-) {
+) : Parcelable {
     override fun toString(): String {
         return "$id - ($typeId) $typeName - $value - $attr1 - $attr2 - $attr3 - $attr4 - $attr5 - $isUnique - $isCustom"
     }

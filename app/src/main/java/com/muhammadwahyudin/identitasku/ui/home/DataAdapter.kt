@@ -1,7 +1,5 @@
 package com.muhammadwahyudin.identitasku.ui.home
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
+import com.muhammadwahyudin.identitasku.utils.Commons
 import kotlinx.android.synthetic.main.item_home_data_list.view.*
 import kotlinx.android.synthetic.main.item_home_data_list_ktp.view.*
 import kotlinx.android.synthetic.main.item_home_data_list_rek_bank.view.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.appcompat.v7.Appcompat
-import org.jetbrains.anko.toast
 import timber.log.Timber
 
 class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolder>() {
@@ -64,6 +62,8 @@ class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolde
         holder.bind(ctx, datasWithType[position])
         holder.itemView.setOnClickListener {
             Timber.d("Data ${datasWithType[position]}")
+            val bs = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.EDIT, datasWithType[position])
+            bs.show((ctx as HomeActivity).supportFragmentManager, bs.tag)
         }
         holder.itemView.setOnLongClickListener {
             ctx.alert(Appcompat, "Yakin mau di delete?", "Wait!") {
@@ -87,30 +87,29 @@ class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolde
                     itemView.tv_data_type_ktp.text = dataWithDataType.typeName
                     itemView.tv_data_value_ktp.text = dataWithDataType.value
                     itemView.btn_copy_value_ktp.setOnClickListener {
-                        copyToClipboard(ctx, dataWithDataType.value)
+                        Commons.copyToClipboard(ctx, dataWithDataType.value)
                     }
                 }
                 Constants.TYPE_REK_BANK -> {
                     itemView.tv_data_bank.text = dataWithDataType.attr1
                     itemView.tv_data_value_rek_bank.text = dataWithDataType.value
-                    itemView.btn_copy_value_rek_bank.setOnClickListener { copyToClipboard(ctx, dataWithDataType.value) }
+                    itemView.btn_copy_value_rek_bank.setOnClickListener {
+                        Commons.copyToClipboard(
+                            ctx,
+                            dataWithDataType.value
+                        )
+                    }
                 }
                 else -> {
                     itemView.tv_data_type.text = dataWithDataType.typeName
                     itemView.tv_data_value.text = dataWithDataType.value
                     itemView.btn_copy_value.setOnClickListener {
-                        copyToClipboard(ctx, dataWithDataType.value)
+                        Commons.copyToClipboard(ctx, dataWithDataType.typeName)
                     }
                 }
             }
         }
 
-        private fun copyToClipboard(ctx: Context, text: String) {
-            val clipboard = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip: ClipData = ClipData.newPlainText(ctx.packageName, text)
-            clipboard.primaryClip = clip
-            ctx.toast("Copied to clipboard")
-        }
     }
 
 }

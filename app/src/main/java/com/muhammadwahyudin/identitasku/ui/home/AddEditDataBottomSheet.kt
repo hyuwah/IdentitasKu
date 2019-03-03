@@ -14,13 +14,30 @@ import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
+import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui._views.RoundedBottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet_add_data.*
+import kotlinx.android.synthetic.main.bottom_sheet_add_edit_data.*
 import org.jetbrains.anko.toast
 import timber.log.Timber
 
-class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
+class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
 
+    companion object {
+        const val ADD = 0
+        const val EDIT = 1
+
+        fun newInstance(type: Int, dataWithType: DataWithDataType? = null): AddEditDataBottomSheet {
+            val args = Bundle()
+            args.putInt("TYPE", type)
+            args.putParcelable("DATA", dataWithType)
+            val fragment = AddEditDataBottomSheet()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    var DATA: DataWithDataType? = null
+    var TYPE: Int = 0
     var selectedDataTypeId: Int = -1
     var dataInput: String = ""
     var attr1Input: String = ""
@@ -30,8 +47,14 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
     var attr5Input: String = ""
     lateinit var aty: HomeActivity
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.bottom_sheet_add_data, container, false)
+        arguments?.let {
+            TYPE = it.getInt("TYPE", 0)
+            DATA = it.getParcelable("DATA")
+        }
+        Timber.d("TYPE: $TYPE\nDATA: $DATA")
+        return inflater.inflate(R.layout.bottom_sheet_add_edit_data, container, false)
     }
 
     override fun onAttach(activity: Activity) {
@@ -42,7 +65,16 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupDataTypeSpinner()
+        when (TYPE) {
+            ADD -> {
+                tv_title.text = "Add New Data"
+                setupAddDataTypeSpinner()
+            }
+            EDIT -> {
+                tv_title.text = "Edit Data"
+                setupEditDataTypeSpinner()
+            }
+        }
 
         btn_save.isEnabled = false
 
@@ -50,6 +82,10 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
         defaultEditText.doOnTextChanged { text, start, count, after ->
             btn_save.isEnabled = !text.isNullOrEmpty() && selectedDataTypeId != -1
             dataInput = text.toString()
+
+            if (TYPE == EDIT && text.toString() != DATA!!.value && !text.isNullOrEmpty()) {
+                btn_save.isEnabled = true
+            }
         }
 
         til_attr1.editText!!.doOnTextChanged { text, start, count, after -> attr1Input = text.toString() }
@@ -59,30 +95,60 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
         til_attr5.editText!!.doOnTextChanged { text, start, count, after -> attr5Input = text.toString() }
 
         btn_save.setOnClickListener {
-            aty.toast("Data Saved\nType $selectedDataTypeId - $dataInput")
-            aty.viewModel.addData(
-                Data(
-                    selectedDataTypeId,
-                    dataInput,
-                    attr1Input,
-                    attr2Input,
-                    attr3Input,
-                    attr4Input,
-                    attr5Input
-                )
-            )
-            this@AddDataBottomSheet.dismiss()
+            when (TYPE) {
+                ADD -> {
+                    aty.viewModel.addData(
+                        Data(
+                            selectedDataTypeId,
+                            dataInput,
+                            attr1Input,
+                            attr2Input,
+                            attr3Input,
+                            attr4Input,
+                            attr5Input
+                        )
+                    )
+                }
+                EDIT -> {
+                    val data = Data(
+                        DATA!!.typeId,
+                        dataInput,
+                        attr1Input,
+                        attr2Input,
+                        attr3Input,
+                        attr4Input,
+                        attr5Input
+                    )
+                    data.id = DATA!!.id
+                    aty.viewModel.updateData(data)
+                }
+            }
+
+            this@AddEditDataBottomSheet.dismiss()
         }
     }
 
-    private fun setupDataTypeSpinner() {
+    private fun setupEditDataTypeSpinner() {
+        val dataTypeStr = arrayListOf<String>()
+        dataTypeStr.add(DATA!!.typeName)
+        val dataTypeAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, dataTypeStr)
+        dataTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_data_type.setTitle("Tipe Data")
+        spinner_data_type.adapter = dataTypeAdapter
+        spinner_data_type.onSearchableItemClicked(DATA!!.typeName, 0)
+        spinner_data_type.isEnabled = false
+
+        updateUIBySelectedType(DATA!!.typeId)
+    }
+
+    private fun setupAddDataTypeSpinner() {
         val dataTypeStr = arrayListOf<String>()
         var dataType = ArrayList<DataType>()
         // Fetch All data type to spinner
         aty.viewModel.getAllDataType().observe(this, Observer {
             it.toCollection(dataType)
             dataTypeStr.clear()
-            Timber.d("All DataType ${it}")
+            Timber.d("All DataType $it")
             it.forEach { dataTypeItem ->
                 dataTypeStr.add(dataTypeItem.name)
 //                Timber.d("DataType " + dataTypeItem.toString())
@@ -91,7 +157,7 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
 
             // Filter unique data type that exists on data table
             aty.viewModel.getAllExistingUniqueType().observe(this, Observer { existingUniqueType ->
-                Timber.d("existingUniqueType ${existingUniqueType}")
+                Timber.d("existingUniqueType $existingUniqueType")
                 existingUniqueType.forEach { item ->
                     dataTypeStr.remove(item.name)
                 }
@@ -99,7 +165,7 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
             })
         })
 
-        var dataTypeAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, dataTypeStr)
+        val dataTypeAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, dataTypeStr)
         dataTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner_data_type.setTitle("Tipe Data")
         spinner_data_type.setPositiveButton("Close")
@@ -121,6 +187,8 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
         // Default
         til_attr1.visibility = View.GONE
 
+        DATA?.let { til_default.editText?.setText(it.value) }
+
         when (type) {
             Constants.TYPE_ALAMAT -> {
                 til_default.editText?.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
@@ -139,6 +207,9 @@ class AddDataBottomSheet : RoundedBottomSheetDialogFragment() {
                 til_attr1.visibility = View.VISIBLE
                 til_attr1.hint = "Nama Bank"
                 til_attr1.editText?.inputType = InputType.TYPE_CLASS_TEXT
+
+                DATA?.let { til_attr1.editText?.setText(it.attr1) }
+
             }
             else -> {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER

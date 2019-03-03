@@ -41,7 +41,15 @@ class HomeActivity : BaseActivity(), KodeinAware {
                 if (dy > 0 && fab_add_data.visibility == View.VISIBLE) {
                     fab_add_data.hide()
                     actionBar?.hide()
-                } else if (dy < 0 && fab_add_data.visibility != View.VISIBLE) {
+                } else if (dy <= 0 && fab_add_data.visibility != View.VISIBLE) {
+                    fab_add_data.show()
+                    actionBar?.show()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (fab_add_data.visibility != View.VISIBLE) {
                     fab_add_data.show()
                     actionBar?.show()
                 }
@@ -57,7 +65,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
         })
 
         fab_add_data.setOnClickListener {
-            val bsFragment = AddDataBottomSheet()
+            val bsFragment = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.ADD)
             bsFragment.show(supportFragmentManager, bsFragment.tag)
         }
 

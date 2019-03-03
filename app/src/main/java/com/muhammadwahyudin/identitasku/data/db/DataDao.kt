@@ -10,7 +10,7 @@ interface DataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(data: Data)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(data: Data)
 
     @Delete
