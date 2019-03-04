@@ -87,17 +87,14 @@ class DataAdapter(val ctx: Context) : RecyclerView.Adapter<DataAdapter.ViewHolde
                     itemView.tv_data_type_ktp.text = dataWithDataType.typeName
                     itemView.tv_data_value_ktp.text = dataWithDataType.value
                     itemView.btn_copy_value_ktp.setOnClickListener {
-                        Commons.copyToClipboard(ctx, dataWithDataType.value)
+                        Commons.copyToClipboard(ctx, dataWithDataType.typeName)
                     }
                 }
                 Constants.TYPE_REK_BANK -> {
                     itemView.tv_data_bank.text = dataWithDataType.attr1
                     itemView.tv_data_value_rek_bank.text = dataWithDataType.value
                     itemView.btn_copy_value_rek_bank.setOnClickListener {
-                        Commons.copyToClipboard(
-                            ctx,
-                            dataWithDataType.value
-                        )
+                        Commons.copyToClipboard(ctx, dataWithDataType.typeName)
                     }
                 }
                 else -> {
