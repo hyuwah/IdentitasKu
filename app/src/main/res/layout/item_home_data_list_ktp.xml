@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   style="@style/CardView.Home.Row"
+                                   xmlns:tools="http://schemas.android.com/tools" style="@style/CardView.Home.Row"
                                    app:cardBackgroundColor="@color/colorAccent"
                                    android:layout_width="match_parent"
                                    android:layout_height="wrap_content">
@@ -11,36 +11,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <TextView
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:text="KARTU TANDA PENDUDUK"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_title_ktp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-        <TextView
-                app:layout_constraintTop_toBottomOf="@id/tv_title_ktp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:text="TextView"
+                tools:text="TextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_data_type_ktp"
+                android:id="@+id/tv_data_type"
                 android:textAppearance="@style/Base.TextAppearance.MaterialComponents.Subtitle2"
-                app:layout_constraintRight_toLeftOf="@+id/btn_copy_value_ktp"/>
+                app:layout_constraintRight_toLeftOf="@+id/btn_copy_value" app:layout_constraintTop_toTopOf="parent"
+        />
         <TextView
-                app:layout_constraintTop_toBottomOf="@id/tv_data_type_ktp"
+                app:layout_constraintTop_toBottomOf="@id/tv_data_type"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:text="TextView"
+                app:layout_constraintRight_toLeftOf="@id/btn_copy_value"
+                tools:text="TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_data_value_ktp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                android:id="@+id/tv_data_value"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
 
         <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_copy_value_ktp"
+                android:id="@+id/btn_copy_value"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:textColor="@android:color/black"
                 android:text="Copy"

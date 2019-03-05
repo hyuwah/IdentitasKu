@@ -13,6 +13,7 @@ import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.repository.AppRepository
 import com.muhammadwahyudin.identitasku.data.repository.IAppRepository
 import com.muhammadwahyudin.identitasku.ui.home.HomeViewModelFactory
+import com.orhanobut.hawk.Hawk
 import org.jetbrains.anko.doAsync
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -48,6 +49,8 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
 
     override fun onCreate() {
         super.onCreate()
+
+        Hawk.init(this).build()
 
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
