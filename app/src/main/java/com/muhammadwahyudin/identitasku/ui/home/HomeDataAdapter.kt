@@ -6,6 +6,7 @@ import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.utils.Commons
+import java.util.*
 
 
 class HomeDataAdapter(data: List<DataWithDataType>) :
@@ -16,12 +17,15 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         addItemType(Constants.TYPE_DEFAULT, R.layout.item_home_data_list)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return data[position].itemType
+    }
     override fun convert(helper: BaseViewHolder, item: DataWithDataType) {
         // Edit
-//        helper.itemView.setOnClickListener {
-//            val bs = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.EDIT, item)
-//            bs.show((mContext as HomeActivity).supportFragmentManager, bs.tag)
-//        }
+        helper.itemView.setOnClickListener {
+            val bs = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.EDIT, item)
+            bs.show((mContext as HomeActivity).supportFragmentManager, bs.tag)
+        }
 
         // Delete
 //        helper.itemView.setOnLongClickListener {
@@ -66,6 +70,7 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
     fun onItemMove(fromPosition: Int, toPosition: Int) {
 //        val tmp = data.removeAt(fromPosition)
 //        data.add(if (toPosition > fromPosition) toPosition - 1 else toPosition, tmp)
+        Collections.swap(data, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
     }
 }
