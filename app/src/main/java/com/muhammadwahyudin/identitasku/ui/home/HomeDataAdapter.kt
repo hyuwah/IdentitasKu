@@ -20,6 +20,7 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
     override fun getItemViewType(position: Int): Int {
         return data[position].itemType
     }
+
     override fun convert(helper: BaseViewHolder, item: DataWithDataType) {
         // Edit
         helper.itemView.setOnClickListener {
@@ -44,7 +45,7 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         helper.setText(R.id.tv_data_type, item.typeName)
         helper.setText(R.id.tv_data_value, item.value)
         helper.setOnClickListener(R.id.btn_copy_value) {
-            Commons.copyToClipboard(mContext, item.typeName)
+            Commons.copyToClipboard(mContext, item.value, item.typeName)
         }
 
         when (item.itemType) {
@@ -63,8 +64,10 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
     }
 
     fun onItemDismiss(position: Int) {
+        (mContext as HomeActivity).viewModel.deleteData(data[position])
         data.removeAt(position)
         notifyItemRemoved(position)
+        // Show snackbar with undo button
     }
 
     fun onItemMove(fromPosition: Int, toPosition: Int) {

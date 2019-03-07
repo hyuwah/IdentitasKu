@@ -6,10 +6,10 @@ import android.content.Context
 import org.jetbrains.anko.toast
 
 object Commons {
-    fun copyToClipboard(ctx: Context, text: String) {
+    fun copyToClipboard(ctx: Context, value: String, type: String) {
         val clipboard = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip: ClipData = ClipData.newPlainText(ctx.packageName, text)
+        val clip: ClipData = ClipData.newPlainText(ctx.packageName, value)
         clipboard.primaryClip = clip
-        ctx.toast("$text copied to clipboard")
+        ctx.toast("$type copied to clipboard")
     }
 }
