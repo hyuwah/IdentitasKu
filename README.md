@@ -4,11 +4,12 @@ An app to centralize your important info.
 
 ### Features
 
-* Common Indonesian Important Data
-* Copy to clipboard
-* Centralize info, no need to memorize it again
-* Password protection
+- [x] Common Indonesian Important Data
+- [x] Copy to clipboard
+- [x] Centralize info, no need to memorize it again
+- [ ] Password protection
 
 ## License
 
-MIT
+- MIT
+- Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY

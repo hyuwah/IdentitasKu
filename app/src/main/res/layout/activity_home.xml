@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/parent_home_activity"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         tools:context=".ui.home.HomeActivity" android:background="#f0f0f0">
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_data"
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_data"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layoutAnimation="@anim/layout_animation_fall_down"
-                android:layout_height="wrap_content" tools:listitem="@layout/item_home_data_list"/>
-
-    </LinearLayout>
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            android:layout_height="match_parent" tools:listitem="@layout/item_home_data_list"
+    />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add_data"
             style="@style/Widget.MaterialComponents.FloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:src="@drawable/ic_add" app:backgroundTint="@color/colorAccent"/>
 
