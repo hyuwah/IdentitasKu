@@ -2,6 +2,8 @@ package com.muhammadwahyudin.identitasku.data
 
 class Constants {
     companion object {
+        const val DB_NAME = "identitasku-db"
+
         const val TYPE_KTP = 1
         const val TYPE_HANDPHONE = 2
         const val TYPE_ALAMAT = 3

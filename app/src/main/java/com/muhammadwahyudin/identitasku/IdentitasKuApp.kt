@@ -4,7 +4,9 @@ import androidx.multidex.MultiDexApplication
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.commonsware.cwac.saferoom.SafeHelperFactory
 import com.facebook.stetho.Stetho
+import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
 import com.muhammadwahyudin.identitasku.data.db.DataDao
 import com.muhammadwahyudin.identitasku.data.db.DataTypeDao
@@ -13,6 +15,7 @@ import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.repository.AppRepository
 import com.muhammadwahyudin.identitasku.data.repository.IAppRepository
 import com.muhammadwahyudin.identitasku.ui.home.HomeViewModelFactory
+import com.muhammadwahyudin.identitasku.utils.Commons
 import com.orhanobut.hawk.Hawk
 import org.jetbrains.anko.doAsync
 import org.kodein.di.Kodein
@@ -25,17 +28,15 @@ import timber.log.Timber.DebugTree
 class IdentitasKuApp : MultiDexApplication(), KodeinAware {
     override val kodein: Kodein = Kodein.lazy {
         bind<AppDatabase>() with eagerSingleton {
-            Room.databaseBuilder(this@IdentitasKuApp, AppDatabase::class.java, "identitasku-db")
+            Room.databaseBuilder(this@IdentitasKuApp, AppDatabase::class.java, Constants.DB_NAME)
                 .fallbackToDestructiveMigration()
+                .openHelperFactory(SafeHelperFactory(Commons.getDeviceId(applicationContext).toCharArray()))
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         val appDB = instance<AppDatabase>()
-
                         populateDataType(appDB)
                         populateData(appDB)
-
-
                     }
                 })
                 .build()
@@ -44,19 +45,15 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
         bind<DataDao>() with singleton { instance<AppDatabase>().dataDao() }
         bind<IAppRepository>() with singleton { AppRepository(instance(), instance()) }
         bind() from provider { HomeViewModelFactory(instance()) }
-
     }
 
     override fun onCreate() {
         super.onCreate()
-
         Hawk.init(this).build()
-
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
             Stetho.initializeWithDefaults(this)
         }
-
     }
 
     /**
@@ -87,18 +84,18 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
         val dataDao = appDB.dataDao()
         doAsync {
             dataDao.deleteAll()
-            dataDao.insert(Data(1, "931561375618"))
-            dataDao.insert(Data(2, "245645657"))
-            dataDao.insert(Data(3, "4526577"))
-            dataDao.insert(Data(3, "75452"))
-            dataDao.insert(Data(3, "464623565"))
-            dataDao.insert(Data(3, "245725475"))
-            dataDao.insert(Data(3, "745272457457"))
+            dataDao.insert(Data(1, "3214011703940001"))
+            dataDao.insert(Data(2, "085759216600"))
+            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A5, Tomang, Jakarta Barat"))
+            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A2, Tomang, Jakarta Barat"))
+            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A1, Tomang, Jakarta Barat"))
+            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A7, Tomang, Jakarta Barat"))
+            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A4, Tomang, Jakarta Barat"))
             dataDao.insert(Data(4, "4574527457425"))
             dataDao.insert(Data(5, "4257457"))
             dataDao.insert(Data(6, "24574545257"))
-            dataDao.insert(Data(7, "245744575474"))
-            dataDao.insert(Data(2, "2457425724574257"))
+            dataDao.insert(Data(7, "9001234567", "Jenius"))
+            dataDao.insert(Data(2, "contoso@gmail.com"))
         }
         Timber.d("Prepopulated Data")
     }

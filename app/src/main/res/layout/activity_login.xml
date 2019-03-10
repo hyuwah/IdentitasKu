@@ -42,6 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" android:padding="16dp">
                 <TextView
+                        android:id="@+id/tv_title"
                         android:text="LOGIN"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -52,33 +53,66 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" android:id="@+id/til_password"
-                        app:passwordToggleEnabled="true">
-
+                        app:passwordToggleEnabled="true" android:hint="Password">
                     <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Password"
                             android:imeActionId="6"
                             android:imeActionLabel="@string/action_sign_in_short"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:singleLine="true"/>
-
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/til_password_confirm"
+                        android:layout_marginTop="8dp"
+                        android:hint="Re-enter your Password" app:passwordToggleEnabled="true"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password_confirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeActionId="6"
+                            android:imeActionLabel="@string/action_sign_in_short"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <Button
                         android:id="@+id/btn_login"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="LOGIN"
+                        android:text="LOGIN with Password"
                         android:textStyle="bold" app:elevation="2dp" app:cornerRadius="6dp"
                         android:layout_marginBottom="16dp"/>
+                <TextView
+                        android:text="--- OR ---"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/textView2"
+                        android:textAlignment="center" android:textStyle="bold"/>
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        style="@style/Widget.MaterialComponents.FloatingActionButton"
+                        android:id="@+id/btn_login_fp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_fingerprint_white_24dp"
+                        app:elevation="6dp"
+                        android:tint="#ffffff"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp" android:layout_gravity="center"
+                        app:backgroundTint="@color/colorAccent"
+                        android:scaleType="fitCenter" app:maxImageSize="32dp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <TextView
-                android:text="Some Copyrights &amp; Stuffs"
+                android:text="Hyuwah ©️ 2019"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
