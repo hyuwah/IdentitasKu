@@ -8,29 +8,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:padding="12dp">
 
-        <TextView
+        <ImageView
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp" app:srcCompat="@drawable/ic_ktp"
+                android:id="@+id/iv_icon" android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+        />
+
+        <TextView
+                app:layout_constraintLeft_toRightOf="@id/iv_icon"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="TextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" android:id="@+id/tv_data_type"
                 android:textAppearance="@style/Base.TextAppearance.MaterialComponents.Subtitle2"
-                app:layout_constraintRight_toLeftOf="@+id/btn_copy_value"/>
+                app:layout_constraintRight_toLeftOf="@+id/btn_copy_value" android:layout_marginLeft="12dp"/>
         <TextView
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/iv_icon"
                 app:layout_constraintTop_toBottomOf="@id/tv_data_type"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/btn_copy_value"
                 android:text="TextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" android:id="@+id/tv_data_value"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" android:layout_marginRight="8dp"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" android:layout_marginRight="8dp"
+                android:layout_marginLeft="12dp"/>
 
         <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:id="@+id/btn_copy_value"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:text="Copy"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

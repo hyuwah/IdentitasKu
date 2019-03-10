@@ -196,13 +196,16 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
 
         when (type) {
             Constants.TYPE_ALAMAT -> {
-                til_default.editText?.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
+                til_default.editText?.inputType = InputType.TYPE_CLASS_TEXT or
+                        InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                        InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
             }
             Constants.TYPE_KTP -> {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER
             }
             Constants.TYPE_EMAIL -> {
-                til_default.editText?.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                til_default.editText?.inputType = InputType.TYPE_CLASS_TEXT or
+                        InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
             }
             Constants.TYPE_HANDPHONE -> {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_PHONE

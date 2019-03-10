@@ -62,6 +62,12 @@ class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: D
         }
     }
 
+    override fun deleteDatasById(listOfId: List<Int>) {
+        doAsync {
+            dataDao.deleteDatasById(listOfId)
+        }
+    }
+
     override fun deleteAllData() {
         doAsync {
             dataDao.deleteAll()

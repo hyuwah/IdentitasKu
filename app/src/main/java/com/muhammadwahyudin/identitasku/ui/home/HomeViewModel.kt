@@ -18,6 +18,14 @@ class HomeViewModel(private val appRepository: IAppRepository) : BaseViewModel()
         Timber.d("Delete ${dataWithDataType.id} - ${dataWithDataType.value}")
     }
 
+    fun deleteDatas(datasWithDataType: List<DataWithDataType>) {
+        val listOfId = arrayListOf<Int>()
+        for (data in datasWithDataType) {
+            listOfId.add(data.id)
+        }
+        appRepository.deleteDatasById(listOfId)
+    }
+
     fun updateData(data: Data) {
         Timber.d("Update $data")
         appRepository.update(data)

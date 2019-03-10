@@ -19,6 +19,13 @@ interface DataDao {
     @Query("DELETE FROM data WHERE id = :id")
     fun deleteById(id: Int)
 
+    @Transaction
+    fun deleteDatasById(listOfId: List<Int>) {
+        for (id in listOfId) {
+            deleteById(id)
+        }
+    }
+
     @Query("SELECT * FROM data")
     fun getAll(): LiveData<List<Data>>
 

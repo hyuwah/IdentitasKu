@@ -7,7 +7,9 @@ An app to centralize your important info.
 - [x] Common Indonesian Important Data
 - [x] Copy to clipboard
 - [x] Centralize info, no need to memorize it again
-- [ ] Password protection
+- [x] Password protection
+- [x] Login with fingerprint
+- [x] Encrypted db
 
 ## License
 

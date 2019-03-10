@@ -15,7 +15,9 @@ import org.jetbrains.anko.find
 class HomeDataAdapter(data: List<DataWithDataType>) :
     BaseMultiItemQuickAdapter<DataWithDataType, BaseViewHolder>(data), SwipeItemTouchHelper.SwipeHelperAdapter {
 
+    private var deleteHandler = Handler() // should make this global
     private var data_swiped = ArrayList<DataWithDataType>()
+    private var datasToDelete = arrayListOf<DataWithDataType>()
     private lateinit var aty: HomeActivity
 
     init {
@@ -52,7 +54,20 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
                 helper.setText(R.id.tv_data_bank, item.attr1)
             }
             Constants.TYPE_DEFAULT -> {
-
+                when (item.typeId) {
+                    Constants.TYPE_HANDPHONE -> {
+                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_handphone)
+                    }
+                    Constants.TYPE_ALAMAT -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_address)
+                    Constants.TYPE_PLN -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_pln)
+                    Constants.TYPE_PDAM -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_pdam)
+                    Constants.TYPE_NPWP -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_npwp)
+                    Constants.TYPE_KK -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_kk)
+                    Constants.TYPE_STNK -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_stnk)
+                    Constants.TYPE_CC -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_credit_card)
+                    Constants.TYPE_BPJS -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_bpjs)
+                    Constants.TYPE_EMAIL -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_email)
+                }
             }
         }
 
@@ -81,22 +96,30 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         val dataToDelete = data[position]
         data.removeAt(position)
         notifyItemRemoved(position)
+
         // clear handler callback first to avoid bug when swiping more than one data in short duration
-        val deleteHandler = Handler() // should make this global
+        deleteHandler.removeCallbacksAndMessages(null)
 
         // should add to list of datasToDelete
+        datasToDelete.add(dataToDelete)
 
         // Handler to run data deletion on db after snackbar disappear
-        deleteHandler.postDelayed({ aty.viewModel.deleteData(dataToDelete) }, 3500) // delete list of datas
+        deleteHandler.postDelayed({ aty.viewModel.deleteDatas(datasToDelete) }, 3500) // delete list of data
+
         // Show snackbar with undo button
         Snackbar.make(aty.find(R.id.parent_home_activity), "${dataToDelete.typeName} deleted", Snackbar.LENGTH_LONG)
             .setAction("UNDO") {
                 data.add(position, dataToDelete)
                 notifyItemInserted(position)
-                // cancel Handler
-                deleteHandler.removeCallbacksAndMessages(null)
+                // check if datasToDelete > 1
+                if (datasToDelete.size > 1) {
+                    // don't cancel the handler, just remove canceled / last data from list of datasToDelete
+                    datasToDelete.remove(dataToDelete)
+                } else {
+                    // cancel Handler
+                    deleteHandler.removeCallbacksAndMessages(null)
+                }
             }.show()
-
     }
 
 //    fun onItemMove(fromPosition: Int, toPosition: Int) {
