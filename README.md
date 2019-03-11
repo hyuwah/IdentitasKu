@@ -2,7 +2,7 @@
 
 An app to centralize your important info.
 
-### Features
+## Features
 
 - [x] Common Indonesian Important Data
 - [x] Copy to clipboard
@@ -13,5 +13,5 @@ An app to centralize your important info.
 
 ## License
 
-- MIT
-- Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY
+-  MIT
+-  Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY

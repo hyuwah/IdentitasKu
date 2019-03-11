@@ -23,7 +23,7 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 
 /**
- * A login screen that offers login via email/password.
+ * A register & login screen that offers login via password/fingerprint.
  */
 class LoginActivity : BaseActivity(), KodeinAware {
     override val kodein by closestKodein()
@@ -35,7 +35,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
 
         // toast("DB ${appDatabase.openHelper.readableDatabase.path}")
 
-        if (Hawk.contains("password")) { // Login
+        if (Hawk.contains(Constants.SP_PASSWORD)) { // Login
             btn_login.setOnClickListener {
                 validateLogin()
             }
@@ -50,10 +50,10 @@ class LoginActivity : BaseActivity(), KodeinAware {
             }
         }
 
-        til_password.editText?.doOnTextChanged { _, _, _, _ ->
+        password.doOnTextChanged { _, _, _, _ ->
             til_password.isErrorEnabled = false
         }
-        til_password_confirm.editText?.doOnTextChanged { _, _, _, _ ->
+        password_confirm.doOnTextChanged { _, _, _, _ ->
             til_password_confirm.isErrorEnabled = false
         }
 
@@ -103,8 +103,8 @@ class LoginActivity : BaseActivity(), KodeinAware {
     }
 
     private fun validateLogin() {
-        val passwordEdt = til_password.editText!!.text
-        if (passwordEdt.isNotBlank() && passwordEdt.toString() == Hawk.get("password")) {
+        val passwordEdt = password.text!!
+        if (passwordEdt.isNotBlank() && passwordEdt.toString() == Hawk.get(Constants.SP_PASSWORD)) {
             startActivity(intentFor<HomeActivity>().clearTop())
             finish()
         } else {
@@ -116,12 +116,12 @@ class LoginActivity : BaseActivity(), KodeinAware {
     }
 
     private fun register() {
-        val passwordEdt = til_password.editText!!.text
-        val passwordConfirmEdt = til_password_confirm.editText!!.text
+        val passwordEdt = password.text!!
+        val passwordConfirmEdt = password_confirm.text!!
         when {
             passwordEdt.isNotBlank() && passwordConfirmEdt.isNotBlank() -> {
                 if (passwordEdt.toString() == passwordConfirmEdt.toString()) {
-                    Hawk.put("password", passwordEdt.toString())
+                    Hawk.put(Constants.SP_PASSWORD, passwordEdt.toString())
                     alert {
                         iconResource = R.drawable.identity_black_256
                         isCancelable = false

@@ -1,8 +1,12 @@
 package com.muhammadwahyudin.identitasku.data
 
+/**
+ * Contain all primitive value constants
+ */
 class Constants {
     companion object {
         const val DB_NAME = "identitasku-db"
+        const val SP_PASSWORD = "password"
 
         const val TYPE_KTP = 1
         const val TYPE_HANDPHONE = 2
