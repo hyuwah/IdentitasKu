@@ -48,6 +48,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
     private var attr3Input: String = ""
     private var attr4Input: String = ""
     private var attr5Input: String = ""
+    var isDataModified = false
     lateinit var aty: HomeActivity
 
     private lateinit var parent_view: CoordinatorLayout
@@ -70,35 +71,9 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
         when (TYPE) {
             ADD -> {
                 tv_title.text = "Add New Data"
+                til_default.isEnabled = false
                 setupAddDataTypeSpinner()
-            }
-            EDIT -> {
-                tv_title.text = "Edit Data"
-                setupEditDataTypeSpinner()
-            }
-        }
-
-        btn_save.isEnabled = false
-
-        val defaultEditText = til_default.editText!!
-        defaultEditText.doOnTextChanged { text, _, _, _ ->
-            btn_save.isEnabled = !text.isNullOrEmpty() && selectedDataTypeId != -1
-            dataInput = text.toString()
-
-            if (TYPE == EDIT && text.toString() != DATA!!.value && !text.isNullOrEmpty()) {
-                btn_save.isEnabled = true
-            }
-        }
-
-        til_attr1.editText!!.doOnTextChanged { text, _, _, _ -> attr1Input = text.toString() }
-        til_attr2.editText!!.doOnTextChanged { text, _, _, _ -> attr2Input = text.toString() }
-        til_attr3.editText!!.doOnTextChanged { text, _, _, _ -> attr3Input = text.toString() }
-        til_attr4.editText!!.doOnTextChanged { text, _, _, _ -> attr4Input = text.toString() }
-        til_attr5.editText!!.doOnTextChanged { text, _, _, _ -> attr5Input = text.toString() }
-
-        btn_save.setOnClickListener {
-            when (TYPE) {
-                ADD -> {
+                btn_save.setOnClickListener {
                     aty.viewModel.addData(
                         Data(
                             selectedDataTypeId,
@@ -111,8 +86,19 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
                         )
                     )
                     Snackbar.make(parent_view, "$selectedDataTypeName successfully added", Snackbar.LENGTH_SHORT).show()
+                    this@AddEditDataBottomSheet.dismiss()
                 }
-                EDIT -> {
+            }
+            EDIT -> {
+                tv_title.text = "Edit Data"
+                setupEditDataTypeSpinner()
+                btn_save.setOnClickListener {
+                    dataInput = if (dataInput.isNotEmpty()) dataInput else DATA!!.value
+                    attr1Input = if (attr1Input.isNotEmpty()) attr1Input else DATA!!.attr1 ?: attr1Input
+                    attr2Input = if (attr2Input.isNotEmpty()) attr2Input else DATA!!.attr2 ?: attr2Input
+                    attr3Input = DATA!!.attr3 ?: attr3Input
+                    attr4Input = DATA!!.attr4 ?: attr4Input
+                    attr5Input = DATA!!.attr5 ?: attr5Input
                     val data = Data(
                         DATA!!.typeId,
                         dataInput,
@@ -125,10 +111,47 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
                     data.id = DATA!!.id
                     aty.viewModel.updateData(data)
                     Snackbar.make(parent_view, "${DATA!!.typeName} successfully modified", Snackbar.LENGTH_SHORT).show()
+                    this@AddEditDataBottomSheet.dismiss()
                 }
             }
+        }
 
-            this@AddEditDataBottomSheet.dismiss()
+        btn_save.isEnabled = false
+
+        val defaultEditText = til_default.editText!!
+        defaultEditText.doOnTextChanged { text, _, _, _ ->
+            btn_save.isEnabled = !text.isNullOrEmpty() && selectedDataTypeId != -1
+            dataInput = text.toString()
+            checkIfDataIsModified(dataInput, DATA?.value)
+        }
+
+        til_attr1.editText!!.doOnTextChanged { text, _, _, _ ->
+            attr1Input = text.toString()
+            checkIfDataIsModified(attr1Input, DATA?.attr1)
+        }
+        til_attr2.editText!!.doOnTextChanged { text, _, _, _ ->
+            attr2Input = text.toString()
+            checkIfDataIsModified(attr2Input, DATA?.attr2)
+        }
+        til_attr3.editText!!.doOnTextChanged { text, _, _, _ ->
+            attr3Input = text.toString()
+            checkIfDataIsModified(attr3Input, DATA?.attr3)
+        }
+        til_attr4.editText!!.doOnTextChanged { text, _, _, _ ->
+            attr4Input = text.toString()
+            checkIfDataIsModified(attr4Input, DATA?.attr4)
+        }
+        til_attr5.editText!!.doOnTextChanged { text, _, _, _ ->
+            attr5Input = text.toString()
+            checkIfDataIsModified(attr5Input, DATA?.attr5)
+        }
+
+    }
+
+    // Check if data modified on edit mode
+    fun checkIfDataIsModified(text: String, value: String?) {
+        if (TYPE == EDIT && text != value && !text.isEmpty()) {
+            btn_save.isEnabled = true
         }
     }
 
@@ -137,7 +160,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
         dataTypeStr.add(DATA!!.typeName)
         val dataTypeAdapter = ArrayAdapter<String>(aty, android.R.layout.simple_spinner_item, dataTypeStr)
         dataTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner_data_type.setTitle("Tipe Data")
+        spinner_data_type.setTitle("Category")
         spinner_data_type.adapter = dataTypeAdapter
         spinner_data_type.onSearchableItemClicked(DATA!!.typeName, 0)
         spinner_data_type.isEnabled = false
@@ -170,7 +193,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
 
         val dataTypeAdapter = ArrayAdapter<String>(aty, android.R.layout.simple_spinner_item, dataTypeStr)
         dataTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner_data_type.setTitle("Tipe Data")
+        spinner_data_type.setTitle("Category")
         spinner_data_type.setPositiveButton("Close")
         spinner_data_type.adapter = dataTypeAdapter
         spinner_data_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -178,7 +201,8 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                dataType.find { it -> it.name == dataTypeAdapter.getItem(position) }?.let { selectedDataTypeId = it.id }
+                dataType.find { it.name == dataTypeAdapter.getItem(position) }?.let { selectedDataTypeId = it.id }
+                til_default.isEnabled = true
                 btn_save.isEnabled = dataInput.isNotEmpty()
                 updateUIBySelectedType(selectedDataTypeId)
             }
@@ -188,6 +212,15 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
     fun updateUIBySelectedType(type: Int) {
         // Default
         til_attr1.visibility = View.GONE
+        til_attr2.visibility = View.GONE
+        til_attr3.visibility = View.GONE
+        til_attr4.visibility = View.GONE
+        til_attr5.visibility = View.GONE
+        attr1Input = ""
+        attr2Input = ""
+        attr3Input = ""
+        attr4Input = ""
+        attr5Input = ""
 
         DATA?.let { til_default.editText?.setText(it.value) }
         if (spinner_data_type.selectedItem != null) {
@@ -199,6 +232,13 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_TEXT or
                         InputType.TYPE_TEXT_FLAG_MULTI_LINE or
                         InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
+                til_attr1.visibility = View.VISIBLE
+                til_attr1.hint = "Keterangan"
+                til_attr1.editText?.inputType = InputType.TYPE_CLASS_TEXT
+
+                DATA?.let {
+                    til_attr1.editText?.setText(it.attr1)
+                }
             }
             Constants.TYPE_KTP -> {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER
@@ -209,14 +249,31 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
             }
             Constants.TYPE_HANDPHONE -> {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_PHONE
+                til_attr1.visibility = View.VISIBLE
+                til_attr1.hint = "Keterangan"
+                til_attr1.editText?.inputType = InputType.TYPE_CLASS_TEXT
+                til_attr2.visibility = View.VISIBLE
+                til_attr2.hint = "Provider"
+                til_attr2.editText?.inputType = InputType.TYPE_CLASS_TEXT
+
+                DATA?.let {
+                    til_attr1.editText?.setText(it.attr1)
+                    til_attr2.editText?.setText(it.attr2)
+                }
             }
             Constants.TYPE_REK_BANK -> {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER
                 til_attr1.visibility = View.VISIBLE
-                til_attr1.hint = "Nama Bank"
+                til_attr1.hint = "Keterangan"
                 til_attr1.editText?.inputType = InputType.TYPE_CLASS_TEXT
+                til_attr2.visibility = View.VISIBLE
+                til_attr2.hint = "Bank"
+                til_attr2.editText?.inputType = InputType.TYPE_CLASS_TEXT
 
-                DATA?.let { til_attr1.editText?.setText(it.attr1) }
+                DATA?.let {
+                    til_attr1.editText?.setText(it.attr1)
+                    til_attr2.editText?.setText(it.attr2)
+                }
 
             }
             else -> {

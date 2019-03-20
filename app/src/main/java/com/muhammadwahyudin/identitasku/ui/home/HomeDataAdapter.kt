@@ -21,6 +21,7 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
     private lateinit var aty: HomeActivity
 
     init {
+        // Init item type
         addItemType(Constants.TYPE_KTP, R.layout.item_home_data_list_ktp)
         addItemType(Constants.TYPE_REK_BANK, R.layout.item_home_data_list_rek_bank)
         addItemType(Constants.TYPE_DEFAULT, R.layout.item_home_data_list)
@@ -33,9 +34,10 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
     override fun convert(helper: BaseViewHolder, item: DataWithDataType) {
         aty = mContext as HomeActivity
         // Edit
-        helper.itemView.setOnClickListener {
+        helper.itemView.setOnLongClickListener {
             val bs = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.EDIT, item)
             bs.show(aty.supportFragmentManager, bs.tag)
+            true
         }
 
         //Commons
@@ -45,6 +47,7 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
             Commons.copyToClipboard(mContext, item.value, item.typeName)
         }
 
+        // Specific data
         when (item.itemType) {
             Constants.TYPE_KTP -> {
 

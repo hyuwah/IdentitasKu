@@ -2,6 +2,8 @@
 
 An app to centralize your important info.
 
+![ss](https://res.cloudinary.com/hyuwah-github-io/image/upload/c_thumb,w_200,g_face/v1553047993/identitasku-1.png)
+
 ## Features
 
 - [x] Common Indonesian Important Data
