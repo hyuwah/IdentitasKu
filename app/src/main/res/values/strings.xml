@@ -1,17 +1,19 @@
 <resources>
     <string name="app_name">IdentitasKu</string>
     <string name="title_activity_login">Sign in</string>
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
-
     <string name="add_data_bottom_sheet_spinner_title">Data Type</string>
+    <string name="register_title">REGISTER</string>
+    <string name="content_desc_data_icon">Data icon</string>
+    <string name="button_copy">Copy</string>
+    <string name="add_new_data_title">Add New Data</string>
+    <string name="button_save">Save</string>
+    <string name="content_desc_identitasku_logo">IdentitasKu Logo</string>
+    <string name="login_title">LOGIN</string>
+    <string name="text_hint_password">Password</string>
+    <string name="text_hint_confirmation_password">Re-enter your Password</string>
+    <string name="button_login_with_password">LOGIN with Password</string>
+    <string name="login_method_separator">--- OR ---</string>
+    <string name="copyright_text">Hyuwah ©️ 2019</string>
+    <string name="edit_data_title">Edit Data</string>
 
 </resources>

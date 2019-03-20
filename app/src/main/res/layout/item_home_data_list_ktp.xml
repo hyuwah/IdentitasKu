@@ -18,6 +18,7 @@
                 android:layout_height="32dp" app:srcCompat="@drawable/ic_ktp"
                 android:id="@+id/iv_icon" android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/content_desc_data_icon"
         />
 
         <LinearLayout
@@ -27,17 +28,17 @@
                 app:layout_constraintRight_toLeftOf="@id/btn_copy_value"
                 app:layout_constraintLeft_toRightOf="@id/iv_icon"
                 android:layout_width="0dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
                 android:layout_height="wrap_content">
             <TextView
-                    tools:text="TextView"
+                    tools:text="Nomor KTP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_data_type"
-                    android:textAppearance="@style/Base.TextAppearance.MaterialComponents.Subtitle2"/>
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
             <TextView
-                    tools:text="TextView"
+                    tools:text="Nomor KTP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_data_value"
@@ -51,7 +52,7 @@
                 android:id="@+id/btn_copy_value"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:textColor="@color/colorPrimary"
-                android:text="Copy"
+                android:text="@string/button_copy"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

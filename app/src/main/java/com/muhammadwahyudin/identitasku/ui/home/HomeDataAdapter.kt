@@ -1,6 +1,9 @@
 package com.muhammadwahyudin.identitasku.ui.home
 
+import android.graphics.Color
 import android.os.Handler
+import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -51,12 +54,31 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         when (item.itemType) {
             Constants.TYPE_KTP -> {
 
-
             }
             Constants.TYPE_REK_BANK -> {
-                helper.setText(R.id.tv_data_bank, item.attr1)
+                if (!item.attr1.isNullOrEmpty()) {
+                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.VISIBLE
+                    helper.setText(R.id.tv_data_keterangan, item.attr1)
+                } else {
+                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
+                }
+                if (!item.attr2.isNullOrEmpty()) {
+                    helper.setText(R.id.tv_data_bank, item.attr2)
+                    helper.setTextColor(R.id.tv_data_bank, Color.BLACK)
+                } else {
+                    helper.setText(R.id.tv_data_bank, "Nama bank belum diisi")
+                    helper.setTextColor(R.id.tv_data_bank, mContext.resources.getColor(R.color.grey_500))
+                }
             }
             Constants.TYPE_DEFAULT -> {
+
+                if (!item.attr1.isNullOrEmpty()) {
+                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.VISIBLE
+                    helper.setText(R.id.tv_data_keterangan, item.attr1)
+                } else {
+                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
+                }
+
                 when (item.typeId) {
                     Constants.TYPE_HANDPHONE -> {
                         helper.setImageResource(R.id.iv_icon, R.drawable.ic_handphone)

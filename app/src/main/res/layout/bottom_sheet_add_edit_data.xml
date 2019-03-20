@@ -19,7 +19,7 @@
     <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Add New Data"
+            android:text="@string/add_new_data_title"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_marginBottom="12dp"/>
 
@@ -37,7 +37,7 @@
     <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/til_default" android:hint="Data"
+            android:layout_height="wrap_content" android:id="@+id/til_default" android:hint="Data*"
             android:textColorHint="@android:color/black" android:layout_marginBottom="8dp">
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -102,7 +102,7 @@
 
     <Button
             android:id="@+id/btn_save"
-            android:text="Save"
+            android:text="@string/button_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" app:icon="@drawable/ic_add"
