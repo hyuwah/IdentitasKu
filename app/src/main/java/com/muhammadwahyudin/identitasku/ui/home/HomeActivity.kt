@@ -1,15 +1,20 @@
 package com.muhammadwahyudin.identitasku.ui.home
 
+import android.animation.LayoutTransition
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._helper.SwipeItemTouchHelper
@@ -28,6 +33,10 @@ class HomeActivity : BaseActivity(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        parent_home_activity.layoutTransition = LayoutTransition().apply {
+            this.enableTransitionType(LayoutTransition.CHANGING)
+        }
 
         dataAdapter = HomeDataAdapter(emptyList())
         val callback = SwipeItemTouchHelper(dataAdapter)
@@ -73,6 +82,8 @@ class HomeActivity : BaseActivity(), KodeinAware {
         viewModel.getAllDataWithType().observe(this, Observer { ListOfDataWithType ->
             // dataAdapter.datasWithType = ListOfDataWithType
             dataAdapter.setNewData(ListOfDataWithType)
+            if (ListOfDataWithType.isEmpty()) showEmptyView()
+            else hideEmptyView()
         })
 
         fab_add_data.setOnClickListener {
@@ -80,10 +91,28 @@ class HomeActivity : BaseActivity(), KodeinAware {
             bsFragment.show(supportFragmentManager, bsFragment.tag)
         }
 
-        fab_add_data.setOnLongClickListener {
-            viewModel.debugPopulateData()
-            true
+        if (BuildConfig.DEBUG) {
+            fab_add_data.setOnLongClickListener {
+                viewModel.debugPopulateData()
+                true
+            }
         }
 
+    }
+
+    private fun showEmptyView() {
+        layout_empty_home_list.visibility = View.VISIBLE
+        rv_data.visibility = View.INVISIBLE
+        fab_add_data.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            this.gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+        }
+    }
+
+    private fun hideEmptyView() {
+        layout_empty_home_list.visibility = View.INVISIBLE
+        rv_data.visibility = View.VISIBLE
+        fab_add_data.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            this.gravity = Gravity.BOTTOM or Gravity.RIGHT
+        }
     }
 }

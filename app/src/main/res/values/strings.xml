@@ -2,7 +2,8 @@
     <string name="app_name">IdentitasKu</string>
     <string name="title_activity_login">Sign in</string>
     <string name="add_data_bottom_sheet_spinner_title">Data Type</string>
-    <string name="register_title">REGISTER</string>
+    <string name="register_title">SET UP PASSWORD</string>
+    <string name="button_register">CONFIRM</string>
     <string name="content_desc_data_icon">Data icon</string>
     <string name="button_copy">Copy</string>
     <string name="add_new_data_title">Add New Data</string>
@@ -13,7 +14,16 @@
     <string name="text_hint_confirmation_password">Re-enter your Password</string>
     <string name="button_login_with_password">LOGIN with Password</string>
     <string name="login_method_separator">--- OR ---</string>
-    <string name="copyright_text">Hyuwah ©️ 2019</string>
+    <string name="copyright_text">Hyuwah (c) 2019</string>
     <string name="edit_data_title">Edit Data</string>
+    <string name="dialog_message_register_success">Click continue to enter</string>
+    <string name="dialog_title_register_success">Register Success</string>
+    <string name="dialog_ok_button_register_success">Continue</string>
+    <string name="text_hint_register_password_empty">Password can\'t be empty</string>
+    <string name="text_hint_register_password_confirmation_empty">Please re-enter your password</string>
+    <string name="text_hint_register_password_confirmation_not_match">Password does not match</string>
+    <string name="text_hint_login_password_invalid">Wrong password</string>
+    <string name="login_fingerprint_title">Login with fingerprint</string>
+    <string name="login_fingerprint_desc">Use your Fingerprint to login.</string>
 
 </resources>

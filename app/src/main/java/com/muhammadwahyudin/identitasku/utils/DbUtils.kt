@@ -11,6 +11,25 @@ import timber.log.Timber
  */
 object DbUtils {
 
+    val DUMMY_DATAS = ArrayList<Data>().apply {
+        add(Data(1, "3214011703940001"))
+        add(Data(2, "085759216603", "Iphone"))
+        add(Data(2, "085759216600", "Android", "IM3"))
+        add(Data(3, "Jl. Tawakal Ujung Blok A5, Tomang, Jakarta Barat", "Kostan"))
+        add(Data(3, "Jl. Tawakal Ujung Blok A2, Tomang, Jakarta Barat", "Rumah"))
+        add(Data(3, "Jl. Tawakal Ujung Blok A1, Tomang, Jakarta Barat"))
+        add(Data(4, "4574527457425"))
+        add(Data(4, "4574527457421", "Kostan"))
+        add(Data(5, "4257457"))
+        add(Data(6, "24574545257"))
+        add(Data(7, "9001234567", "Jenius"))
+        add(Data(8, "321412515123132"))
+        add(Data(9, "3353123124521"))
+        add(Data(10, "904212345123"))
+        add(Data(11, "4213515123"))
+        add(Data(12, "contoso@gmail.com"))
+    }
+
     /**
      * Pre-populate Data Type on [appDB]
      * @param appDB App database object
@@ -44,18 +63,9 @@ object DbUtils {
         val dataDao = appDB.dataDao()
         doAsync {
             dataDao.deleteAll()
-            dataDao.insert(Data(1, "3214011703940001"))
-            dataDao.insert(Data(2, "085759216600"))
-            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A5, Tomang, Jakarta Barat"))
-            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A2, Tomang, Jakarta Barat"))
-            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A1, Tomang, Jakarta Barat"))
-            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A7, Tomang, Jakarta Barat"))
-            dataDao.insert(Data(3, "Jl. Tawakal Ujung Blok A4, Tomang, Jakarta Barat"))
-            dataDao.insert(Data(4, "4574527457425"))
-            dataDao.insert(Data(5, "4257457"))
-            dataDao.insert(Data(6, "24574545257"))
-            dataDao.insert(Data(7, "9001234567", "Jenius"))
-            dataDao.insert(Data(2, "contoso@gmail.com"))
+            DUMMY_DATAS.forEach {
+                dataDao.insert(it)
+            }
         }
         Timber.d("Prepopulated Data")
     }

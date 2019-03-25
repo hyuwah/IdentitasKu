@@ -6,6 +6,13 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         tools:context=".ui.home.HomeActivity" android:background="#f0f0f0">
+
+    <include
+            android:id="@+id/layout_empty_home_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/empty_home_data_list"/>
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_data"
             android:layout_weight="1"

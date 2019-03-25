@@ -36,7 +36,7 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
                         super.onCreate(db)
                         val appDB = instance<AppDatabase>()
                         DbUtils.populateDataType(appDB)
-                        DbUtils.populateData(appDB)
+                        if (BuildConfig.DEBUG) DbUtils.populateData(appDB)
                     }
                 })
                 .build()

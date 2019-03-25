@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.core.widget.doOnTextChanged
 import com.easyfingerprint.EasyFingerPrint
+import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
@@ -33,32 +34,57 @@ class LoginActivity : BaseActivity(), KodeinAware {
     override val kodein by closestKodein()
     val appDatabase by instance<AppDatabase>()
 
+    private var isRegistered = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // toast("DB ${appDatabase.openHelper.readableDatabase.path}")
+        isRegistered = Hawk.contains(Constants.SP_PASSWORD)
 
-        if (Hawk.contains(Constants.SP_PASSWORD)) { // Login
+        if (BuildConfig.DEBUG)
+            btn_login.setOnLongClickListener {
+                alert(
+                    Appcompat,
+                    getString(R.string.dialog_message_register_success),
+                    getString(R.string.dialog_title_register_success)
+                ) {
+                    isCancelable = false
+                    positiveButton(getString(R.string.dialog_ok_button_register_success)) {
+                    }
+                    show()
+                }
+                true
+            }
+
+        if (isRegistered) { // Login
             btn_login.setOnClickListener {
                 validateLogin()
             }
         } else { // First open / register
             tv_title.text = getString(R.string.register_title)
-            btn_login.text = getString(R.string.register_title)
+            btn_login.text = getString(R.string.button_register)
             textView2.visibility = View.GONE
             til_password_confirm.visibility = View.VISIBLE
+            til_password_confirm.isEnabled = false
+            btn_login.isEnabled = false
             btn_login_fp.hide()
             btn_login.setOnClickListener {
                 register()
             }
         }
 
-        password.doOnTextChanged { _, _, _, _ ->
+        password.doOnTextChanged { text, _, _, _ ->
             til_password.isErrorEnabled = false
+            if (!isRegistered) {
+                til_password_confirm.isEnabled = !text.isNullOrEmpty()
+            }
         }
-        password_confirm.doOnTextChanged { _, _, _, _ ->
+        password_confirm.doOnTextChanged { text, _, _, _ ->
             til_password_confirm.isErrorEnabled = false
+            if (!isRegistered) {
+                btn_login.isEnabled = !text.isNullOrEmpty()
+            }
         }
 
         btn_login_fp.setOnClickListener {
@@ -72,7 +98,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
         } // Show fingerprint login, if has sensor, has enrolled & has registered
         else if (FingerprintManagerCompat.from(this).isHardwareDetected &&
             FingerprintManagerCompat.from(this).hasEnrolledFingerprints() &&
-            Hawk.contains(Constants.SP_PASSWORD)
+            isRegistered
         ) {
             btn_login_fp.performClick()
         }
@@ -80,10 +106,10 @@ class LoginActivity : BaseActivity(), KodeinAware {
 
     private fun loginWithFingerprint() {
         EasyFingerPrint(this)
-            .setTittle("Login with fingerprint")
-            .setSubTittle("IdentitasKU")
+            .setTittle(getString(R.string.login_fingerprint_title))
+            .setSubTittle(getString(R.string.app_name))
             .setColorPrimary(R.color.grey_300)
-            .setDescription("Use your Fingerprint to login.")
+            .setDescription(getString(R.string.login_fingerprint_desc))
             .setIcon(ContextCompat.getDrawable(this, R.mipmap.ic_launcher_round))
             .setListern(object : EasyFingerPrint.ResultFingerPrintListern {
                 override fun onError(mensage: String, code: Int) {
@@ -129,7 +155,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
             startActivity(intentFor<HomeActivity>().clearTop())
             finish()
         } else {
-            til_password.error = "Wrong password"
+            til_password.error = getString(R.string.text_hint_login_password_invalid)
             til_password.isErrorEnabled = true
         }
     }
@@ -141,28 +167,29 @@ class LoginActivity : BaseActivity(), KodeinAware {
             passwordEdt.isNotBlank() && passwordConfirmEdt.isNotBlank() -> {
                 if (passwordEdt.toString() == passwordConfirmEdt.toString()) {
                     Hawk.put(Constants.SP_PASSWORD, passwordEdt.toString())
-                    alert {
-                        iconResource = R.drawable.identity_black_256
+                    alert(
+                        Appcompat,
+                        getString(R.string.dialog_message_register_success),
+                        getString(R.string.dialog_title_register_success)
+                    ) {
                         isCancelable = false
-                        title = "Register Success"
-                        message = "Click continue to enter"
-                        positiveButton("Continue") {
+                        positiveButton(getString(R.string.dialog_ok_button_register_success)) {
                             startActivity(intentFor<HomeActivity>().clearTop())
                             finish()
                         }
                         show()
                     }
                 } else {
-                    til_password_confirm.error = "Password does not match"
+                    til_password_confirm.error = getString(R.string.text_hint_register_password_confirmation_not_match)
                     til_password_confirm.isErrorEnabled = true
                 }
             }
             passwordEdt.isBlank() -> {
-                til_password.error = "Password can't be empty"
+                til_password.error = getString(R.string.text_hint_register_password_empty)
                 til_password.isErrorEnabled = true
             }
             passwordEdt.isNotBlank() && passwordConfirmEdt.isBlank() -> {
-                til_password_confirm.error = "Please re-enter your password"
+                til_password_confirm.error = getString(R.string.text_hint_register_password_confirmation_empty)
                 til_password_confirm.isErrorEnabled = true
             }
         }

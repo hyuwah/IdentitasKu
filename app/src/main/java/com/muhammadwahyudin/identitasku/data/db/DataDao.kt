@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
+import com.muhammadwahyudin.identitasku.utils.DbUtils
 
 @Dao
 interface DataDao {
@@ -43,12 +44,8 @@ interface DataDao {
 
     @Transaction
     fun prepopulateData() {
-        insert(Data(1, "3214011703940001"))
-        insert(Data(2, "085759211234"))
-        insert(Data(3, "Jl Tawakal, Jakarta Barat"))
-        insert(Data(4, "868"))
-        insert(Data(5, "56865858"))
-        insert(Data(6, "6858"))
-        insert(Data(12, "example@mail.com"))
+        DbUtils.DUMMY_DATAS.forEach {
+            insert(it)
+        }
     }
 }
