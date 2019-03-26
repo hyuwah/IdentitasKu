@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.core.widget.doOnTextChanged
@@ -15,13 +18,11 @@ import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
+import com.muhammadwahyudin.identitasku.utils.lottieAnimationView
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_login.*
-import org.jetbrains.anko.alert
+import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
-import org.jetbrains.anko.clearTop
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.toast
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
@@ -45,13 +46,31 @@ class LoginActivity : BaseActivity(), KodeinAware {
         if (BuildConfig.DEBUG)
             btn_login.setOnLongClickListener {
                 alert(
-                    Appcompat,
-                    getString(R.string.dialog_message_register_success),
-                    getString(R.string.dialog_title_register_success)
+                    Appcompat
                 ) {
-                    isCancelable = false
-                    positiveButton(getString(R.string.dialog_ok_button_register_success)) {
+                    title = getString(R.string.dialog_title_register_success)
+                    this.customView {
+                        linearLayout {
+                            this.layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                            this.gravity = Gravity.CENTER
+                            this.orientation = LinearLayout.VERTICAL
+                            lottieAnimationView {
+                                this.layoutParams = ViewGroup.LayoutParams(dip(128), dip(128))
+                                this.adjustViewBounds = true
+                                this.setAnimation(R.raw.success)
+                                this.loop(false)
+                                this.playAnimation()
+                            }
+                            positiveButton("Continue") {
+                                it.dismiss()
+                            }
+                        }
+
                     }
+                    isCancelable = false
                     show()
                 }
                 true
@@ -168,15 +187,31 @@ class LoginActivity : BaseActivity(), KodeinAware {
                 if (passwordEdt.toString() == passwordConfirmEdt.toString()) {
                     Hawk.put(Constants.SP_PASSWORD, passwordEdt.toString())
                     alert(
-                        Appcompat,
-                        getString(R.string.dialog_message_register_success),
-                        getString(R.string.dialog_title_register_success)
+                        Appcompat
                     ) {
-                        isCancelable = false
-                        positiveButton(getString(R.string.dialog_ok_button_register_success)) {
-                            startActivity(intentFor<HomeActivity>().clearTop())
-                            finish()
+                        title = getString(R.string.dialog_title_register_success)
+                        this.customView {
+                            linearLayout {
+                                this.layoutParams = ViewGroup.LayoutParams(
+                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT
+                                )
+                                this.gravity = Gravity.CENTER
+                                this.orientation = LinearLayout.VERTICAL
+                                lottieAnimationView {
+                                    this.layoutParams = ViewGroup.LayoutParams(dip(128), dip(128))
+                                    this.adjustViewBounds = true
+                                    this.setAnimation(R.raw.success)
+                                    this.loop(false)
+                                    this.playAnimation()
+                                }
+                                positiveButton("Continue") {
+                                    it.dismiss()
+                                }
+                            }
+
                         }
+                        isCancelable = false
                         show()
                     }
                 } else {
