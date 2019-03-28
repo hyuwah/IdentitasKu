@@ -30,6 +30,8 @@ class HomeActivity : BaseActivity(), KodeinAware {
 
     lateinit var dataAdapter: HomeDataAdapter
 
+    val bsFragment = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.ADD)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -38,6 +40,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
             this.enableTransitionType(LayoutTransition.CHANGING)
         }
 
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         dataAdapter = HomeDataAdapter(emptyList())
         val callback = SwipeItemTouchHelper(dataAdapter)
         callback.icon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white_24dp)
@@ -77,8 +80,6 @@ class HomeActivity : BaseActivity(), KodeinAware {
     }
 
     private fun initializeUI() {
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         viewModel.getAllDataWithType().observe(this, Observer { ListOfDataWithType ->
             // dataAdapter.datasWithType = ListOfDataWithType
             dataAdapter.setNewData(ListOfDataWithType)
@@ -87,8 +88,8 @@ class HomeActivity : BaseActivity(), KodeinAware {
         })
 
         fab_add_data.setOnClickListener {
-            val bsFragment = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.ADD)
-            bsFragment.show(supportFragmentManager, bsFragment.tag)
+            if (!bsFragment.isAdded)
+                bsFragment.show(supportFragmentManager, bsFragment.tag)
         }
 
         if (BuildConfig.DEBUG) {

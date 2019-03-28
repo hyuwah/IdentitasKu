@@ -17,6 +17,7 @@ import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
+import com.muhammadwahyudin.identitasku.ui._views.RegisterSuccessDialog
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.utils.lottieAnimationView
 import com.orhanobut.hawk.Hawk
@@ -45,33 +46,13 @@ class LoginActivity : BaseActivity(), KodeinAware {
 
         if (BuildConfig.DEBUG)
             btn_login.setOnLongClickListener {
-                alert(
-                    Appcompat
-                ) {
-                    title = getString(R.string.dialog_title_register_success)
-                    this.customView {
-                        linearLayout {
-                            this.layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
-                            this.gravity = Gravity.CENTER
-                            this.orientation = LinearLayout.VERTICAL
-                            lottieAnimationView {
-                                this.layoutParams = ViewGroup.LayoutParams(dip(128), dip(128))
-                                this.adjustViewBounds = true
-                                this.setAnimation(R.raw.success)
-                                this.loop(false)
-                                this.playAnimation()
-                            }
-                            positiveButton("Continue") {
-                                it.dismiss()
-                            }
-                        }
-
+                val registerSuccessDialog by lazy {
+                    contentView?.let {
+                        RegisterSuccessDialog(AnkoContext.create(ctx, it))
                     }
-                    isCancelable = false
-                    show()
+                }
+                registerSuccessDialog?.continueButton?.setOnClickListener {
+                    toast("UHUY")
                 }
                 true
             }
@@ -206,7 +187,8 @@ class LoginActivity : BaseActivity(), KodeinAware {
                                     this.playAnimation()
                                 }
                                 positiveButton("Continue") {
-                                    it.dismiss()
+                                    startActivity(intentFor<HomeActivity>().clearTop())
+                                    finish()
                                 }
                             }
 

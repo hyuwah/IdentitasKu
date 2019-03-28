@@ -4,13 +4,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical"
         android:padding="12dp">
 
+    <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"/>
     <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lav_empty_list"
-            app:lottie_rawRes="@raw/empty_list"
+            app:lottie_rawRes="@raw/empty_list_grey"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             android:layout_width="wrap_content"
@@ -31,5 +33,8 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textAlignment="center" android:textColor="@color/grey_600" android:layout_marginEnd="12dp"
             android:layout_marginStart="12dp" android:layout_marginTop="8dp" android:textSize="18sp"/>
+    <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_weight="3"/>
 
 </LinearLayout>
