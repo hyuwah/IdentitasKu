@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.core.widget.doOnTextChanged
@@ -19,7 +16,6 @@ import com.muhammadwahyudin.identitasku.data.db.AppDatabase
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._views.RegisterSuccessDialog
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
-import com.muhammadwahyudin.identitasku.utils.lottieAnimationView
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.*
@@ -46,13 +42,9 @@ class LoginActivity : BaseActivity(), KodeinAware {
 
         if (BuildConfig.DEBUG)
             btn_login.setOnLongClickListener {
-                val registerSuccessDialog by lazy {
-                    contentView?.let {
-                        RegisterSuccessDialog(AnkoContext.create(ctx, it))
-                    }
-                }
-                registerSuccessDialog?.continueButton?.setOnClickListener {
-                    toast("UHUY")
+                val registerSuccessDialog = RegisterSuccessDialog(AnkoContext.create(ctx, contentView!!))
+                registerSuccessDialog.continueButton.setOnClickListener {
+                    registerSuccessDialog.dialog.dismiss()
                 }
                 true
             }
@@ -167,34 +159,10 @@ class LoginActivity : BaseActivity(), KodeinAware {
             passwordEdt.isNotBlank() && passwordConfirmEdt.isNotBlank() -> {
                 if (passwordEdt.toString() == passwordConfirmEdt.toString()) {
                     Hawk.put(Constants.SP_PASSWORD, passwordEdt.toString())
-                    alert(
-                        Appcompat
-                    ) {
-                        title = getString(R.string.dialog_title_register_success)
-                        this.customView {
-                            linearLayout {
-                                this.layoutParams = ViewGroup.LayoutParams(
-                                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                                    ViewGroup.LayoutParams.WRAP_CONTENT
-                                )
-                                this.gravity = Gravity.CENTER
-                                this.orientation = LinearLayout.VERTICAL
-                                lottieAnimationView {
-                                    this.layoutParams = ViewGroup.LayoutParams(dip(128), dip(128))
-                                    this.adjustViewBounds = true
-                                    this.setAnimation(R.raw.success)
-                                    this.loop(false)
-                                    this.playAnimation()
-                                }
-                                positiveButton("Continue") {
-                                    startActivity(intentFor<HomeActivity>().clearTop())
-                                    finish()
-                                }
-                            }
-
-                        }
-                        isCancelable = false
-                        show()
+                    val registerSuccessDialog = RegisterSuccessDialog(AnkoContext.create(ctx, contentView!!))
+                    registerSuccessDialog.continueButton.setOnClickListener {
+                        startActivity(intentFor<HomeActivity>().clearTop())
+                        finish()
                     }
                 } else {
                     til_password_confirm.error = getString(R.string.text_hint_register_password_confirmation_not_match)
