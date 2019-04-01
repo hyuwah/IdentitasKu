@@ -17,6 +17,10 @@ import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui._views.RoundedBottomSheetDialogFragment
+import com.muhammadwahyudin.identitasku.ui.home.datainput.AddressInputFragment
+import com.muhammadwahyudin.identitasku.ui.home.datainput.KtpInputFragment
+import com.muhammadwahyudin.identitasku.ui.home.datainput.PhoneNumInputFragment
+import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_edit_data.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.act
@@ -39,7 +43,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
     }
 
     private var DATA: DataWithDataType? = null
-    private var TYPE: Int = 0
+    var TYPE: Int = 0
     var selectedDataTypeId: Int = -1
     var selectedDataTypeName: String = ""
     var dataInput: String = ""
@@ -228,39 +232,21 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
             selectedDataTypeName = spinner_data_type.selectedItem as String
         }
 
+        childFragmentManager.popBackStack()
+
         when (type) {
             Constants.TYPE_ALAMAT -> {
-                til_default.editText?.inputType = InputType.TYPE_CLASS_TEXT or
-                        InputType.TYPE_TEXT_FLAG_MULTI_LINE or
-                        InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
-                til_attr1.visibility = View.VISIBLE
-                til_attr1.hint = "Keterangan"
-                til_attr1.editText?.inputType = InputType.TYPE_CLASS_TEXT
-
-                DATA?.let {
-                    til_attr1.editText?.setText(it.attr1)
-                }
+                changeFragment(AddressInputFragment(), "alamat")
             }
             Constants.TYPE_KTP -> {
-                til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER
+                changeFragment(KtpInputFragment(), "ktp")
             }
             Constants.TYPE_EMAIL -> {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_TEXT or
                         InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
             }
             Constants.TYPE_HANDPHONE -> {
-                til_default.editText?.inputType = InputType.TYPE_CLASS_PHONE
-                til_attr1.visibility = View.VISIBLE
-                til_attr1.hint = "Keterangan"
-                til_attr1.editText?.inputType = InputType.TYPE_CLASS_TEXT
-                til_attr2.visibility = View.VISIBLE
-                til_attr2.hint = "Provider"
-                til_attr2.editText?.inputType = InputType.TYPE_CLASS_TEXT
-
-                DATA?.let {
-                    til_attr1.editText?.setText(it.attr1)
-                    til_attr2.editText?.setText(it.attr2)
-                }
+                changeFragment(PhoneNumInputFragment(), "phonenum")
             }
             Constants.TYPE_REK_BANK -> {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER
@@ -281,6 +267,14 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
                 til_default.editText?.inputType = InputType.TYPE_CLASS_NUMBER
             }
         }
+    }
+
+    private fun changeFragment(inputFragment: BaseDataInputFragment<HomeActivity>, tag: String) {
+        inputFragment.arguments = Bundle().apply {
+            putParcelable(BaseDataInputFragment.DATA_PARCEL_KEY, DATA)
+        }
+        childFragmentManager.beginTransaction().add(R.id.fl_dynamic_data_fields, inputFragment).addToBackStack(tag)
+            .commit()
     }
 
 

@@ -28,8 +28,10 @@
         </activity>
         <activity
                 android:name=".ui.login.LoginActivity"
-                android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.home.HomeActivity">
+                android:theme="@style/AppTheme.NoActionBar"
+                android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".ui.home.HomeActivity"
+                  android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 

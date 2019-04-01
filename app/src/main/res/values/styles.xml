@@ -40,6 +40,7 @@
     <style name="BaseBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog"/>
@@ -53,5 +54,21 @@
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:clickable">true</item>
+    </style>
+
+    <!--DataInput TextInputLayout-->
+    <style name="DataInput.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColorHint">@android:color/black</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="DataInput.Save.Button" parent="Widget.MaterialComponents.Button.UnelevatedButton.Icon">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:text">@string/button_save</item>
     </style>
 </resources>
