@@ -21,6 +21,7 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
 
     companion object {
         const val DATA_PARCEL_KEY = "data_parcel_key"
+        const val TYPE_NAME_KEY = "type_name_key"
     }
 
     interface IDataInput {
@@ -28,6 +29,7 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
 
     var _type: Int = 0
     var _data: DataWithDataType? = null
+    var _typeName: String? = null
     lateinit var act: HomeActivity
     lateinit var parentDialog: AddEditDataBottomSheet
     lateinit var parent_view: View
@@ -44,6 +46,7 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var mView = inflateView(inflater, container, savedInstanceState)
         _data = arguments?.getParcelable(DATA_PARCEL_KEY)
+        _typeName = arguments?.getString(TYPE_NAME_KEY)
         act = activity as T
         parentDialog = (parentFragment as AddEditDataBottomSheet)
         _type = parentDialog.TYPE
@@ -68,10 +71,11 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
     }
 
     abstract fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
-    abstract fun setupEditType()
-    abstract fun setupAddType()
-    abstract fun setupUIwithData(data: DataWithDataType)
     abstract fun setupInputUI()
+    abstract fun setupAddType()
+    abstract fun setupEditType()
+    abstract fun setupUIwithData(data: DataWithDataType)
+
 
     // Check if data modified on edit mode
     fun checkIfDataIsModified(buttonSave: View, text: String, value: String?, isOptional: Boolean = false) {
@@ -92,7 +96,7 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
                 attr5Input
             )
         )
-        Snackbar.make(parent_view, "Nomor KTP successfully added", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(parent_view, "$_typeName successfully added", Snackbar.LENGTH_SHORT).show()
         parentDialog.dismiss()
     }
 
@@ -108,7 +112,7 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
         )
         modifiedData.id = _data!!.id
         parentViewModel.updateData(modifiedData)
-        Snackbar.make(parent_view, "Nomor KTP successfully updated", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(parent_view, "${_data?.typeName} successfully updated", Snackbar.LENGTH_SHORT).show()
         parentDialog.dismiss()
     }
 

@@ -7,17 +7,17 @@
 
     <com.google.android.material.textfield.TextInputLayout
             style="@style/DataInput.TextInputLayout"
-            android:id="@+id/til_rek_bank_data"
-            android:hint="Nomor Rekening">
+            android:id="@+id/til_pln_data"
+            android:hint="Nomor Handphone">
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"/>
+                android:inputType="number|phone"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
             style="@style/DataInput.TextInputLayout"
-            android:id="@+id/til_rek_bank_ket"
+            android:id="@+id/til_pln_ket"
             android:hint="Keterangan">
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -25,8 +25,8 @@
                 android:inputType="text"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-            android:id="@+id/spinner_rek_bank_provider"
+    <Spinner
+            android:id="@+id/spinner_pln_provider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
