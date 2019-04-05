@@ -136,7 +136,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
                 changeFragment(BankAccountInputFragment(), "Nomor Rekening Bank", "bank_account")
             }
             Constants.TYPE_CC -> {
-                changeFragment(Generic2InputFragment(), "Credit Card", "credit_card")
+                changeFragment(CreditCardInputFragment(), "Credit Card", "credit_card")
             }
             Constants.TYPE_BPJS -> {
                 changeFragment(Generic1InputFragment(), "Nomor BPJS", "bpjs")

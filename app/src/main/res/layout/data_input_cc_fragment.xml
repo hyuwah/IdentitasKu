@@ -5,30 +5,15 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.TextInputLayout
-            style="@style/DataInput.TextInputLayout"
-            android:id="@+id/til_phonenum_data"
-            android:hint="Nomor Handphone">
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number|phone"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-            style="@style/DataInput.TextInputLayout"
-            android:id="@+id/til_phonenum_ket"
-            android:hint="Keterangan">
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Spinner
-            android:id="@+id/spinner_phonenum_provider"
+    <com.vinaygaba.creditcardview.CreditCardView
+            android:id="@+id/ccv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="225dp"
+            app:isEditable="true"
+            app:cardFrontBackground="@drawable/cardbackground_world"
+            app:type="auto">
+
+    </com.vinaygaba.creditcardview.CreditCardView>
 
     <Button
             style="@style/DataInput.Save.Button"
