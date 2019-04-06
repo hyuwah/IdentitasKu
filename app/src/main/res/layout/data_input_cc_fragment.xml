@@ -11,9 +11,18 @@
             android:layout_height="225dp"
             app:isEditable="true"
             app:cardFrontBackground="@drawable/cardbackground_world"
-            app:type="auto">
+            app:type="auto"/>
 
-    </com.vinaygaba.creditcardview.CreditCardView>
+    <com.google.android.material.textfield.TextInputLayout
+            style="@style/DataInput.TextInputLayout"
+            android:layout_marginTop="8dp"
+            android:id="@+id/til_cc_ket"
+            android:hint="Keterangan">
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
             style="@style/DataInput.Save.Button"

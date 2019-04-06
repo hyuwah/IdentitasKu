@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.DataType
@@ -79,6 +81,9 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
         spinner_data_type.onSearchableItemClicked(DATA!!.typeName, 0)
         spinner_data_type.isEnabled = false
         updateUIBySelectedType(DATA!!.typeId)
+
+        // Change Bottomsheet state to Expand
+        (this.dialog as BottomSheetDialog).behavior?.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun setupAddDataTypeSpinner() {
@@ -136,6 +141,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
                 changeFragment(BankAccountInputFragment(), "Nomor Rekening Bank", "bank_account")
             }
             Constants.TYPE_CC -> {
+                (this.dialog as BottomSheetDialog).behavior?.state = BottomSheetBehavior.STATE_EXPANDED
                 changeFragment(CreditCardInputFragment(), "Credit Card", "credit_card")
             }
             Constants.TYPE_BPJS -> {

@@ -17,8 +17,18 @@ class EmailInputFragment : BaseDataInputFragment<HomeActivity>() {
 
 
     override fun setupInputUI() {
-        dataOnTextChanged(til_email_data, btn_save, { newText -> dataInput = newText; dataInput }, _data?.value)
-        dataOnTextChanged(til_email_ket, btn_save, { newText -> attr1Input = newText; attr1Input }, _data?.attr1)
+        dataOnTextChanged(
+            til_email_data.editText,
+            btn_save,
+            { newText -> dataInput = newText; dataInput },
+            _data?.value
+        )
+        dataOnTextChanged(
+            til_email_ket.editText,
+            btn_save,
+            { newText -> attr1Input = newText; attr1Input },
+            _data?.attr1
+        )
     }
 
 
@@ -37,6 +47,7 @@ class EmailInputFragment : BaseDataInputFragment<HomeActivity>() {
     override fun setupUIwithData(data: DataWithDataType) {
         til_email_data.editText?.setText(data.value)
         til_email_ket.editText?.setText(data.attr1)
+        btn_save.isEnabled = false
     }
 
 }

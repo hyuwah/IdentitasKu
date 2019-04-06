@@ -19,9 +19,9 @@ class PlnInputFragment : BaseDataInputFragment<HomeActivity>() {
     }
 
     override fun setupInputUI() {
-        dataOnTextChanged(til_pln_data, btn_save, { newText -> dataInput = newText; dataInput }, _data?.value)
+        dataOnTextChanged(til_pln_data.editText, btn_save, { newText -> dataInput = newText; dataInput }, _data?.value)
         dataOnTextChanged(
-            til_pln_ket,
+            til_pln_ket.editText,
             btn_save,
             { newText -> attr1Input = newText; attr1Input },
             _data?.attr1,
@@ -56,5 +56,6 @@ class PlnInputFragment : BaseDataInputFragment<HomeActivity>() {
         var selectedPos = InputDataset.PHONENUM_PROVIDERS.indexOf(data.attr2)
         if (selectedPos != -1)
             spinner_pln_provider.setSelection(selectedPos)
+        btn_save.isEnabled = false
     }
 }

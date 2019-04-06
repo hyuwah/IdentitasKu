@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputLayout
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
@@ -117,13 +117,13 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
     }
 
     fun dataOnTextChanged(
-        textInputLayout: TextInputLayout,
+        editText: EditText?,
         buttonSave: View,
         dataAssignment: (newText: String) -> String,
         oldData: String?,
         isOptional: Boolean = false
     ) {
-        textInputLayout.editText?.doOnTextChanged { text, start, count, after ->
+        editText?.doOnTextChanged { text, start, count, after ->
             buttonSave.isEnabled = !text.isNullOrEmpty()
             dataAssignment(text.toString())
             checkIfDataIsModified(buttonSave, dataAssignment(text.toString()), oldData, isOptional)

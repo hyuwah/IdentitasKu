@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doOnTextChanged
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
@@ -19,15 +18,12 @@ class Generic1InputFragment : BaseDataInputFragment<HomeActivity>(), BaseDataInp
 
     override fun setupInputUI() {
         til_generic_data.hint = _typeName
-        til_generic_data.editText?.doOnTextChanged { text, start, count, after ->
-            btn_save.isEnabled = !text.isNullOrEmpty()
-            dataInput = text.toString()
-            checkIfDataIsModified(btn_save, dataInput, _data?.value)
-        }
+        dataOnTextChanged(til_generic_data.editText, btn_save, { txt -> dataInput = txt;dataInput }, _data?.value)
     }
 
     override fun setupUIwithData(data: DataWithDataType) {
         til_generic_data.editText?.setText(data.value)
+        btn_save.isEnabled = false
     }
 
     override fun setupEditType() {

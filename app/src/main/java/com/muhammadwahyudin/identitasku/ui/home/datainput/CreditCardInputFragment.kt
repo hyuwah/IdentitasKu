@@ -5,27 +5,58 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.core.widget.doOnTextChanged
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
 import kotlinx.android.synthetic.main.data_input_cc_fragment.*
 import org.jetbrains.anko.find
-import org.jetbrains.anko.support.v4.findOptional
 
 class CreditCardInputFragment : BaseDataInputFragment<HomeActivity>() {
+
+    lateinit var etCardNumber: EditText
+    lateinit var etCardholderName: EditText
+    lateinit var etCardExpireDate: EditText
+    lateinit var etCardCvv: EditText
+
     override fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.data_input_cc_fragment, container, false)
     }
 
     override fun setupInputUI() {
         ccv.setIsFlippable(true)
-        ccv.find<EditText>(R.id.card_number).doOnTextChanged { text, start, count, after ->
-            btn_save.isEnabled = !text.isNullOrEmpty()
-            dataInput = text.toString()
-            checkIfDataIsModified(btn_save, dataInput, _data?.value)
-        }
+
+        etCardNumber = ccv.find(R.id.card_number)
+        dataOnTextChanged(etCardNumber, btn_save, { newText -> dataInput = newText; dataInput }, _data?.value)
+
+        etCardholderName = ccv.find(R.id.card_name)
+        dataOnTextChanged(
+            etCardholderName,
+            btn_save,
+            { newText -> attr2Input = newText; attr2Input },
+            _data?.attr2,
+            true
+        )
+
+        etCardExpireDate = ccv.find(R.id.expiry_date)
+        dataOnTextChanged(
+            etCardExpireDate,
+            btn_save,
+            { newText -> attr3Input = newText; attr3Input },
+            _data?.attr3,
+            true
+        )
+
+        etCardCvv = ccv.find(R.id.cvv_et)
+        dataOnTextChanged(etCardCvv, btn_save, { newText -> attr4Input = newText; attr4Input }, _data?.attr4, true)
+
+        dataOnTextChanged(
+            til_cc_ket.editText,
+            btn_save,
+            { newText -> attr1Input = newText;attr1Input },
+            _data?.attr1,
+            true
+        )
     }
 
     override fun setupAddType() {
@@ -42,9 +73,11 @@ class CreditCardInputFragment : BaseDataInputFragment<HomeActivity>() {
 
     override fun setupUIwithData(data: DataWithDataType) {
         ccv.cardNumber = data.value
-        ccv.expiryDate = data.attr2
-        findOptional<EditText>(R.id.cvv_et)?.setText("999")
-
+        ccv.cardName = data.attr2
+        ccv.expiryDate = data.attr3
+        etCardCvv.setText(data.attr4)
+        til_cc_ket.editText?.setText(data.attr1)
+        btn_save.isEnabled = false
     }
 
 }

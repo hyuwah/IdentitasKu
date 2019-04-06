@@ -37,7 +37,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.core:core-ktx:1.1.0-alpha05'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.0-alpha-2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.0-alpha-2'
@@ -48,11 +48,14 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.room:room-runtime:2.1.0-alpha06"
     kapt "androidx.room:room-compiler:2.1.0-alpha06"
-    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04"
     implementation 'com.google.firebase:firebase-core:16.0.8'
 
     // ANKO
     implementation "org.jetbrains.anko:anko:$anko_version"
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.0-alpha-2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.0-alpha-2'
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.jakewharton.timber:timber:4.7.1'
@@ -76,8 +79,8 @@ dependencies {
 
     implementation 'com.facebook.stetho:stetho:1.5.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
 
 }
 

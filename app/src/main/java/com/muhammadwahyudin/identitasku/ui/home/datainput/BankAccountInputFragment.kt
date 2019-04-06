@@ -36,12 +36,18 @@ class BankAccountInputFragment : BaseDataInputFragment<HomeActivity>() {
         var selectedPos = InputDataset.BANK_LIST.indexOf(data.attr2)
         if (selectedPos != -1)
             spinner_rek_bank_provider.setSelection(selectedPos)
+        btn_save.isEnabled = false
     }
 
     override fun setupInputUI() {
-        dataOnTextChanged(til_rek_bank_data, btn_save, { newText -> dataInput = newText; dataInput }, _data?.value)
         dataOnTextChanged(
-            til_rek_bank_ket,
+            til_rek_bank_data.editText,
+            btn_save,
+            { newText -> dataInput = newText; dataInput },
+            _data?.value
+        )
+        dataOnTextChanged(
+            til_rek_bank_ket.editText,
             btn_save,
             { newText -> attr1Input = newText; attr1Input },
             _data?.attr1,

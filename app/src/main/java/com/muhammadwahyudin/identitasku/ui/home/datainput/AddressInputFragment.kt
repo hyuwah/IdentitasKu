@@ -32,12 +32,18 @@ class AddressInputFragment : BaseDataInputFragment<HomeActivity>() {
     override fun setupUIwithData(data: DataWithDataType) {
         til_address_data.editText?.setText(data.value)
         til_address_ket.editText?.setText(data.attr1)
+        btn_save.isEnabled = false
     }
 
     override fun setupInputUI() {
-        dataOnTextChanged(til_address_data, btn_save, { newText -> dataInput = newText; dataInput }, _data?.value)
         dataOnTextChanged(
-            til_address_ket,
+            til_address_data.editText,
+            btn_save,
+            { newText -> dataInput = newText; dataInput },
+            _data?.value
+        )
+        dataOnTextChanged(
+            til_address_ket.editText,
             btn_save,
             { newText -> attr1Input = newText; attr1Input },
             _data?.attr1,

@@ -19,9 +19,14 @@ class PhoneNumInputFragment : BaseDataInputFragment<HomeActivity>() {
     }
 
     override fun setupInputUI() {
-        dataOnTextChanged(til_phonenum_data, btn_save, { newText -> dataInput = newText; dataInput }, _data?.value)
         dataOnTextChanged(
-            til_phonenum_ket,
+            til_phonenum_data.editText,
+            btn_save,
+            { newText -> dataInput = newText; dataInput },
+            _data?.value
+        )
+        dataOnTextChanged(
+            til_phonenum_ket.editText,
             btn_save,
             { newText -> attr1Input = newText; attr1Input },
             _data?.attr1,
@@ -44,6 +49,7 @@ class PhoneNumInputFragment : BaseDataInputFragment<HomeActivity>() {
         var selectedPos = InputDataset.PHONENUM_PROVIDERS.indexOf(data.attr2)
         if (selectedPos != -1)
             spinner_phonenum_provider.setSelection(selectedPos)
+        btn_save.isEnabled = false
     }
 
     override fun setupEditType() {
