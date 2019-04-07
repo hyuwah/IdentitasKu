@@ -28,6 +28,19 @@ android {
         experimental = true
     }
 
+    bundle {
+        language {
+            enableSplit = true
+        }
+        density {
+            enableSplit = true
+        }
+        abi {
+            enableSplit = true
+        }
+    }
+
+
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }

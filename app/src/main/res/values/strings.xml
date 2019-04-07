@@ -54,5 +54,6 @@
     <string name="data_input_address_value_hint">Alamat</string>
     <string name="data_input_rek_bank_value_hint">Nomor Rekening</string>
     <string name="data_input_phonenum_value_hint">Nomor Handphone</string>
+    <string name="snackbar_btn_undo">UNDO</string>
 
 </resources>

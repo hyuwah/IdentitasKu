@@ -32,13 +32,13 @@
                 android:layout_marginEnd="8dp"
                 android:layout_height="wrap_content">
             <TextView
-                    tools:text="Nomor KTP"
+                    tools:text="Category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_data_type"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
             <TextView
-                    tools:text="Nomor KTP"
+                    tools:text="Data Value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_data_value"

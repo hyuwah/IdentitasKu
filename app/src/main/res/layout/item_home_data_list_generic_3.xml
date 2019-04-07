@@ -29,7 +29,7 @@
                 android:layout_width="256dp" android:layout_marginStart="12dp" android:layout_marginEnd="8dp">
             <TextView
                     android:id="@+id/tv_data_type"
-                    tools:text="Rekening Bank"
+                    tools:text="Category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
@@ -38,11 +38,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/tv_data_keterangan"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    tools:text="Primary"/>
+                    tools:text="Keterangan"/>
             <TextView
-                    tools:text="Bank BTPN"
+                    tools:text="Spinner Item"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/tv_data_bank"
+                    android:layout_height="wrap_content" android:id="@+id/tv_data_attr2"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"/>
             <TextView
                     tools:text="9675984754548654"

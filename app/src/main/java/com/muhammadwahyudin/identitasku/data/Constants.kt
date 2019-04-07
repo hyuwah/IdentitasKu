@@ -3,8 +3,7 @@ package com.muhammadwahyudin.identitasku.data
 /**
  * Contain all primitive value constants
  */
-class Constants {
-    companion object {
+object Constants {
         const val DB_NAME = "identitasku-db"
         const val SP_PASSWORD = "password"
 
@@ -21,5 +20,5 @@ class Constants {
         const val TYPE_BPJS = 11
         const val TYPE_EMAIL = 12
         const val TYPE_DEFAULT = -1
-    }
+
 }
