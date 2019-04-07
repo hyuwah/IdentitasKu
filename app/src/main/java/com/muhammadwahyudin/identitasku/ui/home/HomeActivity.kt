@@ -113,7 +113,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
         layout_empty_home_list.visibility = View.INVISIBLE
         rv_data.visibility = View.VISIBLE
         fab_add_data.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-            this.gravity = Gravity.BOTTOM or Gravity.RIGHT
+            this.gravity = Gravity.BOTTOM or Gravity.END
         }
     }
 }

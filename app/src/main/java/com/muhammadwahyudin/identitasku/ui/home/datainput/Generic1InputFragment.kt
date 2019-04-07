@@ -10,7 +10,7 @@ import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
 import kotlinx.android.synthetic.main.data_input_generic_1_fragment.*
 
-class Generic1InputFragment : BaseDataInputFragment<HomeActivity>(), BaseDataInputFragment.IDataInput {
+class Generic1InputFragment : BaseDataInputFragment<HomeActivity>() {
 
     override fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.data_input_generic_1_fragment, container, false)

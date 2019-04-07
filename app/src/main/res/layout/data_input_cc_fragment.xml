@@ -17,7 +17,7 @@
             style="@style/DataInput.TextInputLayout"
             android:layout_marginTop="8dp"
             android:id="@+id/til_cc_ket"
-            android:hint="Keterangan">
+            android:hint="@string/til_hint_keterangan">
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

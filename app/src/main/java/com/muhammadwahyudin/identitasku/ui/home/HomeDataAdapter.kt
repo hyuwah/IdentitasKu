@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Handler
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -19,7 +20,7 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
     BaseMultiItemQuickAdapter<DataWithDataType, BaseViewHolder>(data), SwipeItemTouchHelper.SwipeHelperAdapter {
 
     private var deleteHandler = Handler() // should make this global
-    private var data_swiped = ArrayList<DataWithDataType>()
+    private var _swipedDatas = ArrayList<DataWithDataType>()
     private var datasToDelete = arrayListOf<DataWithDataType>()
     private lateinit var aty: HomeActivity
 
@@ -67,7 +68,7 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
                     helper.setTextColor(R.id.tv_data_bank, Color.BLACK)
                 } else {
                     helper.setText(R.id.tv_data_bank, "Nama bank belum diisi")
-                    helper.setTextColor(R.id.tv_data_bank, mContext.resources.getColor(R.color.grey_500))
+                    helper.setTextColor(R.id.tv_data_bank, ContextCompat.getColor(mContext, R.color.grey_500))
                 }
             }
             Constants.TYPE_DEFAULT -> {
@@ -103,14 +104,14 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                for (item in data_swiped) {
+                for (item in _swipedDatas) {
                     val index_removed = data.indexOf(item)
                     if (index_removed != -1) {
                         data.removeAt(index_removed)
                         notifyItemRemoved(index_removed)
                     }
                 }
-                data_swiped.clear()
+                _swipedDatas.clear()
                 super.onScrollStateChanged(recyclerView, newState)
             }
         })

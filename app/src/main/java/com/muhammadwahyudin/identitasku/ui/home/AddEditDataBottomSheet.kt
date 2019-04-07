@@ -30,36 +30,36 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
 
         fun newInstance(type: Int, dataWithType: DataWithDataType? = null): AddEditDataBottomSheet {
             val args = Bundle()
-            args.putInt("TYPE", type)
-            args.putParcelable("DATA", dataWithType)
+            args.putInt("type", type)
+            args.putParcelable("_data", dataWithType)
             val fragment = AddEditDataBottomSheet()
             fragment.arguments = args
             return fragment
         }
     }
 
-    private var DATA: DataWithDataType? = null
-    var TYPE: Int = 0
+    private var _data: DataWithDataType? = null
+    private var _selectedDataTypeName: String = ""
+    private lateinit var aty: HomeActivity
     var selectedDataTypeId: Int = -1
-    var selectedDataTypeName: String = ""
-    lateinit var aty: HomeActivity
+    var type: Int = 0
 
-    private lateinit var parent_view: CoordinatorLayout
+    private lateinit var _parent_view: CoordinatorLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         arguments?.let {
-            TYPE = it.getInt("TYPE", 0)
-            DATA = it.getParcelable("DATA")
+            type = it.getInt("type", 0)
+            _data = it.getParcelable("_data")
         }
         aty = activity as HomeActivity
-        parent_view = act.find(R.id.parent_home_activity)
-        Timber.d("TYPE: $TYPE\nDATA: $DATA")
+        _parent_view = act.find(R.id.parent_home_activity)
+        Timber.d("type: $type\n_data: $_data")
         return inflater.inflate(R.layout.bottom_sheet_add_edit_data, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        when (TYPE) {
+        when (type) {
             ADD -> {
                 tv_title.text = getString(R.string.add_new_data_title)
                 setupAddDataTypeSpinner()
@@ -73,17 +73,17 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
 
     private fun setupEditDataTypeSpinner() {
         val dataTypeStr = arrayListOf<String>()
-        dataTypeStr.add(DATA!!.typeName)
+        dataTypeStr.add(_data!!.typeName)
         val dataTypeAdapter = ArrayAdapter<String>(aty, android.R.layout.simple_spinner_item, dataTypeStr)
         dataTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner_data_type.setTitle("Category")
+        spinner_data_type.setTitle(getString(R.string.spinner_category_title))
         spinner_data_type.adapter = dataTypeAdapter
-        spinner_data_type.onSearchableItemClicked(DATA!!.typeName, 0)
+        spinner_data_type.onSearchableItemClicked(_data!!.typeName, 0)
         spinner_data_type.isEnabled = false
-        updateUIBySelectedType(DATA!!.typeId)
+        updateUIBySelectedType(_data!!.typeId)
 
         // Change Bottomsheet state to Expand
-        (this.dialog as BottomSheetDialog).behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+        (this.dialog as BottomSheetDialog?)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun setupAddDataTypeSpinner() {
@@ -122,7 +122,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
     }
 
     private fun updateUIBySelectedType(type: Int) {
-        if (spinner_data_type.selectedItem != null) selectedDataTypeName = spinner_data_type.selectedItem as String
+        if (spinner_data_type.selectedItem != null) _selectedDataTypeName = spinner_data_type.selectedItem as String
         childFragmentManager.popBackStack()
         when (type) {
             Constants.TYPE_ALAMAT -> {
@@ -141,7 +141,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
                 changeFragment(BankAccountInputFragment(), "Nomor Rekening Bank", "bank_account")
             }
             Constants.TYPE_CC -> {
-                (this.dialog as BottomSheetDialog).behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+                (this.dialog as BottomSheetDialog?)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
                 changeFragment(CreditCardInputFragment(), "Credit Card", "credit_card")
             }
             Constants.TYPE_BPJS -> {
@@ -168,7 +168,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
     private fun changeFragment(inputFragment: BaseDataInputFragment<HomeActivity>, typeName: String, tag: String) {
         inputFragment.arguments = Bundle().apply {
             putString(BaseDataInputFragment.TYPE_NAME_KEY, typeName)
-            putParcelable(BaseDataInputFragment.DATA_PARCEL_KEY, DATA)
+            putParcelable(BaseDataInputFragment.DATA_PARCEL_KEY, _data)
         }
         childFragmentManager.beginTransaction()
             .add(R.id.fl_dynamic_data_fields, inputFragment)

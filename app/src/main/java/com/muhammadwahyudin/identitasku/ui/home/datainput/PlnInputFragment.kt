@@ -53,7 +53,7 @@ class PlnInputFragment : BaseDataInputFragment<HomeActivity>() {
     override fun setupUIwithData(data: DataWithDataType) {
         til_pln_data.editText?.setText(data.value)
         til_pln_ket.editText?.setText(data.attr1)
-        var selectedPos = InputDataset.PHONENUM_PROVIDERS.indexOf(data.attr2)
+        val selectedPos = InputDataset.PLN_TYPE.indexOf(data.attr2)
         if (selectedPos != -1)
             spinner_pln_provider.setSelection(selectedPos)
         btn_save.isEnabled = false

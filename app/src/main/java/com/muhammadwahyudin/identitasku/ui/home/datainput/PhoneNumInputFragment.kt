@@ -46,7 +46,7 @@ class PhoneNumInputFragment : BaseDataInputFragment<HomeActivity>() {
     override fun setupUIwithData(data: DataWithDataType) {
         til_phonenum_data.editText?.setText(data.value)
         til_phonenum_ket.editText?.setText(data.attr1)
-        var selectedPos = InputDataset.PHONENUM_PROVIDERS.indexOf(data.attr2)
+        val selectedPos = InputDataset.PHONENUM_PROVIDERS.indexOf(data.attr2)
         if (selectedPos != -1)
             spinner_phonenum_provider.setSelection(selectedPos)
         btn_save.isEnabled = false

@@ -3,10 +3,11 @@ package com.muhammadwahyudin.identitasku.ui._views
 import android.content.DialogInterface
 import android.view.View
 import android.view.ViewGroup.LayoutParams
-import android.widget.Button
+import androidx.core.content.ContextCompat
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.utils.lottieAnimationView
 import org.jetbrains.anko.*
+import org.jetbrains.anko.appcompat.v7.Appcompat
 
 private const val LOTTIEVIEW_HEIGHT = 128
 private const val LOTTIEVIEW_WIDTH = 128
@@ -14,12 +15,15 @@ private const val LOTTIEVIEW_WIDTH = 128
 class RegisterSuccessDialog(ui: AnkoContext<View>) {
 
     var dialog: DialogInterface
-    lateinit var continueButton: Button
-
+    lateinit var onPositiveBtnClick: () -> Unit
     init {
         with(ui) {
-            dialog = alert {
+            dialog = alert(Appcompat) {
                 titleResource = R.string.dialog_title_register_success
+                positiveButton(R.string.dialog_btn_ok) {
+                    it.dismiss()
+                    onPositiveBtnClick()
+                }
                 this.customView {
                     themedRelativeLayout(R.style.AppTheme) {
                         this.layoutParams = LayoutParams(
@@ -36,17 +40,15 @@ class RegisterSuccessDialog(ui: AnkoContext<View>) {
                             centerHorizontally()
                             topMargin = dip(8)
                         }
-                        continueButton = themedButton(R.style.Widget_MaterialComponents_Button_TextButton_Dialog) {
-                            backgroundColorResource = R.color.mtrl_btn_transparent_bg_color
-                            text = "Continue"
+                        textView(R.string.dialog_message_register_success) {
+                            id = R.id.tv_desc_register_success
+                            textColor = ContextCompat.getColor(ctx, android.R.color.black)
                         }.lparams(wrapContent, wrapContent) {
-                            alignParentRight()
                             below(R.id.lav_register_success)
-                            rightMargin = dip(12)
-                            bottomMargin = dip(8)
+                            rightMargin = dip(20)
+                            leftMargin = dip(20)
                         }
                     }
-
                 }
                 isCancelable = false
             }.show()

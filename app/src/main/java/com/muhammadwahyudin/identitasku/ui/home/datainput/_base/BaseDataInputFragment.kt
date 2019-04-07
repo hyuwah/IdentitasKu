@@ -24,9 +24,6 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
         const val TYPE_NAME_KEY = "type_name_key"
     }
 
-    interface IDataInput {
-    }
-
     var _type: Int = 0
     var _data: DataWithDataType? = null
     var _typeName: String? = null
@@ -44,12 +41,12 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
     var attr5Input = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var mView = inflateView(inflater, container, savedInstanceState)
+        val mView = inflateView(inflater, container, savedInstanceState)
         _data = arguments?.getParcelable(DATA_PARCEL_KEY)
         _typeName = arguments?.getString(TYPE_NAME_KEY)
         act = activity as T
         parentDialog = (parentFragment as AddEditDataBottomSheet)
-        _type = parentDialog.TYPE
+        _type = parentDialog.type
         parent_view = act.find(R.id.parent_home_activity)
         parentViewModel = act.viewModel
         return mView
