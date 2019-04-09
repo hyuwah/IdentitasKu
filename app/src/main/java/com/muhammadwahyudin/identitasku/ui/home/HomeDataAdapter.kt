@@ -76,6 +76,7 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         }
 
         //Commons (BEWARE! DEFAULT ITEM TYPE ALSO AFFECTED)
+        // item.typeName doesn't respect Locale languange!
         helper.setText(R.id.tv_data_type, item.typeName)
         helper.setText(R.id.tv_data_value, item.value)
         helper.setOnClickListener(R.id.btn_copy_value) {
@@ -184,7 +185,11 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         deleteHandler.postDelayed({ aty.viewModel.deleteDatas(datasToDelete) }, 3500) // delete list of data
 
         // Show snackbar with undo button
-        Snackbar.make(aty.find(R.id.parent_home_activity), "${dataToDelete.typeName} deleted", Snackbar.LENGTH_LONG)
+        Snackbar.make(
+            aty.find(R.id.parent_home_activity),
+            dataToDelete.typeName + aty.getString(R.string.snackbar_data_deleted),
+            Snackbar.LENGTH_LONG
+        )
             .setAction(aty.getString(R.string.snackbar_btn_undo)) {
                 data.add(position, dataToDelete)
                 notifyItemInserted(position)

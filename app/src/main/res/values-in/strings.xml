@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IdentitasKu</string>
+    <string name="title_activity_login">Masuk</string>
+    <string name="add_data_bottom_sheet_spinner_title">Kategori</string>
+    <string name="register_title">BUAT PASSWORD</string>
+    <string name="button_register">KONFIRMASI</string>
+    <string name="content_desc_data_icon">Data icon</string>
+    <string name="button_copy">Salin</string>
+    <string name="add_new_data_title">Tambah data baru</string>
+    <string name="button_save">Simpan</string>
+    <string name="content_desc_identitasku_logo">IdentitasKu Logo</string>
+    <string name="login_title">MASUK</string>
+    <string name="text_hint_password">Password</string>
+    <string name="text_hint_confirmation_password">Masukkan kembali Passwordnya</string>
+    <string name="button_login_with_password">MASUK dengan Password</string>
+    <string name="login_method_separator">--- ATAU ---</string>
+    <string name="copyright_text">Hyuwah © 2019</string>
+    <string name="edit_data_title">Ubah Data</string>
+    <string name="dialog_message_register_success">Simpan password kamu baik-baik, bila lupa, kamu akan kehilangan akses
+        pada data-data yang telah kamu simpan.
+    </string>
+    <string name="dialog_title_register_success">Registrasi Berhasil</string>
+    <string name="dialog_ok_button_register_success">Lanjut</string>
+    <string name="text_hint_register_password_empty">Password harus diisi</string>
+    <string name="text_hint_register_password_confirmation_empty">Mohon masukkan kembali passwordnya</string>
+    <string name="text_hint_register_password_confirmation_not_match">Password tidak cocok</string>
+    <string name="text_hint_login_password_invalid">Password salah</string>
+    <string name="login_fingerprint_title">Masuk dengan fingerprint</string>
+    <string name="login_fingerprint_desc">Gunakan Fingerprint untuk masuk.</string>
+    <string name="dialog_btn_ok">OK</string>
+    <string name="spinner_category_title">Kategori</string>
+    <string name="dialog_title_fingerprint_not_enrolled">Ups..</string>
+    <string name="dialog_message_fingerprint_not_enrolled">Kamu harus mengamankan perangkatmu dengan fingerprint
+        terlebih dahulu
+    </string>
+    <string name="dialog_btn_action_fingerprint_not_enrolled">Tambah fingerprint</string>
+    <string name="dialog_title_forgot_password">Lupa Password?</string>
+    <string name="dialog_message_forgot_password">Kamu bisa reset password, tapi data - data yang telah disimpan juga
+        akan dihapus demi keamanan.
+    </string>
+    <string name="dialog_btn_action_forgot_password">Atur ulang Password</string>
+    <string name="dialog_btn_cancel_forgot_password">Coba lagi</string>
+    <string name="dialog_title_forgot_password_confirmation">Yakin akan mengatur ulang password?</string>
+    <string name="dialog_message_forgot_password_confirmation">Proses ini tidak bisa dibatalkan!</string>
+    <string name="dialog_btn_no">Tidak</string>
+    <string name="dialog_btn_yes">Ya</string>
+    <string name="dialog_btn_cancel">Batal</string>
+    <string name="img_cd_splash_logo">Splash Logo</string>
+    <string name="list_data_empty_title">Belum ada apa-apa disini</string>
+    <string name="list_data_empty_desc">Mulai tambah data dengan menyentuh tombol (+) dibawah</string>
+    <string name="til_hint_keterangan">Keterangan</string>
+    <string name="data_input_pln_value_hint">Nomor Pelanggan / Meteran</string>
+    <string name="data_input_stnk_value_hint">Nomor STNK</string>
+    <string name="data_input_email_value_hint">Alamat Email</string>
+    <string name="data_input_address_value_hint">Alamat</string>
+    <string name="data_input_rek_bank_value_hint">Nomor Rekening</string>
+    <string name="data_input_phonenum_value_hint">Nomor Handphone</string>
+    <string name="snackbar_btn_undo">BATALKAN</string>
+    <string name="spinner_category_hint">Pilih kategori…</string>
+    <string name="snackbar_data_deleted">dihapus</string>
+    <string name="btn_close">Tutup</string>
+    <string name="data_type_name_address">Alamat</string>
+    <string name="data_type_name_ktp">Nomor KTP</string>
+    <string name="data_type_name_email">Email</string>
+    <string name="data_type_name_phonenum">Nomor Handphone</string>
+    <string name="data_type_name_bank_acc">Nomor Rekening Bank</string>
+    <string name="data_type_name_credit_card">Kartu Kredit</string>
+    <string name="data_type_name_bpjs">Nomor BPJS</string>
+    <string name="data_type_name_kk">Nomor Kartu Keluarga</string>
+    <string name="data_type_name_npwp">Nomor NPWP</string>
+    <string name="data_type_name_pdam">Nomor PDAM</string>
+    <string name="data_type_name_pln">Nomor PLN</string>
+    <string name="data_type_name_stnk">Nomor STNK</string>
+    <string name="card_number_hint">MASUKKAN NOMOR KARTU</string>
+    <string name="card_name_hint">MASUKKAN NAMA KARTU</string>
+</resources>

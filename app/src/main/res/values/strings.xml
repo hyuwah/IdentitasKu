@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">IdentitasKu</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="add_data_bottom_sheet_spinner_title">Data Type</string>
+    <string name="add_data_bottom_sheet_spinner_title">Category</string>
     <string name="register_title">SET UP PASSWORD</string>
     <string name="button_register">CONFIRM</string>
     <string name="content_desc_data_icon">Data icon</string>
@@ -16,8 +16,8 @@
     <string name="login_method_separator">--- OR ---</string>
     <string name="copyright_text">Hyuwah © 2019</string>
     <string name="edit_data_title">Edit Data</string>
-    <string name="dialog_message_register_success">Simpan password kamu baik-baik, bila lupa, kamu akan kehilangan akses
-        pada data-data yang telah kamu simpan.
+    <string name="dialog_message_register_success">Keep your password safe, you won\'t be able to access the data if you
+        forgot the password.
     </string>
     <string name="dialog_title_register_success">Register Success</string>
     <string name="dialog_ok_button_register_success">Continue</string>
@@ -33,13 +33,13 @@
     <string name="dialog_message_fingerprint_not_enrolled">You need to secure your device with fingerprint first
     </string>
     <string name="dialog_btn_action_fingerprint_not_enrolled">Add fingerprint</string>
-    <string name="dialog_title_forgot_password">Lupa Password?</string>
-    <string name="dialog_message_forgot_password">Kamu bisa reset password, tapi data - data yang telah disimpan juga
-        akan dihapus demi keamanan.
+    <string name="dialog_title_forgot_password">Forgot Password?</string>
+    <string name="dialog_message_forgot_password">Yuou can reset the password, but for security reason, all the data
+        that you\'ve saved will also be deleted.
     </string>
     <string name="dialog_btn_action_forgot_password">Reset Password</string>
-    <string name="dialog_btn_cancel_forgot_password">Coba lagi</string>
-    <string name="dialog_title_forgot_password_confirmation">Yakin akan reset password?</string>
+    <string name="dialog_btn_cancel_forgot_password">Try again</string>
+    <string name="dialog_title_forgot_password_confirmation">Are you sure you want to reset password?</string>
     <string name="dialog_message_forgot_password_confirmation">This process cannot be undone!</string>
     <string name="dialog_btn_no">No</string>
     <string name="dialog_btn_yes">Yes</string>
@@ -47,13 +47,29 @@
     <string name="img_cd_splash_logo">Splash Logo</string>
     <string name="list_data_empty_title">There\'s nothing here yet</string>
     <string name="list_data_empty_desc">Start adding some data by clicking the (+) button below</string>
-    <string name="til_hint_keterangan">Keterangan</string>
-    <string name="data_input_pln_value_hint">Nomor Pelanggan / Meteran</string>
-    <string name="data_input_stnk_value_hint">Nomor STNK</string>
-    <string name="data_input_email_value_hint">Alamat Email</string>
-    <string name="data_input_address_value_hint">Alamat</string>
-    <string name="data_input_rek_bank_value_hint">Nomor Rekening</string>
-    <string name="data_input_phonenum_value_hint">Nomor Handphone</string>
+    <string name="til_hint_keterangan">Description</string>
+    <string name="data_input_pln_value_hint">Customer / Meteran Number</string>
+    <string name="data_input_stnk_value_hint">STNK Number</string>
+    <string name="data_input_email_value_hint">Email Address</string>
+    <string name="data_input_address_value_hint">Address</string>
+    <string name="data_input_rek_bank_value_hint">Account Number</string>
+    <string name="data_input_phonenum_value_hint">Phone Number</string>
     <string name="snackbar_btn_undo">UNDO</string>
-
+    <string name="spinner_category_hint">Select Category…</string>
+    <string name="snackbar_data_deleted">deleted</string>
+    <string name="btn_close">Close</string>
+    <string name="data_type_name_address">Address</string>
+    <string name="data_type_name_ktp">KTP Number</string>
+    <string name="data_type_name_email">Email</string>
+    <string name="data_type_name_phonenum">Phone Number</string>
+    <string name="data_type_name_bank_acc">Bank Account</string>
+    <string name="data_type_name_credit_card">Credit Card</string>
+    <string name="data_type_name_bpjs">BPJS Number</string>
+    <string name="data_type_name_kk">Kartu Keluarga Number</string>
+    <string name="data_type_name_npwp">NPWP Number</string>
+    <string name="data_type_name_pdam">PDAM Number</string>
+    <string name="data_type_name_pln">PLN Number</string>
+    <string name="data_type_name_stnk">STNK Number</string>
+    <string name="card_number_hint">ENTER CARD NUMBER</string>
+    <string name="card_name_hint">ENTER CARD NAME</string>
 </resources>

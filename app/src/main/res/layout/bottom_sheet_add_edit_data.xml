@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            app:hintText="Select Category..."
+            app:hintText="@string/spinner_category_hint"
             android:layout_marginBottom="16dp"/>
 
     <View

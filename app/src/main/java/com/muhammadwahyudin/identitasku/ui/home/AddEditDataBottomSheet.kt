@@ -110,8 +110,8 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
 
         val dataTypeAdapter = ArrayAdapter<String>(aty, android.R.layout.simple_spinner_item, dataTypeStr)
         dataTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner_data_type.setTitle("Category")
-        spinner_data_type.setPositiveButton("Close")
+        spinner_data_type.setTitle(resources.getString(R.string.spinner_category_title))
+        spinner_data_type.setPositiveButton(getString(R.string.btn_close))
         spinner_data_type.adapter = dataTypeAdapter
         spinner_data_type.onItemSelectedListener {
             onItemSelected { adapterView, view, i, l ->
@@ -126,41 +126,41 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
         childFragmentManager.popBackStack()
         when (type) {
             Constants.TYPE_ALAMAT -> {
-                changeFragment(AddressInputFragment(), "Alamat", "alamat")
+                changeFragment(AddressInputFragment(), getString(R.string.data_type_name_address), "alamat")
             }
             Constants.TYPE_KTP -> {
-                changeFragment(Generic1InputFragment(), "Nomor KTP", "ktp")
+                changeFragment(Generic1InputFragment(), getString(R.string.data_type_name_ktp), "ktp")
             }
             Constants.TYPE_EMAIL -> {
-                changeFragment(EmailInputFragment(), "Email", "email")
+                changeFragment(EmailInputFragment(), getString(R.string.data_type_name_email), "email")
             }
             Constants.TYPE_HANDPHONE -> {
-                changeFragment(PhoneNumInputFragment(), "Nomor Handphone", "phonenum")
+                changeFragment(PhoneNumInputFragment(), getString(R.string.data_type_name_phonenum), "phonenum")
             }
             Constants.TYPE_REK_BANK -> {
-                changeFragment(BankAccountInputFragment(), "Nomor Rekening Bank", "bank_account")
+                changeFragment(BankAccountInputFragment(), getString(R.string.data_type_name_bank_acc), "bank_account")
             }
             Constants.TYPE_CC -> {
                 (this.dialog as BottomSheetDialog?)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
-                changeFragment(CreditCardInputFragment(), "Credit Card", "credit_card")
+                changeFragment(CreditCardInputFragment(), getString(R.string.data_type_name_credit_card), "credit_card")
             }
             Constants.TYPE_BPJS -> {
-                changeFragment(Generic1InputFragment(), "Nomor BPJS", "bpjs")
+                changeFragment(Generic1InputFragment(), getString(R.string.data_type_name_bpjs), "bpjs")
             }
             Constants.TYPE_KK -> {
-                changeFragment(Generic1InputFragment(), "Nomor Kartu Keluarga", "kk")
+                changeFragment(Generic1InputFragment(), getString(R.string.data_type_name_kk), "kk")
             }
             Constants.TYPE_NPWP -> {
-                changeFragment(Generic1InputFragment(), "NPWP", "npwp")
+                changeFragment(Generic1InputFragment(), getString(R.string.data_type_name_npwp), "npwp")
             }
             Constants.TYPE_PDAM -> {
-                changeFragment(Generic2InputFragment(), "Nomor PDAM", "pdam")
+                changeFragment(Generic2InputFragment(), getString(R.string.data_type_name_pdam), "pdam")
             }
             Constants.TYPE_PLN -> {
-                changeFragment(PlnInputFragment(), "Nomor PLN", "pln")
+                changeFragment(PlnInputFragment(), getString(R.string.data_type_name_pln), "pln")
             }
             Constants.TYPE_STNK -> {
-                changeFragment(Generic2InputFragment(), "Nomor STNK", "stnk")
+                changeFragment(Generic2InputFragment(), getString(R.string.data_type_name_stnk), "stnk")
             }
         }
     }
