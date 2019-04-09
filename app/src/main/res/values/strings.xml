@@ -56,7 +56,7 @@
     <string name="data_input_phonenum_value_hint">Phone Number</string>
     <string name="snackbar_btn_undo">UNDO</string>
     <string name="spinner_category_hint">Select Category…</string>
-    <string name="snackbar_data_deleted">deleted</string>
+    <string name="snackbar_data_deleted">\u0020deleted</string>
     <string name="btn_close">Close</string>
     <string name="data_type_name_address">Address</string>
     <string name="data_type_name_ktp">KTP Number</string>

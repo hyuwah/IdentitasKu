@@ -4,6 +4,8 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -33,6 +35,7 @@ import org.jetbrains.anko.appcompat.v7.Appcompat
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
+import java.util.concurrent.Executor
 
 
 /**
@@ -126,7 +129,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
             .negativeButtonListener(DialogInterface.OnClickListener { dialog, which ->
                 dialog.dismiss()
             })
-            .executor(mainExecutor)
+            .executor(MainExecutor())
             .build()
             .authenticate(this)
             .subscribeOn(Schedulers.io())
@@ -259,5 +262,13 @@ class LoginActivity : BaseActivity(), KodeinAware {
             }
             show()
         }
+    }
+
+    class MainExecutor : Executor {
+        private val handler = Handler(Looper.getMainLooper())
+        override fun execute(command: Runnable?) {
+            handler.post(command)
+        }
+
     }
 }

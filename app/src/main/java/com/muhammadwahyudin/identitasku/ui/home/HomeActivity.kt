@@ -81,9 +81,8 @@ class HomeActivity : BaseActivity(), KodeinAware {
 
     private fun initializeUI() {
         viewModel.getAllDataWithType().observe(this, Observer { ListOfDataWithType ->
-            // dataAdapter.datasWithType = ListOfDataWithType
             dataAdapter.setNewData(ListOfDataWithType)
-            if (ListOfDataWithType.isEmpty()) showEmptyView()
+            if (ListOfDataWithType.isNullOrEmpty()) showEmptyView()
             else hideEmptyView()
         })
 

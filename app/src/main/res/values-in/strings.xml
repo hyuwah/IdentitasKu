@@ -58,7 +58,7 @@
     <string name="data_input_phonenum_value_hint">Nomor Handphone</string>
     <string name="snackbar_btn_undo">BATALKAN</string>
     <string name="spinner_category_hint">Pilih kategori…</string>
-    <string name="snackbar_data_deleted">dihapus</string>
+    <string name="snackbar_data_deleted">\u0020dihapus</string>
     <string name="btn_close">Tutup</string>
     <string name="data_type_name_address">Alamat</string>
     <string name="data_type_name_ktp">Nomor KTP</string>
