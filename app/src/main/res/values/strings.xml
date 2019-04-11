@@ -34,7 +34,7 @@
     </string>
     <string name="dialog_btn_action_fingerprint_not_enrolled">Add fingerprint</string>
     <string name="dialog_title_forgot_password">Forgot Password?</string>
-    <string name="dialog_message_forgot_password">Yuou can reset the password, but for security reason, all the data
+    <string name="dialog_message_forgot_password">You can reset the password, but for security reason, all the data
         that you\'ve saved will also be deleted.
     </string>
     <string name="dialog_btn_action_forgot_password">Reset Password</string>
@@ -72,4 +72,5 @@
     <string name="data_type_name_stnk">STNK Number</string>
     <string name="card_number_hint">ENTER CARD NUMBER</string>
     <string name="card_name_hint">ENTER CARD NAME</string>
+    <string name="exit_double_tap_message">Press back again to exit</string>
 </resources>

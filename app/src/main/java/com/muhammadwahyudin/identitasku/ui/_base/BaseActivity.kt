@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.muhammadwahyudin.identitasku.BuildConfig
+import com.muhammadwahyudin.identitasku.R
 import org.jetbrains.anko.toast
 
 @SuppressLint("Registered")
@@ -31,7 +32,7 @@ open class BaseActivity : AppCompatActivity() {
             return
         }
         this.backToExitPressed = true
-        toast("Press back again to exit")
+        toast(getString(R.string.exit_double_tap_message))
         Handler().postDelayed({ backToExitPressed = false }, 2000)
     }
 

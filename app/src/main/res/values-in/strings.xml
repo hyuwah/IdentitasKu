@@ -74,4 +74,5 @@
     <string name="data_type_name_stnk">Nomor STNK</string>
     <string name="card_number_hint">MASUKKAN NOMOR KARTU</string>
     <string name="card_name_hint">MASUKKAN NAMA KARTU</string>
+    <string name="exit_double_tap_message">Tap sekali lagi untuk keluar</string>
 </resources>

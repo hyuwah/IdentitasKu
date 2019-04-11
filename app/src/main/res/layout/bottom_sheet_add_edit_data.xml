@@ -41,6 +41,7 @@
             android:layout_height="2dp" android:layout_marginBottom="12dp"
             android:background="#a0cccccc"/>
     <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_data_input_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"

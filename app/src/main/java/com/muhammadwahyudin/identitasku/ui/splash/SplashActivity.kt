@@ -5,6 +5,7 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.ui.login.LoginActivity
+import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 
 class SplashActivity : AppCompatActivity() {
@@ -14,7 +15,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         Handler().postDelayed({
-            startActivity(intentFor<LoginActivity>())
+            startActivity(intentFor<LoginActivity>().clearTask())
             finish()
         }, 2500)
     }

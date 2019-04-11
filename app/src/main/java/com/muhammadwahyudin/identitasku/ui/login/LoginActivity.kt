@@ -43,7 +43,7 @@ import java.util.concurrent.Executor
  */
 class LoginActivity : BaseActivity(), KodeinAware {
     override val kodein by closestKodein()
-    val appDatabase by instance<AppDatabase>()
+    private val appDatabase by instance<AppDatabase>()
 
     private var isRegistered = false
     private var wrongPasswordInputAttempt = 0
@@ -64,9 +64,12 @@ class LoginActivity : BaseActivity(), KodeinAware {
             }
 
         if (isRegistered) { // Login
+            btn_login.isEnabled = false
             btn_login.setOnClickListener {
-                if (wrongPasswordInputAttempt > 3)
+                if (wrongPasswordInputAttempt > 3) {
                     showForgotPasswordDialog()
+                    wrongPasswordInputAttempt = 0
+                }
                 else
                     validateLogin()
             }
@@ -87,6 +90,8 @@ class LoginActivity : BaseActivity(), KodeinAware {
             til_password.isErrorEnabled = false
             if (!isRegistered) {
                 til_password_confirm.isEnabled = !text.isNullOrEmpty()
+            } else {
+                btn_login.isEnabled = !text.isNullOrEmpty()
             }
         }
         password_confirm.doOnTextChanged { text, _, _, _ ->
@@ -115,8 +120,8 @@ class LoginActivity : BaseActivity(), KodeinAware {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         disposable?.dispose()
+        super.onDestroy()
     }
 
     var disposable: Disposable? = null
@@ -213,7 +218,9 @@ class LoginActivity : BaseActivity(), KodeinAware {
         alert(Appcompat) {
             title = getString(R.string.dialog_title_forgot_password_confirmation)
             message = getString(R.string.dialog_message_forgot_password_confirmation)
-            positiveButton(getString(R.string.dialog_btn_no)) { it.dismiss() }
+            positiveButton(getString(R.string.dialog_btn_no)) {
+                it.dismiss()
+            }
             negativeButton(getString(R.string.dialog_btn_yes)) {
                 Hawk.deleteAll()
                 doAsync {
@@ -227,7 +234,6 @@ class LoginActivity : BaseActivity(), KodeinAware {
         }
     }
 
-    // TODO extract string
     private fun showForgotPasswordDialog() {
         alert(Appcompat) {
             title = getString(R.string.dialog_title_forgot_password)
@@ -247,7 +253,6 @@ class LoginActivity : BaseActivity(), KodeinAware {
         }
     }
 
-    // TODO extract string
     private fun showNeedToAddFingerprintDialog() {
         alert(
             Appcompat,

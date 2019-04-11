@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
@@ -12,18 +14,21 @@ import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFra
 import kotlinx.android.synthetic.main.data_input_cc_fragment.*
 import org.jetbrains.anko.find
 
+
 class CreditCardInputFragment : BaseDataInputFragment<HomeActivity>() {
 
-    lateinit var etCardNumber: EditText
-    lateinit var etCardholderName: EditText
-    lateinit var etCardExpireDate: EditText
-    lateinit var etCardCvv: EditText
+    private lateinit var etCardNumber: EditText
+    private lateinit var etCardholderName: EditText
+    private lateinit var etCardExpireDate: EditText
+    private lateinit var etCardCvv: EditText
 
     override fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.data_input_cc_fragment, container, false)
     }
 
     override fun setupInputUI() {
+        (parentDialog.dialog as BottomSheetDialog?)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+
         ccv.setIsFlippable(true)
 
         etCardNumber = ccv.find(R.id.card_number)

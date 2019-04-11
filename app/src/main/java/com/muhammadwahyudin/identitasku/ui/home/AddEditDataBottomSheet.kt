@@ -141,7 +141,6 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
                 changeFragment(BankAccountInputFragment(), getString(R.string.data_type_name_bank_acc), "bank_account")
             }
             Constants.TYPE_CC -> {
-                (this.dialog as BottomSheetDialog?)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
                 changeFragment(CreditCardInputFragment(), getString(R.string.data_type_name_credit_card), "credit_card")
             }
             Constants.TYPE_BPJS -> {
