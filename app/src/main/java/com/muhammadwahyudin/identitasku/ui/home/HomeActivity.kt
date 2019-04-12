@@ -4,6 +4,8 @@ import android.animation.LayoutTransition
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
@@ -18,7 +20,9 @@ import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._helper.SwipeItemTouchHelper
+import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_home.*
+import org.jetbrains.anko.intentFor
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
@@ -50,6 +54,21 @@ class HomeActivity : BaseActivity(), KodeinAware {
 
         initializeUI()
         initializeRecyclerView()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.home_appbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.home_app_menu_preferences -> {
+                startActivity(intentFor<SettingsActivity>())
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initializeRecyclerView() {

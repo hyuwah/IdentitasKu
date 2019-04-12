@@ -37,6 +37,11 @@
         <activity android:name=".ui.home.HomeActivity"
                   android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity android:name=".ui.settings.SettingsActivity"
+                  android:parentActivityName=".ui.home.HomeActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value=".ui.home.HomeActivity"/>
+        </activity>
     </application>
 
 </manifest>

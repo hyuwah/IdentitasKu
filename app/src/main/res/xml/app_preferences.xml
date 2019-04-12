@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+            android:key="setting_pref_privacy_policy"
+            android:title="Privacy Policy"
+    />
+    <Preference
+            android:key="setting_pref_about"
+            android:title="About"/>
+</PreferenceScreen>
