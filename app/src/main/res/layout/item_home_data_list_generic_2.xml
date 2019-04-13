@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         style="@style/CardView.Home.Row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:padding="12dp">
+            android:layout_height="wrap_content" android:padding="12dp" android:orientation="horizontal"
+    >
 
         <ImageView
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp" app:srcCompat="@drawable/ic_ktp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:id="@+id/iv_icon" android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/content_desc_data_icon"
-        />
+                android:layout_gravity="center"/>
 
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toLeftOf="@id/btn_copy_value"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_icon"
-                app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/linearLayout"
-                android:layout_width="256dp" android:layout_marginLeft="12dp" android:layout_marginRight="12dp">
+                android:id="@+id/linearLayout"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="4dp"
+                android:layout_width="0dp"
+                android:layout_weight="1">
             <TextView
                     tools:text="Category"
                     android:layout_width="match_parent"
@@ -49,13 +47,10 @@
 
         <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:id="@+id/btn_copy_value"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:text="@string/button_copy"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
         />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

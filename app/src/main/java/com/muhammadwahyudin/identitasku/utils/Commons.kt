@@ -3,8 +3,8 @@ package com.muhammadwahyudin.identitasku.utils
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.provider.Settings
 import org.jetbrains.anko.toast
+import java.util.*
 
 /**
  * Singleton class of common functions that used within the project
@@ -24,11 +24,10 @@ object Commons {
     }
 
     /**
-     * Method to get device Id. Used as unique password for saferoom
-     * @param ctx Context
+     * Method to get UUID. Used as unique password for saferoom
      * @return String of device id
      */
-    fun getDeviceId(ctx: Context): String {
-        return Settings.Secure.getString(ctx.contentResolver, Settings.Secure.ANDROID_ID)
+    fun getUUID(): String {
+        return UUID.randomUUID().toString()
     }
 }

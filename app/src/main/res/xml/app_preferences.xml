@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+            app:title="Information">
     <Preference
-            android:key="setting_pref_privacy_policy"
-            android:title="Privacy Policy"
-    />
+            app:key="setting_pref_privacy_policy"
+            app:title="Privacy Policy"
+            app:singleLineTitle="true"/>
     <Preference
-            android:key="setting_pref_about"
-            android:title="About"/>
-</PreferenceScreen>
+            app:key="setting_pref_about"
+            app:title="About"
+            app:singleLineTitle="true"/>
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>

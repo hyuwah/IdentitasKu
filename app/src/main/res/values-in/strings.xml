@@ -75,4 +75,5 @@
     <string name="card_number_hint">MASUKKAN NOMOR KARTU</string>
     <string name="card_name_hint">MASUKKAN NAMA KARTU</string>
     <string name="exit_double_tap_message">Tap sekali lagi untuk keluar</string>
+    <string name="biometric_failed">Fingerprint tak dikenal</string>
 </resources>

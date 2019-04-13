@@ -1,41 +1,31 @@
 package com.muhammadwahyudin.identitasku.ui.login
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.biometric.BiometricConstants
 import androidx.core.content.ContextCompat
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.core.widget.doOnTextChanged
-import com.github.pwittchen.rxbiometric.library.RxBiometric
-import com.github.pwittchen.rxbiometric.library.throwable.AuthenticationError
-import com.github.pwittchen.rxbiometric.library.throwable.AuthenticationFail
-import com.github.pwittchen.rxbiometric.library.throwable.AuthenticationHelp
 import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
+import com.muhammadwahyudin.identitasku.biometric.BiometricCallback
+import com.muhammadwahyudin.identitasku.biometric.BiometricManager
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._views.RegisterSuccessDialog
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
+import com.muhammadwahyudin.identitasku.utils.BiometricUtils
 import com.orhanobut.hawk.Hawk
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
-import java.util.concurrent.Executor
 
 
 /**
@@ -69,8 +59,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
                 if (wrongPasswordInputAttempt > 3) {
                     showForgotPasswordDialog()
                     wrongPasswordInputAttempt = 0
-                }
-                else
+                } else
                     validateLogin()
             }
         } else { // First open / register
@@ -102,75 +91,70 @@ class LoginActivity : BaseActivity(), KodeinAware {
         }
 
         btn_login_fp.setOnClickListener {
-            loginWithFingerprint()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (BiometricUtils.isFingerprintAvailable(this))
+                    loginWithFingerprint()
+                else
+                    showNeedToAddFingerprintDialog()
+            }
         }
 
 
         // Hide login with fingerprint if device has no sensor
-        if (!FingerprintManagerCompat.from(this).isHardwareDetected) {
+        if (!BiometricUtils.isHardwareSupported(this)) {
             textView2.visibility = View.GONE
             btn_login_fp.hide()
         } // Show fingerprint login, if has sensor, has enrolled & has registered
-        else if (FingerprintManagerCompat.from(this).isHardwareDetected &&
-            FingerprintManagerCompat.from(this).hasEnrolledFingerprints() &&
+        else if (
+            BiometricUtils.isHardwareSupported(this) &&
+            BiometricUtils.isFingerprintAvailable(this) &&
             isRegistered
         ) {
             btn_login_fp.performClick()
         }
     }
 
-    override fun onDestroy() {
-        disposable?.dispose()
-        super.onDestroy()
-    }
-
-    var disposable: Disposable? = null
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun loginWithFingerprint() {
-        disposable?.dispose()
-        disposable = RxBiometric
-            .title(getString(R.string.login_fingerprint_title))
-            .description(getString(R.string.login_fingerprint_desc))
-            .negativeButtonText(getString(R.string.dialog_btn_cancel))
-            .negativeButtonListener(DialogInterface.OnClickListener { dialog, which ->
-                dialog.dismiss()
-            })
-            .executor(MainExecutor())
+        BiometricManager.BiometricBuilder(this)
+            .setTitle(getString(R.string.login_fingerprint_title))
+            .setSubtitle(getString(R.string.app_name))
+            .setDescription(getString(R.string.login_fingerprint_desc))
+            .setNegativeButtonText(getString(R.string.dialog_btn_cancel))
             .build()
-            .authenticate(this)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onComplete = {
+            .authenticate(object : BiometricCallback {
+                override fun onBiometricAuthenticationNotAvailable() {
+                }
+
+                override fun onBiometricAuthenticationPermissionNotGranted() {
+                    toast("Biometric auth permission not granted")
+                }
+
+                override fun onBiometricAuthenticationInternalError(error: String) {
+                    toast("Biometric auth internal error: $error")
+                }
+
+                override fun onAuthenticationFailed() {
+//                    toast("Auth failed")
+                }
+
+                override fun onAuthenticationCancelled() {
+                }
+
+                override fun onAuthenticationSuccessful() {
                     startActivity(intentFor<HomeActivity>().clearTop())
                     finish()
-                },
-                onError = {
-                    when (it) {
-                        is AuthenticationError -> {
-//                            toast("${it.errorCode} : ${it.errorMessage}")
-                            when (it.errorCode) {
-                                BiometricConstants.ERROR_NO_BIOMETRICS -> {
-                                    showNeedToAddFingerprintDialog()
-                                }
-                                BiometricConstants.ERROR_LOCKOUT -> {
-                                    toast("Too many attempts. Please try again later...")
-                                }
-                                BiometricConstants.ERROR_UNABLE_TO_PROCESS -> {
-                                }
-                                BiometricConstants.ERROR_TIMEOUT -> {
-                                }
-                            }
-                        }
-                        is AuthenticationFail -> {
-//                            toast("${it.message}")
-                        }
-                        is AuthenticationHelp -> {
-//                            toast("auth help")
-                        }
-//                        else -> toast("error ${it.message}")
-                    }
                 }
-            )
+
+                override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
+//                    toast("Auth help ($helpCode) $helpString")
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+//                    toast("Auth error ($errorCode) $errString")
+                }
+
+            })
     }
 
     private fun validateLogin() {
@@ -230,7 +214,8 @@ class LoginActivity : BaseActivity(), KodeinAware {
                 recreate()
             }
         }.show().apply {
-            getButton(AlertDialog.BUTTON_NEGATIVE).textColor = ContextCompat.getColor(ctx, R.color.red_500)
+            getButton(AlertDialog.BUTTON_NEGATIVE).textColor =
+                ContextCompat.getColor(this@LoginActivity, R.color.red_500)
         }
     }
 
@@ -248,7 +233,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
             }
         }.show().apply {
             getButton(AlertDialog.BUTTON_NEGATIVE).apply {
-                textColor = ContextCompat.getColor(ctx, R.color.red_500)
+                textColor = ContextCompat.getColor(this@LoginActivity, R.color.red_500)
             }
         }
     }
@@ -267,13 +252,5 @@ class LoginActivity : BaseActivity(), KodeinAware {
             }
             show()
         }
-    }
-
-    class MainExecutor : Executor {
-        private val handler = Handler(Looper.getMainLooper())
-        override fun execute(command: Runnable?) {
-            handler.post(command)
-        }
-
     }
 }

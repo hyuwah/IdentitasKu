@@ -7,10 +7,10 @@ apply plugin: 'io.fabric'
 
 def versionMajor = 1
 def versionMinor = 0
-def versionPatch = 2
+def versionPatch = 3
 def versionBuild = 0
 
-def getBuildDate() {
+static def getBuildDate() {
     def date = new Date()
     def formattedDate = date.format("yyyy-MM-dd")
     return formattedDate
@@ -108,8 +108,6 @@ dependencies {
     implementation "org.jetbrains.anko:anko:$anko_version"
     // Chrome custom tab
     implementation 'androidx.browser:browser:1.0.0'
-    // Fingerprint
-    implementation 'com.github.pwittchen:rxbiometric:0.1.0'
     //    implementation 'com.github.bumptech.glide:glide:4.9.0'
     // Log
     implementation 'com.jakewharton.timber:timber:4.7.1'

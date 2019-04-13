@@ -34,7 +34,7 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
         bind<AppDatabase>() with eagerSingleton {
             Room.databaseBuilder(applicationContext, AppDatabase::class.java, Constants.DB_NAME)
                 .fallbackToDestructiveMigration()
-                .openHelperFactory(SafeHelperFactory(Commons.getDeviceId(applicationContext).toCharArray()))
+                .openHelperFactory(SafeHelperFactory(Commons.getUUID().toCharArray()))
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
