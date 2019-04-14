@@ -3,6 +3,7 @@ package com.muhammadwahyudin.identitasku.ui.home
 import android.animation.LayoutTransition
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -20,6 +21,7 @@ import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._helper.SwipeItemTouchHelper
+import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
 import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import org.jetbrains.anko.intentFor
@@ -54,6 +56,11 @@ class HomeActivity : BaseActivity(), KodeinAware {
 
         initializeUI()
         initializeRecyclerView()
+        initTutorial()
+    }
+
+    private fun initTutorial() {
+        TutorialHelper.initAddEditFab(this, fab_add_data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -102,7 +109,12 @@ class HomeActivity : BaseActivity(), KodeinAware {
         viewModel.getAllDataWithType().observe(this, Observer { ListOfDataWithType ->
             dataAdapter.setNewData(ListOfDataWithType)
             if (ListOfDataWithType.isNullOrEmpty()) showEmptyView()
-            else hideEmptyView()
+            else {
+                hideEmptyView()
+                Handler().postDelayed({
+                    if (dataAdapter.itemCount > 0) TutorialHelper.initFirstDataItem(this, rv_data)
+                }, 1000)
+            }
         })
 
         fab_add_data.setOnClickListener {

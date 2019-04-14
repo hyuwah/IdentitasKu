@@ -1,10 +1,13 @@
 package com.muhammadwahyudin.identitasku.utils
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import org.jetbrains.anko.toast
 import java.util.*
+
 
 /**
  * Singleton class of common functions that used within the project
@@ -29,5 +32,18 @@ object Commons {
      */
     fun getUUID(): String {
         return UUID.randomUUID().toString()
+    }
+
+    /**
+     * Method to dismiss soft keyboard
+     * @param activity
+     */
+    fun hideSoftKeyboard(activity: Activity) {
+        // Check if no view has focus:
+        val view = activity.currentFocus
+        view?.let { v ->
+            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(v.windowToken, 0)
+        }
     }
 }

@@ -34,8 +34,6 @@ class SettingsActivity : AppCompatActivity() {
                 val builder = CustomTabsIntent.Builder()
                 builder.setToolbarColor(ContextCompat.getColor(act, R.color.colorPrimary))
                 builder.setShowTitle(true)
-                builder.setStartAnimations(act, android.R.anim.fade_in, android.R.anim.fade_out)
-                builder.setExitAnimations(act, android.R.anim.fade_in, android.R.anim.fade_out)
                 val customTabsIntent = builder.build()
 
                 // check is chrome available

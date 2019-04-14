@@ -115,11 +115,15 @@ dependencies {
     implementation 'com.orhanobut:hawk:2.0.1'
     implementation 'com.commonsware.cwac:saferoom.x:1.0.1'
     implementation 'com.facebook.stetho:stetho:1.5.0'
+    // Process
+    implementation 'com.jakewharton:process-phoenix:2.0.0'
     // Custom View
     implementation 'com.toptoche.searchablespinner:searchablespinnerlibrary:1.3.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
     implementation 'com.airbnb.android:lottie:3.0.0'
     implementation 'com.vinaygaba:creditcardview:1.0.4'
+    //ShowcaseView
+    implementation 'com.github.iammert:MaterialIntroView:1.6.0'
     // Test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'

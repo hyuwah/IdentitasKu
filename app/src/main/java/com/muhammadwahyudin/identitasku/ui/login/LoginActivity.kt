@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.commonsware.cwac.saferoom.SafeHelperFactory
+import com.jakewharton.processphoenix.ProcessPhoenix
 import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.biometric.BiometricCallback
@@ -17,9 +18,11 @@ import com.muhammadwahyudin.identitasku.biometric.BiometricManager
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
+import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
 import com.muhammadwahyudin.identitasku.ui._views.RegisterSuccessDialog
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.utils.BiometricUtils
+import com.muhammadwahyudin.identitasku.utils.Commons
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.*
@@ -58,6 +61,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
             btn_login.isEnabled = false
             btn_login.setOnClickListener {
                 if (wrongPasswordInputAttempt > 3) {
+                    Commons.hideSoftKeyboard(this)
                     showForgotPasswordDialog()
                     wrongPasswordInputAttempt = 0
                 } else
@@ -218,11 +222,13 @@ class LoginActivity : BaseActivity(), KodeinAware {
             }
             negativeButton(getString(R.string.dialog_btn_yes)) {
                 Hawk.deleteAll()
+                TutorialHelper.resetTutorial(this@LoginActivity)
                 doAsync {
                     appDatabase.dataDao().deleteAll()
                 }
+                this@LoginActivity.deleteDatabase(appDatabase.openHelper.databaseName)
                 it.dismiss()
-                recreate()
+                ProcessPhoenix.triggerRebirth(applicationContext)
             }
         }.show().apply {
             getButton(AlertDialog.BUTTON_NEGATIVE).textColor =
