@@ -8,10 +8,11 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.ui._helper.CustomTabHelper
 import org.jetbrains.anko.support.v4.act
-import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.support.v4.longToast
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -53,7 +54,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             findPreference<Preference>("setting_pref_about")?.setOnPreferenceClickListener {
-                toast("not implemented")
+                longToast("Version: ${BuildConfig.APPLICATION_ID} ${BuildConfig.VERSION_NAME}")
                 true
             }
         }

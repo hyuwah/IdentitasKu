@@ -16,7 +16,6 @@ import com.muhammadwahyudin.identitasku.data.db.DataTypeDao
 import com.muhammadwahyudin.identitasku.data.repository.AppRepository
 import com.muhammadwahyudin.identitasku.data.repository.IAppRepository
 import com.muhammadwahyudin.identitasku.ui.home.HomeViewModelFactory
-import com.muhammadwahyudin.identitasku.utils.Commons
 import com.muhammadwahyudin.identitasku.utils.DbUtils
 import com.orhanobut.hawk.Hawk
 import io.fabric.sdk.android.Fabric
@@ -33,8 +32,8 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
     override val kodein: Kodein = Kodein.lazy {
         bind<AppDatabase>() with eagerSingleton {
             Room.databaseBuilder(applicationContext, AppDatabase::class.java, Constants.DB_NAME)
+                .openHelperFactory(SafeHelperFactory(Hawk.get<String>(Constants.SP_PASSWORD, "123456").toCharArray()))
                 .fallbackToDestructiveMigration()
-                .openHelperFactory(SafeHelperFactory(Commons.getUUID().toCharArray()))
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)

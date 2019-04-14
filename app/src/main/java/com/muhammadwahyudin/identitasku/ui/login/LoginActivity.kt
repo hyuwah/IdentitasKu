@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import com.commonsware.cwac.saferoom.SafeHelperFactory
 import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.biometric.BiometricCallback
@@ -93,7 +94,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
         btn_login_fp.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (BiometricUtils.isFingerprintAvailable(this))
-                    loginWithFingerprint()
+                    openFingerprintDialog()
                 else
                     showNeedToAddFingerprintDialog()
             }
@@ -115,7 +116,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun loginWithFingerprint() {
+    private fun openFingerprintDialog() {
         BiometricManager.BiometricBuilder(this)
             .setTitle(getString(R.string.login_fingerprint_title))
             .setSubtitle(getString(R.string.app_name))
@@ -142,8 +143,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
                 }
 
                 override fun onAuthenticationSuccessful() {
-                    startActivity(intentFor<HomeActivity>().clearTop())
-                    finish()
+                    goToHomeActivity()
                 }
 
                 override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
@@ -157,11 +157,19 @@ class LoginActivity : BaseActivity(), KodeinAware {
             })
     }
 
+    private fun goToHomeActivity() {
+        SafeHelperFactory.rekey(
+            appDatabase.openHelper.writableDatabase,
+            Hawk.get<String>(Constants.SP_PASSWORD).toCharArray()
+        )
+        startActivity(intentFor<HomeActivity>().clearTop())
+        finish()
+    }
+
     private fun validateLogin() {
         val passwordEdt = password.text!!
         if (passwordEdt.isNotBlank() && passwordEdt.toString() == Hawk.get(Constants.SP_PASSWORD)) {
-            startActivity(intentFor<HomeActivity>().clearTop())
-            finish()
+            goToHomeActivity()
         } else {
             til_password.error = getString(R.string.text_hint_login_password_invalid)
             til_password.isErrorEnabled = true
@@ -176,6 +184,9 @@ class LoginActivity : BaseActivity(), KodeinAware {
             passwordEdt.isNotBlank() && passwordConfirmEdt.isNotBlank() -> {
                 if (passwordEdt.toString() == passwordConfirmEdt.toString()) {
                     Hawk.put(Constants.SP_PASSWORD, passwordEdt.toString())
+                    // Reencrypt using user pass
+                    SafeHelperFactory.rekey(appDatabase.openHelper.writableDatabase, passwordEdt)
+
                     val registerSuccessDialog = RegisterSuccessDialog(AnkoContext.create(this, contentView!!))
                     registerSuccessDialog.onPositiveBtnClick = {
                         startActivity(intentFor<HomeActivity>().clearTop())
