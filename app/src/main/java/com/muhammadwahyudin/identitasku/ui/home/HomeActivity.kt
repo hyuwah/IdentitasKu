@@ -51,7 +51,8 @@ class HomeActivity : BaseActivity(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         dataAdapter = HomeDataAdapter(emptyList())
         val callback = SwipeItemTouchHelper(dataAdapter)
-        callback.icon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white_24dp)
+        callback.deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white_24dp)
+        callback.shareIcon = ContextCompat.getDrawable(this, R.drawable.ic_share_white_24dp)
         callback.bgColorCode = Color.RED
         val mItemTouchHelper = ItemTouchHelper(callback)
         mItemTouchHelper.attachToRecyclerView(rv_data)
