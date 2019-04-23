@@ -8,6 +8,7 @@ import co.mobiwise.materialintro.shape.Focus
 import co.mobiwise.materialintro.shape.FocusGravity
 import co.mobiwise.materialintro.shape.ShapeType
 import co.mobiwise.materialintro.view.MaterialIntroView
+import com.muhammadwahyudin.identitasku.R
 
 /**
  * Singleton object for tutorial / showcase view related methods
@@ -28,7 +29,7 @@ object TutorialHelper {
             .setIdempotent(true)
             .enableFadeAnimation(true)
             .performClick(true)
-            .setInfoText("Add your first data! Click this button to open input dialog")
+            .setInfoText(activity.getString(R.string.tutorial_btn_add_data))
             .setShape(ShapeType.CIRCLE)
             .setTarget(view)
             .setUsageId("bsc_add_edit_fab") //THIS SHOULD BE UNIQUE ID
@@ -48,7 +49,7 @@ object TutorialHelper {
             .setDelayMillis(500)
             .setIdempotent(true)
             .enableFadeAnimation(true)
-            .setInfoText("Long click to edit, Swipe to delete")
+            .setInfoText(activity.getString(R.string.tutorial_item_list))
             .setShape(ShapeType.RECTANGLE)
             .setTarget(view.getChildAt(0))
             .setUsageId("bsc_rv_item") //THIS SHOULD BE UNIQUE ID

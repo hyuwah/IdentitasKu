@@ -74,4 +74,10 @@
     <string name="card_name_hint">ENTER CARD NAME</string>
     <string name="exit_double_tap_message">Press back again to exit</string>
     <string name="biometric_failed">Fingerprint not recognized</string>
+    <string name="tutorial_btn_add_data">Add your first data! Click this button to open input dialog</string>
+    <string name="tutorial_item_list">Hold to edit, Swipe to delete</string>
+    <string name="pref_sort_by_category">Sort by category</string>
+    <string name="pref_category_information">Information</string>
+    <string name="pref_privacy_policy">Privacy Policy</string>
+    <string name="pref_about">About</string>
 </resources>

@@ -19,11 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
+import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._helper.SwipeItemTouchHelper
 import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
 import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_home.*
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.intentFor
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -107,7 +109,15 @@ class HomeActivity : BaseActivity(), KodeinAware {
 
     private fun initializeUI() {
         viewModel.getAllDataWithType().observe(this, Observer { ListOfDataWithType ->
-            dataAdapter.setNewData(ListOfDataWithType)
+
+            val listToDisplay: List<DataWithDataType> =
+                if (defaultSharedPreferences.getBoolean("setting_pref_list_sort_by_category", false))
+                    ListOfDataWithType.sortedBy { it.typeId }.toList() // Should convert to List, Default to Immutable AbstractList
+                else
+                    ListOfDataWithType
+
+            dataAdapter.setNewData(listToDisplay)
+
             if (ListOfDataWithType.isNullOrEmpty()) showEmptyView()
             else {
                 hideEmptyView()
