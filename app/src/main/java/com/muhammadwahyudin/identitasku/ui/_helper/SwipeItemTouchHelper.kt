@@ -46,15 +46,14 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
             // Right to left
             ItemTouchHelper.START -> {
                 Timber.d("Swiped start")
-//                adapter.onItemDismiss(viewHolder.adapterPosition)
+                adapter.onItemDismiss(viewHolder.adapterPosition)
             }
             // Left to right
             ItemTouchHelper.END -> {
                 Timber.d("Swiped end")
-                //adapter.onItemShare(viewHolder.adapterPosition)
+                adapter.onItemShare(viewHolder.adapterPosition)
             }
         }
-        adapter.onItemDismiss(viewHolder.adapterPosition)
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {
@@ -180,7 +179,7 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
 
     interface SwipeHelperAdapter {
         fun onItemDismiss(position: Int)
-        //fun onItemShare(position: Int)
+        fun onItemShare(position: Int)
     }
 
     // From materialx, not currently used

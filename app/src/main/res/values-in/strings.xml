@@ -76,11 +76,13 @@
     <string name="card_name_hint">MASUKKAN NAMA KARTU</string>
     <string name="exit_double_tap_message">Tap sekali lagi untuk keluar</string>
     <string name="biometric_failed">Fingerprint tak dikenal</string>
-    <string name="tutorial_btn_add_data">Add your first data! Click this button to open input dialog</string>
-    <string name="tutorial_item_list">Hold to edit, Swipe to delete</string>
+    <string name="tutorial_btn_add_data">Klik disini untuk mulai menambahkan data!</string>
+    <string name="tutorial_item_list">Tahan untuk mengedit, Geser kanan untuk membagikan, Geser kiri untuk menghapus
+    </string>
     <string name="pref_sort_by_category">Urut berdasarkan kategori</string>
     <string name="pref_category_information">Informasi</string>
     <string name="pref_privacy_policy">Kebijakan Privasi</string>
     <string name="pref_about">Tentang</string>
+    <string name="share_intent_chooser_title">Kirim data %s ke :</string>
 
 </resources>
