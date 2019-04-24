@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 
 class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Callback() {
 
@@ -14,7 +15,8 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
     }
 
     var bgColorCode: Int = Color.LTGRAY
-    var icon: Drawable? = null
+    var deleteIcon: Drawable? = null
+    var shareIcon: Drawable? = null
     private var intrinsicHeight = 0
     private var intrinsicWidth = 0
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
@@ -40,7 +42,18 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        adapter.onItemDismiss(viewHolder.adapterPosition)
+        when (direction) {
+            // Right to left
+            ItemTouchHelper.START -> {
+                Timber.d("Swiped start")
+                adapter.onItemDismiss(viewHolder.adapterPosition)
+            }
+            // Left to right
+            ItemTouchHelper.END -> {
+                Timber.d("Swiped end")
+                adapter.onItemShare(viewHolder.adapterPosition)
+            }
+        }
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {
@@ -64,6 +77,10 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
         val itemHeight = itemView.bottom - itemView.top
         val background = ColorDrawable(bgColorCode)
         background.color = bgColorCode
+
+        val shareBackground = ColorDrawable(Color.parseColor("#4CAF50"))
+        shareBackground.color = Color.parseColor("#4CAF50")
+
         val isCanceled = dX == 0f && !isCurrentlyActive
 
         // Reset background canvas if canceled
@@ -87,23 +104,23 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
         // Draw background
         if (dX > 0) {
             // Swipe to right
-            background.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+            shareBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+            shareBackground.draw(c)
         } else {
             // Swipe to left
             background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+            background.draw(c)
         }
-        background.draw(c)
 
-        // Draw icon
-        icon?.let {
-            intrinsicHeight = it.intrinsicHeight
-            intrinsicWidth = it.intrinsicWidth
+        // Draw deleteIcon
+        if (dX > 0) {
+            shareIcon?.let {
+                intrinsicHeight = it.intrinsicHeight
+                intrinsicWidth = it.intrinsicWidth
 
-            val iconMargin = (itemHeight - intrinsicHeight) / 2
-            val iconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
-            val iconBottom = iconTop + intrinsicHeight
-
-            if (dX > 0) {
+                val iconMargin = (itemHeight - intrinsicHeight) / 2
+                val iconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
+                val iconBottom = iconTop + intrinsicHeight
                 // Add on left
                 it.setBounds(
                     itemView.left + iconMargin,
@@ -112,7 +129,15 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
                     iconBottom
                 )
                 it.draw(c)
-            } else {
+            }
+        } else {
+            deleteIcon?.let {
+                intrinsicHeight = it.intrinsicHeight
+                intrinsicWidth = it.intrinsicWidth
+
+                val iconMargin = (itemHeight - intrinsicHeight) / 2
+                val iconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
+                val iconBottom = iconTop + intrinsicHeight
                 // Add on right
                 it.setBounds(
                     itemView.right - iconMargin - intrinsicWidth,
@@ -154,6 +179,7 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
 
     interface SwipeHelperAdapter {
         fun onItemDismiss(position: Int)
+        fun onItemShare(position: Int)
     }
 
     // From materialx, not currently used

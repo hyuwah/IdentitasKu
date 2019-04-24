@@ -1,5 +1,6 @@
 package com.muhammadwahyudin.identitasku.ui.home
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Handler
 import android.view.View
@@ -168,6 +169,37 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
             }
         })
         super.onAttachedToRecyclerView(recyclerView)
+    }
+
+    override fun onItemShare(position: Int) {
+        notifyItemChanged(position)
+        // Need to takout from adapter and implement on activity
+        // ShareItem(category,message)
+        val dataToShare = data[position]
+        // Share Intent
+        // TODO differentiate based on data category
+        var message = "${dataToShare.typeName}: ${dataToShare.value}"
+        when (dataToShare.typeId) {
+            TYPE_REK_BANK -> message = "${dataToShare.typeName}: (${dataToShare.attr2}) ${dataToShare.value}"
+            TYPE_HANDPHONE,
+            TYPE_ALAMAT -> {
+                if (!dataToShare.attr1.isNullOrEmpty()) message =
+                    "${dataToShare.typeName} (${dataToShare.attr1}) : ${dataToShare.value}"
+            }
+        }
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, message)
+            type = "text/plain"
+        }
+        aty.startActivity(
+            Intent.createChooser(
+                sendIntent, String.format(
+                    aty.getString(R.string.share_intent_chooser_title),
+                    dataToShare.typeName
+                )
+            )
+        )
     }
 
     override fun onItemDismiss(position: Int) {
