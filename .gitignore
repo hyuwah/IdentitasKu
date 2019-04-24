@@ -13,3 +13,5 @@
 .externalNativeBuild
 
 app/release/
+
+\.idea/

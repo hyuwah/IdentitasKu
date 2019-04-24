@@ -12,7 +12,7 @@ def versionBuild = 0
 
 static def getBuildDate() {
     def date = new Date()
-    def formattedDate = date.format("yyyy-MM-dd")
+    def formattedDate = date.format("yyyyMMdd")
     return formattedDate
 }
 def BUILD_DATE = getBuildDate()
@@ -37,24 +37,29 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        applicationVariants.all{ variant->
+            variant.outputs.all{ output->
+                outputFileName = "identitasku_"+variant.versionName+".apk"
+            }
+        }
     }
     buildTypes {
         debug {
-            versionNameSuffix "-debug" + " (" + BUILD_DATE + ")"
+            versionNameSuffix "-debug_" + BUILD_DATE
             debuggable true
             zipAlignEnabled false
             minifyEnabled false
             manifestPlaceholders = [appName: "IdentitasKu-dev", crashlyticsEnabled: false]
         }
         release {
-            versionNameSuffix " (" + BUILD_DATE + ")"
+            versionNameSuffix "-release_" + BUILD_DATE
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             manifestPlaceholders = [appName: "IdentitasKu", crashlyticsEnabled: true]
-
         }
     }
     dataBinding {
