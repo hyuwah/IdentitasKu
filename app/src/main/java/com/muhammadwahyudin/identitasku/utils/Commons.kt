@@ -4,6 +4,10 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.VIBRATOR_SERVICE
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.inputmethod.InputMethodManager
 import org.jetbrains.anko.toast
 import java.util.*
@@ -44,6 +48,23 @@ object Commons {
         view?.let { v ->
             val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
+        }
+    }
+
+    /**
+     *  Method to vibrate phone (150 ms)
+     *  @param context
+     */
+    fun shortVibrate(context: Context) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            (context.getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(
+                VibrationEffect.createOneShot(
+                    150,
+                    VibrationEffect.DEFAULT_AMPLITUDE
+                )
+            )
+        } else {
+            (context.getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(150)
         }
     }
 }
