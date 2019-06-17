@@ -7,8 +7,8 @@ apply plugin: 'io.fabric'
 
 def versionMajor = 1
 def versionMinor = 0
-def versionPatch = 3
-def versionBuild = 0
+def versionPatch = 4
+def versionBuild = 1
 
 static def getBuildDate() {
     def date = new Date()
@@ -88,17 +88,17 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // Android Jetpack
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
+    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.preference:preference:1.1.0-alpha04'
+    implementation 'androidx.preference:preference:1.1.0-beta01'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.room:room-runtime:2.1.0-alpha06'
-    kapt "androidx.room:room-compiler:2.1.0-alpha06"
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04'
+    implementation 'androidx.room:room-runtime:2.1.0'
+    kapt "androidx.room:room-compiler:2.1.0"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
     // KTX
-    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
+    implementation 'androidx.core:core-ktx:1.2.0-alpha01'
     // Coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.0-alpha-2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.0-alpha-2'
@@ -106,9 +106,9 @@ dependencies {
     implementation 'org.kodein.di:kodein-di-generic-jvm:5.2.0'
     implementation 'org.kodein.di:kodein-di-framework-android-x:5.2.0'
     // Firebase
-    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
     // Crashlytics
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     // ANKO
     implementation "org.jetbrains.anko:anko:$anko_version"
     // Chrome custom tab
@@ -119,7 +119,7 @@ dependencies {
     // Pref & Storage
     implementation 'com.orhanobut:hawk:2.0.1'
     implementation 'com.commonsware.cwac:saferoom.x:1.0.1'
-    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho:1.5.1'
     // Process
     implementation 'com.jakewharton:process-phoenix:2.0.0'
     // Custom View
@@ -131,8 +131,8 @@ dependencies {
     implementation 'com.github.iammert:MaterialIntroView:1.6.0'
     // Test
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

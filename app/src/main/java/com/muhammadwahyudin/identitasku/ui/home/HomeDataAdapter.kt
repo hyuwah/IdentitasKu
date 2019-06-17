@@ -25,6 +25,7 @@ import com.muhammadwahyudin.identitasku.data.Constants.TYPE_STNK
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui._helper.SwipeItemTouchHelper
 import com.muhammadwahyudin.identitasku.utils.Commons
+import com.muhammadwahyudin.identitasku.utils.Commons.shortVibrate
 import org.jetbrains.anko.find
 
 class HomeDataAdapter(data: List<DataWithDataType>) :
@@ -172,6 +173,9 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
     }
 
     override fun onItemShare(position: Int) {
+        // Vibrate
+        shortVibrate(mContext)
+
         notifyItemChanged(position)
         // Need to takout from adapter and implement on activity
         // ShareItem(category,message)
@@ -203,6 +207,9 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
     }
 
     override fun onItemDismiss(position: Int) {
+        // Vibrate
+        shortVibrate(mContext)
+
         val dataToDelete = data[position]
         data.removeAt(position)
         notifyItemRemoved(position)
