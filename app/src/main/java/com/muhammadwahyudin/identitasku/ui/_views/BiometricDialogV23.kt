@@ -6,10 +6,10 @@ import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.biometric.BiometricCallback
 import kotlinx.android.synthetic.main.bottom_sheet_biometric.*
 
-
-class BiometricDialogV23(context: Context, biometricCallback: BiometricCallback) : BottomSheetDialog(
-    context, R.style.BottomSheetDialogTheme
-) {
+class BiometricDialogV23(
+    context: Context,
+    biometricCallback: BiometricCallback
+) : BottomSheetDialog(context, R.style.BottomSheetDialogTheme) {
 
     private var biometricCallback: BiometricCallback? = biometricCallback
 
@@ -18,7 +18,9 @@ class BiometricDialogV23(context: Context, biometricCallback: BiometricCallback)
     }
 
     private fun setDialogView() {
-        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_biometric, null)
+        val bottomSheetView = layoutInflater.inflate(
+            R.layout.bottom_sheet_biometric, null
+        )
         setContentView(bottomSheetView)
         btn_cancel.setOnClickListener {
             dismiss()

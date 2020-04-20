@@ -1,104 +1,83 @@
 package com.muhammadwahyudin.identitasku.data.repository
 
-import androidx.lifecycle.LiveData
 import com.muhammadwahyudin.identitasku.data.db.DataDao
 import com.muhammadwahyudin.identitasku.data.db.DataTypeDao
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
-import org.jetbrains.anko.doAsync
 
-class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: DataDao) : IAppRepository {
+class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: DataDao) :
+    IAppRepository {
 
-    override fun insert(dataType: DataType) {
-        doAsync {
-            dataTypeDao.insert(dataType)
-        }
+    override suspend fun insert(dataType: DataType) {
+        dataTypeDao.insert(dataType)
     }
 
-    override fun update(dataType: DataType) {
-        doAsync {
-            dataTypeDao.update(dataType)
-        }
+    override suspend fun update(dataType: DataType) {
+        dataTypeDao.update(dataType)
     }
 
-    override fun delete(dataType: DataType) {
-        doAsync {
-            dataTypeDao.delete(dataType)
-        }
+    override suspend fun delete(dataType: DataType) {
+        dataTypeDao.delete(dataType)
     }
 
-    override fun deleteAllDataType() {
-        doAsync {
-            dataTypeDao.deleteAll()
-        }
+    override suspend fun deleteAllDataType() {
+        dataTypeDao.deleteAll()
     }
 
-    override fun getAllDataType(): LiveData<List<DataType>> {
+    override suspend fun getAllDataType(): List<DataType> {
         return dataTypeDao.getAll()
     }
 
-    override fun insert(data: Data) {
-        doAsync {
-            dataDao.insert(data)
-        }
+    override suspend fun insert(data: Data) {
+        dataDao.insert(data)
     }
 
-    override fun update(data: Data) {
-        doAsync {
-            dataDao.update(data)
-        }
+    override suspend fun update(data: Data) {
+        dataDao.update(data)
     }
 
-    override fun delete(data: Data) {
-        doAsync {
-            dataDao.delete(data)
-        }
+    override suspend fun delete(data: Data) {
+        dataDao.delete(data)
     }
 
-    override fun deleteById(id: Int) {
-        doAsync {
-            dataDao.deleteById(id)
-        }
+    override suspend fun deleteById(id: Int) {
+        dataDao.deleteById(id)
     }
 
-    override fun deleteDatasById(listOfId: List<Int>) {
-        doAsync {
-            dataDao.deleteDatasById(listOfId)
-        }
+    override suspend fun deleteDatasById(listOfId: List<Int>) {
+        dataDao.deleteDatasById(listOfId)
     }
 
-    override fun deleteAllData() {
-        doAsync {
-            dataDao.deleteAll()
-        }
+    override suspend fun deleteAllData() {
+        dataDao.deleteAll()
     }
 
-    override fun getAllData(): LiveData<List<Data>> {
+    override suspend fun getAllData(): List<Data> {
         return dataDao.getAll()
     }
 
-    override fun getAllDataByType(type: Int): LiveData<List<Data>> {
+    override suspend fun getAllDataByType(type: Int): List<Data> {
         return dataDao.getAllByType(type)
     }
 
-    override fun getDataById(id: Int): LiveData<Data> {
+    override suspend fun getDataById(id: Int): Data {
         return dataDao.getDataById(id)
     }
 
-    override fun resetDataType() {
-        doAsync { dataTypeDao.reset() }
+    override suspend fun resetDataType() {
+        dataTypeDao.reset()
     }
 
-    override fun prepopulateData() {
-        doAsync { dataDao.prepopulateData() }
+    override suspend fun prepopulateData() {
+        dataDao.prepopulateData()
     }
 
-    override fun getAllDataWithType(): LiveData<List<DataWithDataType>> {
+    override suspend fun getAllDataWithType(): List<DataWithDataType> {
         return dataDao.getAllWithDataType()
     }
 
-    override fun getAllExistingUniqueType(): LiveData<List<DataType>> {
+    override suspend fun getAllExistingUniqueType(): List<DataType> {
         return dataTypeDao.getAllExistingUniqueType()
     }
 }

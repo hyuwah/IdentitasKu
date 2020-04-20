@@ -8,13 +8,15 @@ import android.widget.ArrayAdapter
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.InputDataset
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
-import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
 import kotlinx.android.synthetic.main.data_input_bank_acc_fragment.*
-import org.jetbrains.anko.sdk27.coroutines.onItemSelectedListener
 
-class BankAccountInputFragment : BaseDataInputFragment<HomeActivity>() {
-    override fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+class BankAccountInputFragment : BaseDataInputFragment() {
+    override fun inflateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.data_input_bank_acc_fragment, container, false)
     }
 
@@ -56,12 +58,14 @@ class BankAccountInputFragment : BaseDataInputFragment<HomeActivity>() {
         spinner_rek_bank_provider.setTitle("Bank")
         spinner_rek_bank_provider.setPositiveButton("Close")
         spinner_rek_bank_provider.adapter =
-            ArrayAdapter(act, R.layout.support_simple_spinner_dropdown_item, InputDataset.BANK_LIST)
-        spinner_rek_bank_provider.onItemSelectedListener {
-            onItemSelected { adapterView, view, i, l ->
-                attr2Input = adapterView?.getItemAtPosition(i).toString()
-                checkIfDataIsModified(btn_save, attr2Input, _data?.attr2, true)
-            }
+            ArrayAdapter(
+                requireActivity(),
+                R.layout.support_simple_spinner_dropdown_item,
+                InputDataset.BANK_LIST
+            )
+        spinner_rek_bank_provider.setOnSearchTextChangedListener { value ->
+            attr2Input = value
+            checkIfDataIsModified(btn_save, attr2Input, _data?.attr2, true)
         }
     }
 }

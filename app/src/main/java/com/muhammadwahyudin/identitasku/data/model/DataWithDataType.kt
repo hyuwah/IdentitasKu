@@ -30,6 +30,9 @@ data class DataWithDataType(
     }
 
     override fun toString(): String {
-        return "$id - ($typeId) $typeName - $value - $attr1 - $attr2 - $attr3 - $attr4 - $attr5 - $isUnique - $isCustom"
+        return """
+            $id - ($typeId) $typeName - $value - $attr1 - $attr2 - $attr3 - $attr4 - $attr5 - 
+            $isUnique - $isCustom
+        """.trimIndent()
     }
 }

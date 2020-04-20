@@ -7,17 +7,16 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.snackbar.Snackbar
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui.home.AddEditDataBottomSheet
 import com.muhammadwahyudin.identitasku.ui.home.AddEditDataBottomSheet.Companion.EDIT
-import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.ui.home.HomeViewModel
-import org.jetbrains.anko.find
 
-abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
+abstract class BaseDataInputFragment : Fragment() {
 
     companion object {
         const val DATA_PARCEL_KEY = "data_parcel_key"
@@ -27,10 +26,9 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
     var _type: Int = 0
     var _data: DataWithDataType? = null
     var _typeName: String? = null
-    lateinit var act: HomeActivity
     lateinit var parentDialog: AddEditDataBottomSheet
-    lateinit var parent_view: View
-    lateinit var parentViewModel: HomeViewModel
+    private lateinit var parent_view: View
+    private val parentViewModel: HomeViewModel by activityViewModels()
 
     // DATA ATTR
     var dataInput = ""
@@ -40,15 +38,17 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
     var attr4Input = ""
     var attr5Input = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val mView = inflateView(inflater, container, savedInstanceState)
         _data = arguments?.getParcelable(DATA_PARCEL_KEY)
         _typeName = arguments?.getString(TYPE_NAME_KEY)
-        act = activity as T
         parentDialog = (parentFragment as AddEditDataBottomSheet)
         _type = parentDialog.type
-        parent_view = act.find(R.id.parent_home_activity)
-        parentViewModel = act.viewModel
+        parent_view = requireActivity().findViewById(R.id.parent_home_activity)
         return mView
     }
 
@@ -67,16 +67,24 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
         }
     }
 
-    abstract fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
+    abstract fun inflateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View
     abstract fun setupInputUI()
     abstract fun setupAddType()
     abstract fun setupEditType()
     abstract fun setupUIwithData(data: DataWithDataType)
 
-
     // Check if data modified on edit mode
-    fun checkIfDataIsModified(buttonSave: View, text: String, value: String?, isOptional: Boolean = false) {
-        if (_type == EDIT && text != value && (!text.isEmpty() || isOptional)) {
+    fun checkIfDataIsModified(
+        buttonSave: View,
+        text: String,
+        value: String?,
+        isOptional: Boolean = false
+    ) {
+        if (_type == EDIT && text != value && (text.isNotEmpty() || isOptional)) {
             buttonSave.isEnabled = true
         }
     }
@@ -109,14 +117,16 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
         )
         modifiedData.id = _data!!.id
         parentViewModel.updateData(modifiedData)
-        Snackbar.make(parent_view, "${_data?.typeName} successfully updated", Snackbar.LENGTH_SHORT).show()
+        Snackbar
+            .make(parent_view, "${_data?.typeName} successfully updated", Snackbar.LENGTH_SHORT)
+            .show()
         parentDialog.dismiss()
     }
 
-    fun dataOnTextChanged(
+    inline fun dataOnTextChanged(
         editText: EditText?,
         buttonSave: View,
-        dataAssignment: (newText: String) -> String,
+        crossinline dataAssignment: (newText: String) -> String,
         oldData: String?,
         isOptional: Boolean = false
     ) {
@@ -126,5 +136,4 @@ abstract class BaseDataInputFragment<T : HomeActivity> : Fragment() {
             checkIfDataIsModified(buttonSave, dataAssignment(text.toString()), oldData, isOptional)
         }
     }
-
 }

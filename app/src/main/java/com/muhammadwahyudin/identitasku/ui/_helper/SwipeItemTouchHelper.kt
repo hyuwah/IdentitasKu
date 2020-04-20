@@ -21,9 +21,14 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
     private var intrinsicWidth = 0
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
         return if (recyclerView.layoutManager is GridLayoutManager) {
-            val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            val dragFlags =
+                ItemTouchHelper.UP or ItemTouchHelper.DOWN or
+                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             val swipeFlags = 0
             makeMovementFlags(dragFlags, swipeFlags)
         } else {
@@ -86,7 +91,13 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
         // Reset background canvas if canceled
         if (isCanceled) {
             if (dX > 0) {
-                clearCanvas(c, itemView.left.toFloat(), itemView.top.toFloat(), dX, itemView.bottom.toFloat())
+                clearCanvas(
+                    c,
+                    itemView.left.toFloat(),
+                    itemView.top.toFloat(),
+                    dX,
+                    itemView.bottom.toFloat()
+                )
             } else {
                 clearCanvas(
                     c,
@@ -100,7 +111,6 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
             return
         }
 
-
         // Draw background
         if (dX > 0) {
             // Swipe to right
@@ -108,7 +118,12 @@ class SwipeItemTouchHelper(var adapter: SwipeHelperAdapter) : ItemTouchHelper.Ca
             shareBackground.draw(c)
         } else {
             // Swipe to left
-            background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+            background.setBounds(
+                itemView.right + dX.toInt(),
+                itemView.top,
+                itemView.right,
+                itemView.bottom
+            )
             background.draw(c)
         }
 

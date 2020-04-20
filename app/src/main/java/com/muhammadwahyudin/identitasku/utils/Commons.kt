@@ -9,9 +9,7 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.inputmethod.InputMethodManager
-import org.jetbrains.anko.toast
 import java.util.*
-
 
 /**
  * Singleton class of common functions that used within the project
@@ -26,8 +24,8 @@ object Commons {
     fun copyToClipboard(ctx: Context, value: String, type: String) {
         val clipboard = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip: ClipData = ClipData.newPlainText(ctx.packageName, value)
-        clipboard.primaryClip = clip
-        ctx.toast("$type copied to clipboard")
+        clipboard.setPrimaryClip(clip)
+        (ctx as Activity).toast("$type copied to clipboard")
     }
 
     /**

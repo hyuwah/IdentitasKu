@@ -32,7 +32,7 @@ object TutorialHelper {
             .setInfoText(activity.getString(R.string.tutorial_btn_add_data))
             .setShape(ShapeType.CIRCLE)
             .setTarget(view)
-            .setUsageId("bsc_add_edit_fab") //THIS SHOULD BE UNIQUE ID
+            .setUsageId("bsc_add_edit_fab") // THIS SHOULD BE UNIQUE ID
             .show()
     }
 
@@ -52,7 +52,7 @@ object TutorialHelper {
             .setInfoText(activity.getString(R.string.tutorial_item_list))
             .setShape(ShapeType.RECTANGLE)
             .setTarget(view.getChildAt(0))
-            .setUsageId("bsc_rv_item") //THIS SHOULD BE UNIQUE ID
+            .setUsageId("bsc_rv_item") // THIS SHOULD BE UNIQUE ID
             .show()
     }
 
@@ -61,9 +61,12 @@ object TutorialHelper {
      * @param activity
      */
     fun resetTutorial(activity: Activity) {
-        val preferences = activity.getSharedPreferences("material_intro_preferences", Context.MODE_PRIVATE)
+        val preferences = activity.getSharedPreferences(
+            "material_intro_preferences",
+            Context.MODE_PRIVATE
+        )
         val editor = preferences.edit()
         editor.clear()
-        editor.commit()
+        editor.apply()
     }
 }

@@ -19,7 +19,6 @@ import javax.crypto.NoSuchPaddingException
 import javax.crypto.SecretKey
 import javax.security.cert.CertificateException
 
-
 @Suppress("DEPRECATION")
 @TargetApi(Build.VERSION_CODES.M)
 open class BiometricManagerV23 {
@@ -36,7 +35,6 @@ open class BiometricManagerV23 {
     protected lateinit var description: String
     protected lateinit var negativeButtonText: String
     private lateinit var biometricDialogV23: BiometricDialogV23
-
 
     fun displayBiometricPromptV23(biometricCallback: BiometricCallback) {
         generateKey()
@@ -59,7 +57,9 @@ open class BiometricManagerV23 {
                         biometricCallback.onAuthenticationHelp(helpMsgId, helpString!!)
                     }
 
-                    override fun onAuthenticationSucceeded(result: FingerprintManagerCompat.AuthenticationResult?) {
+                    override fun onAuthenticationSucceeded(
+                        result: FingerprintManagerCompat.AuthenticationResult?
+                    ) {
                         super.onAuthenticationSucceeded(result)
                         dismissDialog()
                         biometricCallback.onAuthenticationSuccessful()
@@ -78,7 +78,6 @@ open class BiometricManagerV23 {
         }
     }
 
-
     private fun displayBiometricDialog(biometricCallback: BiometricCallback) {
         biometricDialogV23 = BiometricDialogV23(context!!, biometricCallback)
         biometricDialogV23.setTitle(title)
@@ -87,7 +86,6 @@ open class BiometricManagerV23 {
         biometricDialogV23.setButtonText(negativeButtonText)
         biometricDialogV23.show()
     }
-
 
     private fun dismissDialog() {
         biometricDialogV23.dismiss()
@@ -101,9 +99,15 @@ open class BiometricManagerV23 {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore")
             keyStore.load(null)
-            keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+            keyGenerator = KeyGenerator.getInstance(
+                KeyProperties.KEY_ALGORITHM_AES,
+                "AndroidKeyStore"
+            )
             keyGenerator.init(
-                KeyGenParameterSpec.Builder(KEY_NAME, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+                KeyGenParameterSpec.Builder(
+                    KEY_NAME,
+                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+                )
                     .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
                     .setUserAuthenticationRequired(true)
                     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
@@ -111,7 +115,6 @@ open class BiometricManagerV23 {
             )
 
             keyGenerator.generateKey()
-
         } catch (exc: KeyStoreException) {
             exc.printStackTrace()
         } catch (exc: NoSuchAlgorithmException) {
@@ -125,18 +128,15 @@ open class BiometricManagerV23 {
         } catch (exc: IOException) {
             exc.printStackTrace()
         }
-
     }
-
 
     private fun initCipher(): Boolean {
         try {
             cipher = Cipher.getInstance(
-                KeyProperties.KEY_ALGORITHM_AES + "/"
-                        + KeyProperties.BLOCK_MODE_CBC + "/"
-                        + KeyProperties.ENCRYPTION_PADDING_PKCS7
+                KeyProperties.KEY_ALGORITHM_AES + "/" +
+                        KeyProperties.BLOCK_MODE_CBC + "/" +
+                        KeyProperties.ENCRYPTION_PADDING_PKCS7
             )
-
         } catch (e: NoSuchAlgorithmException) {
             throw RuntimeException("Failed to get Cipher", e)
         } catch (e: NoSuchPaddingException) {
@@ -148,8 +148,6 @@ open class BiometricManagerV23 {
             val key = keyStore.getKey(KEY_NAME, null) as SecretKey
             cipher.init(Cipher.ENCRYPT_MODE, key)
             return true
-
-
         } catch (e: KeyPermanentlyInvalidatedException) {
             return false
         } catch (e: KeyStoreException) {
@@ -165,7 +163,6 @@ open class BiometricManagerV23 {
         } catch (e: InvalidKeyException) {
             throw RuntimeException("Failed to init Cipher", e)
         }
-
     }
 
     companion object {

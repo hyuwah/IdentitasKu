@@ -4,22 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.InputDataset
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
-import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
 import kotlinx.android.synthetic.main.data_input_pln_fragment.*
-import org.jetbrains.anko.sdk27.coroutines.onItemSelectedListener
 
-class PlnInputFragment : BaseDataInputFragment<HomeActivity>() {
-    override fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+class PlnInputFragment : BaseDataInputFragment() {
+    override fun inflateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.data_input_pln_fragment, container, false)
     }
 
     override fun setupInputUI() {
-        dataOnTextChanged(til_pln_data.editText, btn_save, { newText -> dataInput = newText; dataInput }, _data?.value)
+        dataOnTextChanged(
+            til_pln_data.editText,
+            btn_save,
+            { newText -> dataInput = newText; dataInput },
+            _data?.value
+        )
         dataOnTextChanged(
             til_pln_ket.editText,
             btn_save,
@@ -29,9 +37,21 @@ class PlnInputFragment : BaseDataInputFragment<HomeActivity>() {
         )
 
         spinner_pln_provider.adapter =
-            ArrayAdapter(act, android.R.layout.simple_spinner_dropdown_item, InputDataset.PLN_TYPE)
-        spinner_pln_provider.onItemSelectedListener {
-            onItemSelected { adapterView, view, i, l ->
+            ArrayAdapter(
+                requireActivity(),
+                android.R.layout.simple_spinner_dropdown_item,
+                InputDataset.PLN_TYPE
+            )
+        spinner_pln_provider.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                i: Int,
+                l: Long
+            ) {
                 attr2Input = adapterView?.getItemAtPosition(i).toString()
                 checkIfDataIsModified(btn_save, attr2Input, _data?.attr2, true)
             }

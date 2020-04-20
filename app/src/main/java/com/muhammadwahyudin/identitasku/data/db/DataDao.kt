@@ -1,49 +1,48 @@
 package com.muhammadwahyudin.identitasku.data.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.utils.DbUtils
 
 @Dao
-interface DataDao {
+abstract class DataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(data: Data)
+    abstract suspend fun insert(data: Data)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(data: Data)
+    abstract suspend fun update(data: Data)
 
     @Delete
-    fun delete(data: Data)
+    abstract suspend fun delete(data: Data)
 
     @Query("DELETE FROM data WHERE id = :id")
-    fun deleteById(id: Int)
+    abstract suspend fun deleteById(id: Int)
 
     @Transaction
-    fun deleteDatasById(listOfId: List<Int>) {
+    open suspend fun deleteDatasById(listOfId: List<Int>) {
         for (id in listOfId) {
             deleteById(id)
         }
     }
 
     @Query("SELECT * FROM data")
-    fun getAll(): LiveData<List<Data>>
+    abstract suspend fun getAll(): List<Data>
 
     @Query("SELECT * FROM data JOIN data_type ON data.type_id=data_type.type_id ")
-    fun getAllWithDataType(): LiveData<List<DataWithDataType>>
+    abstract suspend fun getAllWithDataType(): List<DataWithDataType>
 
     @Query("SELECT * FROM data WHERE type_id == (:type)")
-    fun getAllByType(type: Int): LiveData<List<Data>>
+    abstract suspend fun getAllByType(type: Int): List<Data>
 
     @Query("SELECT * FROM data WHERE id = :id")
-    fun getDataById(id: Int): LiveData<Data>
+    abstract suspend fun getDataById(id: Int): Data
 
     @Query("DElETE FROM data")
-    fun deleteAll()
+    abstract suspend fun deleteAll()
 
     @Transaction
-    fun prepopulateData() {
+    open suspend fun prepopulateData() {
         DbUtils.DUMMY_DATAS.forEach {
             insert(it)
         }

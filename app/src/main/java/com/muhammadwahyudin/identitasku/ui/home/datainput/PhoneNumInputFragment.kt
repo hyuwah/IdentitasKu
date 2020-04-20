@@ -4,17 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.InputDataset
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
-import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
 import kotlinx.android.synthetic.main.data_input_phonenum_fragment.*
-import org.jetbrains.anko.sdk27.coroutines.onItemSelectedListener
 
-class PhoneNumInputFragment : BaseDataInputFragment<HomeActivity>() {
-    override fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+class PhoneNumInputFragment : BaseDataInputFragment() {
+    override fun inflateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.data_input_phonenum_fragment, container, false)
     }
 
@@ -34,13 +37,26 @@ class PhoneNumInputFragment : BaseDataInputFragment<HomeActivity>() {
         )
 
         spinner_phonenum_provider.adapter =
-            ArrayAdapter(act, android.R.layout.simple_spinner_dropdown_item, InputDataset.PHONENUM_PROVIDERS)
-        spinner_phonenum_provider.onItemSelectedListener {
-            onItemSelected { adapterView, view, i, l ->
+            ArrayAdapter(
+                requireActivity(),
+                android.R.layout.simple_spinner_dropdown_item,
+                InputDataset.PHONENUM_PROVIDERS
+            )
+        spinner_phonenum_provider.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View?,
+                    i: Int,
+                    l: Long
+                ) {
                 attr2Input = adapterView?.getItemAtPosition(i).toString()
                 checkIfDataIsModified(btn_save, attr2Input, _data?.attr2, true)
             }
-        }
+            }
     }
 
     override fun setupUIwithData(data: DataWithDataType) {
@@ -63,5 +79,4 @@ class PhoneNumInputFragment : BaseDataInputFragment<HomeActivity>() {
             saveAddData()
         }
     }
-
 }

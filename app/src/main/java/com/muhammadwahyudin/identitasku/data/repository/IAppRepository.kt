@@ -1,32 +1,28 @@
 package com.muhammadwahyudin.identitasku.data.repository
 
-import androidx.lifecycle.LiveData
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 
 interface IAppRepository {
 
-        fun insert(dataType: DataType)
-        fun update(dataType: DataType)
-        fun delete(dataType: DataType)
-        fun deleteAllDataType()
-        fun getAllDataType(): LiveData<List<DataType>>
-        fun resetDataType()
-        fun getAllExistingUniqueType(): LiveData<List<DataType>>
+    suspend fun insert(dataType: DataType)
+    suspend fun update(dataType: DataType)
+    suspend fun delete(dataType: DataType)
+    suspend fun deleteAllDataType()
+    suspend fun getAllDataType(): List<DataType>
+    suspend fun resetDataType()
+    suspend fun getAllExistingUniqueType(): List<DataType>
 
-        fun insert(data: Data)
-        fun update(data: Data)
-        fun delete(data: Data)
-        fun deleteById(id: Int)
-    fun deleteDatasById(listOfId: List<Int>)
-        fun deleteAllData()
-        fun getAllData(): LiveData<List<Data>>
-        fun getAllDataByType(type: Int): LiveData<List<Data>>
-        fun getAllDataWithType(): LiveData<List<DataWithDataType>>
-        fun getDataById(id: Int): LiveData<Data>
-        fun prepopulateData()
-
-
-
+    suspend fun insert(data: Data)
+    suspend fun update(data: Data)
+    suspend fun delete(data: Data)
+    suspend fun deleteById(id: Int)
+    suspend fun deleteDatasById(listOfId: List<Int>)
+    suspend fun deleteAllData()
+    suspend fun getAllData(): List<Data>
+    suspend fun getAllDataByType(type: Int): List<Data>
+    suspend fun getAllDataWithType(): List<DataWithDataType>
+    suspend fun getDataById(id: Int): Data
+    suspend fun prepopulateData()
 }

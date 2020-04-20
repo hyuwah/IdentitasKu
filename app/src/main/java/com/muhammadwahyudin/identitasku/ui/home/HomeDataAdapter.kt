@@ -26,10 +26,10 @@ import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui._helper.SwipeItemTouchHelper
 import com.muhammadwahyudin.identitasku.utils.Commons
 import com.muhammadwahyudin.identitasku.utils.Commons.shortVibrate
-import org.jetbrains.anko.find
 
 class HomeDataAdapter(data: List<DataWithDataType>) :
-    BaseMultiItemQuickAdapter<DataWithDataType, BaseViewHolder>(data), SwipeItemTouchHelper.SwipeHelperAdapter {
+    BaseMultiItemQuickAdapter<DataWithDataType, BaseViewHolder>(data),
+    SwipeItemTouchHelper.SwipeHelperAdapter {
 
     companion object LAYOUT {
         const val GENERIC_1 = 0
@@ -72,12 +72,13 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         aty = mContext as HomeActivity
         // Edit
         helper.itemView.setOnLongClickListener {
-            val bs = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.EDIT, item)
+            val bs = AddEditDataBottomSheet
+                .newInstance(AddEditDataBottomSheet.EDIT, item)
             bs.show(aty.supportFragmentManager, bs.tag)
             true
         }
 
-        //Commons (BEWARE! DEFAULT ITEM TYPE ALSO AFFECTED)
+        // Commons (BEWARE! DEFAULT ITEM TYPE ALSO AFFECTED)
         // item.typeName doesn't respect Locale languange!
         helper.setText(R.id.tv_data_type, item.typeName)
         helper.setText(R.id.tv_data_value, item.value)
@@ -132,9 +133,12 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
                     helper.getView<TextView>(R.id.tv_data_attr2).visibility = View.GONE
                 }
                 when (item.typeId) {
-                    TYPE_HANDPHONE -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_handphone)
-                    TYPE_PLN -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_pln)
-                    TYPE_REK_BANK -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_bank_account)
+                    TYPE_HANDPHONE ->
+                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_handphone)
+                    TYPE_PLN ->
+                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_pln)
+                    TYPE_REK_BANK ->
+                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_bank_account)
                 }
             }
             CREDIT_CARD -> {
@@ -150,7 +154,6 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
                 // NO TYPE WILL USE THIS
             }
         }
-
     }
 
     // SWIPE & DRAG
@@ -184,7 +187,8 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         // TODO differentiate based on data category
         var message = "${dataToShare.typeName}: ${dataToShare.value}"
         when (dataToShare.typeId) {
-            TYPE_REK_BANK -> message = "${dataToShare.typeName}: (${dataToShare.attr2}) ${dataToShare.value}"
+            TYPE_REK_BANK -> message =
+                "${dataToShare.typeName}: (${dataToShare.attr2}) ${dataToShare.value}"
             TYPE_HANDPHONE,
             TYPE_ALAMAT -> {
                 if (!dataToShare.attr1.isNullOrEmpty()) message =
@@ -214,18 +218,21 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         data.removeAt(position)
         notifyItemRemoved(position)
 
-        // clear handler callback first to avoid bug when swiping more than one data in short duration
+        // clear handler callback first to avoid bug when swiping >1 data in short duration
         deleteHandler.removeCallbacksAndMessages(null)
 
         // should add to list of datasToDelete
         datasToDelete.add(dataToDelete)
 
         // Handler to run data deletion on db after snackbar disappear
-        deleteHandler.postDelayed({ aty.viewModel.deleteDatas(datasToDelete) }, 3500) // delete list of data
+        deleteHandler.postDelayed(
+            { aty.viewModel.deleteDatas(datasToDelete) },
+            3500
+        ) // delete list of data
 
         // Show snackbar with undo button
         Snackbar.make(
-            aty.find(R.id.parent_home_activity),
+            aty.findViewById(R.id.parent_home_activity),
             dataToDelete.typeName + aty.getString(R.string.snackbar_data_deleted),
             Snackbar.LENGTH_LONG
         )
@@ -234,7 +241,8 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
                 notifyItemInserted(position)
                 // check if datasToDelete > 1
                 if (datasToDelete.size > 1) {
-                    // don't cancel the handler, just remove canceled / last data from list of datasToDelete
+                    // don't cancel the handler,
+                    // just remove canceled / last data from list of datasToDelete
                     datasToDelete.remove(dataToDelete)
                 } else {
                     // cancel Handler

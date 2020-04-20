@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
-import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
 import kotlinx.android.synthetic.main.data_input_email_fragment.*
 
-class EmailInputFragment : BaseDataInputFragment<HomeActivity>() {
-    override fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+class EmailInputFragment : BaseDataInputFragment() {
+    override fun inflateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.data_input_email_fragment, container, false)
     }
-
 
     override fun setupInputUI() {
         dataOnTextChanged(
@@ -30,7 +32,6 @@ class EmailInputFragment : BaseDataInputFragment<HomeActivity>() {
             _data?.attr1
         )
     }
-
 
     override fun setupAddType() {
         btn_save.setOnClickListener {
@@ -49,5 +50,4 @@ class EmailInputFragment : BaseDataInputFragment<HomeActivity>() {
         til_email_ket.editText?.setText(data.attr1)
         btn_save.isEnabled = false
     }
-
 }

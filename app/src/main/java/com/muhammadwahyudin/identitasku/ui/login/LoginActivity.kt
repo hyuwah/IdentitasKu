@@ -7,7 +7,6 @@ import android.provider.Settings
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.commonsware.cwac.saferoom.SafeHelperFactory
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -19,24 +18,29 @@ import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
-import com.muhammadwahyudin.identitasku.ui._views.RegisterSuccessDialog
+import com.muhammadwahyudin.identitasku.ui._views.RegisterSuccessDialogs
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.utils.BiometricUtils
 import com.muhammadwahyudin.identitasku.utils.Commons
+import com.muhammadwahyudin.identitasku.utils.toast
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_login.*
-import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.Appcompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
-
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A register & login screen that offers login via password/fingerprint.
  */
-class LoginActivity : BaseActivity(), KodeinAware {
+class LoginActivity : BaseActivity(), KodeinAware, CoroutineScope {
     override val kodein by closestKodein()
+    override val coroutineContext: CoroutineContext
+        get() = Job()
     private val appDatabase by instance<AppDatabase>()
 
     private var isRegistered = false
@@ -50,9 +54,9 @@ class LoginActivity : BaseActivity(), KodeinAware {
 
         if (BuildConfig.DEBUG)
             btn_login.setOnLongClickListener {
-                val registerSuccessDialog = RegisterSuccessDialog(AnkoContext.create(this, contentView!!))
-                registerSuccessDialog.onPositiveBtnClick = {
-                    registerSuccessDialog.dialog.dismiss()
+                val dialog = RegisterSuccessDialogs()
+                dialog.show(supportFragmentManager) {
+                    dialog.dismiss()
                 }
                 true
             }
@@ -103,7 +107,6 @@ class LoginActivity : BaseActivity(), KodeinAware {
                     showNeedToAddFingerprintDialog()
             }
         }
-
 
         // Hide login with fingerprint if device has no sensor
         if (!BiometricUtils.isHardwareSupported(this)) {
@@ -157,7 +160,6 @@ class LoginActivity : BaseActivity(), KodeinAware {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
 //                    toast("Auth error ($errorCode) $errString")
                 }
-
             })
     }
 
@@ -166,7 +168,9 @@ class LoginActivity : BaseActivity(), KodeinAware {
             appDatabase.openHelper.writableDatabase,
             Hawk.get<String>(Constants.SP_PASSWORD).toCharArray()
         )
-        startActivity(intentFor<HomeActivity>().clearTop())
+        startActivity(Intent(this, HomeActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        })
         finish()
     }
 
@@ -191,14 +195,17 @@ class LoginActivity : BaseActivity(), KodeinAware {
                     // Reencrypt using user pass
                     SafeHelperFactory.rekey(appDatabase.openHelper.writableDatabase, passwordEdt)
 
-                    val registerSuccessDialog = RegisterSuccessDialog(AnkoContext.create(this, contentView!!))
-                    registerSuccessDialog.onPositiveBtnClick = {
-                        startActivity(intentFor<HomeActivity>().clearTop())
-                        registerSuccessDialog.dialog.dismiss()
+                    val dialog = RegisterSuccessDialogs()
+                    dialog.show(supportFragmentManager) {
+                        startActivity(Intent(this, HomeActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        })
+                        dialog.dismiss()
                         finish()
                     }
                 } else {
-                    til_password_confirm.error = getString(R.string.text_hint_register_password_confirmation_not_match)
+                    til_password_confirm.error =
+                        getString(R.string.text_hint_register_password_confirmation_not_match)
                     til_password_confirm.isErrorEnabled = true
                 }
             }
@@ -207,67 +214,63 @@ class LoginActivity : BaseActivity(), KodeinAware {
                 til_password.isErrorEnabled = true
             }
             passwordEdt.isNotBlank() && passwordConfirmEdt.isBlank() -> {
-                til_password_confirm.error = getString(R.string.text_hint_register_password_confirmation_empty)
+                til_password_confirm.error =
+                    getString(R.string.text_hint_register_password_confirmation_empty)
                 til_password_confirm.isErrorEnabled = true
             }
         }
     }
 
     private fun resetPassword() {
-        alert(Appcompat) {
-            title = getString(R.string.dialog_title_forgot_password_confirmation)
-            message = getString(R.string.dialog_message_forgot_password_confirmation)
-            positiveButton(getString(R.string.dialog_btn_no)) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.dialog_title_forgot_password_confirmation))
+            .setMessage(getString(R.string.dialog_message_forgot_password_confirmation))
+            .setPositiveButton(getString(R.string.dialog_btn_no)) { it, _ ->
                 it.dismiss()
             }
-            negativeButton(getString(R.string.dialog_btn_yes)) {
+            .setNegativeButton(getString(R.string.dialog_btn_yes)) { it, _ ->
                 Hawk.deleteAll()
-                TutorialHelper.resetTutorial(this@LoginActivity)
-                doAsync {
+                TutorialHelper.resetTutorial(this)
+                launch(Dispatchers.IO) {
                     appDatabase.dataDao().deleteAll()
                 }
-                this@LoginActivity.deleteDatabase(appDatabase.openHelper.databaseName)
+                deleteDatabase(appDatabase.openHelper.databaseName)
                 it.dismiss()
                 ProcessPhoenix.triggerRebirth(applicationContext)
             }
-        }.show().apply {
-            getButton(AlertDialog.BUTTON_NEGATIVE).textColor =
-                ContextCompat.getColor(this@LoginActivity, R.color.red_500)
-        }
+            .create()
+        dialog.show()
     }
 
     private fun showForgotPasswordDialog() {
-        alert(Appcompat) {
-            title = getString(R.string.dialog_title_forgot_password)
-            message = getString(R.string.dialog_message_forgot_password)
-            isCancelable = false
-            negativeButton(getString(R.string.dialog_btn_action_forgot_password)) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.dialog_title_forgot_password))
+            .setMessage(getString(R.string.dialog_message_forgot_password))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.dialog_btn_cancel_forgot_password)) { it, _ ->
+                it.dismiss()
+            }
+            .setNegativeButton(getString(R.string.dialog_btn_action_forgot_password)) { it, _ ->
                 resetPassword()
                 it.dismiss()
             }
-            positiveButton(getString(R.string.dialog_btn_cancel_forgot_password)) {
-                it.dismiss()
-            }
-        }.show().apply {
-            getButton(AlertDialog.BUTTON_NEGATIVE).apply {
-                textColor = ContextCompat.getColor(this@LoginActivity, R.color.red_500)
-            }
-        }
+            .create()
+        dialog.show()
     }
 
     private fun showNeedToAddFingerprintDialog() {
-        alert(
-            Appcompat,
-            getString(R.string.dialog_message_fingerprint_not_enrolled),
-            getString(R.string.dialog_title_fingerprint_not_enrolled)
-        ) {
-            positiveButton(getString(R.string.dialog_btn_action_fingerprint_not_enrolled)) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.dialog_title_fingerprint_not_enrolled))
+            .setMessage(getString(R.string.dialog_message_fingerprint_not_enrolled))
+            .setPositiveButton(
+                getString(R.string.dialog_btn_action_fingerprint_not_enrolled)
+            ) { _, _ ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     startActivity(Intent(Settings.ACTION_FINGERPRINT_ENROLL))
                 else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                     startActivity(Intent(Settings.ACTION_SECURITY_SETTINGS))
             }
-            show()
-        }
+            .create()
+        dialog.show()
     }
 }

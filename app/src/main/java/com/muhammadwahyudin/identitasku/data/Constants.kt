@@ -21,4 +21,5 @@ object Constants {
         const val TYPE_EMAIL = 12
         const val TYPE_DEFAULT = -1
 
+        const val PRIVACY_POLICY_URL = "https://sites.google.com/view/identitasku/beranda"
 }

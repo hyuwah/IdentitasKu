@@ -7,7 +7,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
-import org.jetbrains.anko.toast
+import com.muhammadwahyudin.identitasku.utils.toast
 
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
@@ -35,5 +35,4 @@ open class BaseActivity : AppCompatActivity() {
         toast(getString(R.string.exit_double_tap_message))
         Handler().postDelayed({ backToExitPressed = false }, 2000)
     }
-
 }

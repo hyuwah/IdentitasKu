@@ -9,32 +9,39 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
-import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
 import kotlinx.android.synthetic.main.data_input_cc_fragment.*
-import org.jetbrains.anko.find
 
-
-class CreditCardInputFragment : BaseDataInputFragment<HomeActivity>() {
+class CreditCardInputFragment : BaseDataInputFragment() {
 
     private lateinit var etCardNumber: EditText
     private lateinit var etCardholderName: EditText
     private lateinit var etCardExpireDate: EditText
     private lateinit var etCardCvv: EditText
 
-    override fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun inflateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.data_input_cc_fragment, container, false)
     }
 
     override fun setupInputUI() {
-        (parentDialog.dialog as BottomSheetDialog?)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+        (parentDialog.dialog as BottomSheetDialog?)?.behavior?.state =
+            BottomSheetBehavior.STATE_EXPANDED
 
         ccv.setIsFlippable(true)
 
-        etCardNumber = ccv.find(R.id.card_number)
-        dataOnTextChanged(etCardNumber, btn_save, { newText -> dataInput = newText; dataInput }, _data?.value)
+        etCardNumber = ccv.findViewById(R.id.card_number)
+        dataOnTextChanged(
+            etCardNumber,
+            btn_save,
+            { newText -> dataInput = newText; dataInput },
+            _data?.value
+        )
 
-        etCardholderName = ccv.find(R.id.card_name)
+        etCardholderName = ccv.findViewById(R.id.card_name)
         dataOnTextChanged(
             etCardholderName,
             btn_save,
@@ -43,7 +50,7 @@ class CreditCardInputFragment : BaseDataInputFragment<HomeActivity>() {
             true
         )
 
-        etCardExpireDate = ccv.find(R.id.expiry_date)
+        etCardExpireDate = ccv.findViewById(R.id.expiry_date)
         dataOnTextChanged(
             etCardExpireDate,
             btn_save,
@@ -52,13 +59,19 @@ class CreditCardInputFragment : BaseDataInputFragment<HomeActivity>() {
             true
         )
 
-        etCardCvv = ccv.find(R.id.cvv_et)
-        dataOnTextChanged(etCardCvv, btn_save, { newText -> attr4Input = newText; attr4Input }, _data?.attr4, true)
+        etCardCvv = ccv.findViewById(R.id.cvv_et)
+        dataOnTextChanged(
+            etCardCvv,
+            btn_save,
+            { newText -> attr4Input = newText; attr4Input },
+            _data?.attr4,
+            true
+        )
 
         dataOnTextChanged(
             til_cc_ket.editText,
             btn_save,
-            { newText -> attr1Input = newText;attr1Input },
+            { newText -> attr1Input = newText; attr1Input },
             _data?.attr1,
             true
         )
@@ -84,5 +97,4 @@ class CreditCardInputFragment : BaseDataInputFragment<HomeActivity>() {
         til_cc_ket.editText?.setText(data.attr1)
         btn_save.isEnabled = false
     }
-
 }

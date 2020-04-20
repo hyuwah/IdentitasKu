@@ -2,35 +2,40 @@
 
 package com.muhammadwahyudin.identitasku.data.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.muhammadwahyudin.identitasku.data.model.DataType
 
 @Dao
-interface DataTypeDao {
+abstract class DataTypeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(dataType: DataType)
+    abstract suspend fun insert(dataType: DataType)
 
     @Update
-    fun update(dataType: DataType)
+    abstract suspend fun update(dataType: DataType)
 
     @Delete
-    fun delete(dataType: DataType)
+    abstract suspend fun delete(dataType: DataType)
 
     @Query("SELECT * FROM data_type")
-    fun getAll(): LiveData<List<DataType>>
+    abstract suspend fun getAll(): List<DataType>
 
     @Query("DElETE FROM data_type")
-    fun deleteAll()
+    abstract suspend fun deleteAll()
 
     @Query("DELETE FROM SQLITE_SEQUENCE WHERE name = 'data_type'")
-    fun resetAutoincrementId()
+    abstract suspend fun resetAutoincrementId()
 
-    @Query("SELECT data_type.type_id, data_type.name, data_type.is_unique, data_type.is_custom FROM data_type INNER JOIN data ON data_type.type_id=data.type_id WHERE data_type.is_unique=1")
-    fun getAllExistingUniqueType(): LiveData<List<DataType>>
+    @Query(
+        """
+        SELECT data_type.type_id, data_type.name, data_type.is_unique, data_type.is_custom 
+        FROM data_type INNER JOIN data ON data_type.type_id=data.type_id 
+        WHERE data_type.is_unique=1
+    """
+    )
+    abstract suspend fun getAllExistingUniqueType(): List<DataType>
 
     @Transaction
-    fun reset() {
+    open suspend fun reset() {
         deleteAll()
         resetAutoincrementId()
         insert(DataType("KTP", isUnique = true, isCustom = false))
@@ -46,6 +51,4 @@ interface DataTypeDao {
         insert(DataType("Nomor BPJS", isUnique = false, isCustom = false))
         insert(DataType("Alamat Email", isUnique = false, isCustom = false))
     }
-
-
 }

@@ -23,7 +23,7 @@ class CustomTabHelper {
             return it
         }
 
-        val pm = context.getPackageManager()
+        val pm = context.packageManager
 
         val activityIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         val defaultViewHandlerInfo = pm.resolveActivity(activityIntent, 0)
@@ -47,27 +47,32 @@ class CustomTabHelper {
 
         when {
             packagesSupportingCustomTabs.isEmpty() -> sPackageNameToUse = null
-            packagesSupportingCustomTabs.size == 1 -> sPackageNameToUse = packagesSupportingCustomTabs.get(0)
-            !TextUtils.isEmpty(defaultViewHandlerPackageName)
-                    && !hasSpecializedHandlerIntents(context, activityIntent)
+            packagesSupportingCustomTabs.size == 1 -> sPackageNameToUse =
+                packagesSupportingCustomTabs[0]
+            !TextUtils.isEmpty(defaultViewHandlerPackageName) &&
+                    !hasSpecializedHandlerIntents(context, activityIntent)
                     && packagesSupportingCustomTabs.contains(defaultViewHandlerPackageName) ->
                 sPackageNameToUse = defaultViewHandlerPackageName
-            packagesSupportingCustomTabs.contains(STABLE_PACKAGE) -> sPackageNameToUse = STABLE_PACKAGE
-            packagesSupportingCustomTabs.contains(BETA_PACKAGE) -> sPackageNameToUse = BETA_PACKAGE
-            packagesSupportingCustomTabs.contains(DEV_PACKAGE) -> sPackageNameToUse = DEV_PACKAGE
-            packagesSupportingCustomTabs.contains(LOCAL_PACKAGE) -> sPackageNameToUse = LOCAL_PACKAGE
+            packagesSupportingCustomTabs.contains(STABLE_PACKAGE) ->
+                sPackageNameToUse = STABLE_PACKAGE
+            packagesSupportingCustomTabs.contains(BETA_PACKAGE) ->
+                sPackageNameToUse = BETA_PACKAGE
+            packagesSupportingCustomTabs.contains(DEV_PACKAGE) ->
+                sPackageNameToUse = DEV_PACKAGE
+            packagesSupportingCustomTabs.contains(LOCAL_PACKAGE) ->
+                sPackageNameToUse = LOCAL_PACKAGE
         }
         return sPackageNameToUse
     }
 
     private fun hasSpecializedHandlerIntents(context: Context, intent: Intent): Boolean {
         try {
-            val pm = context.getPackageManager()
+            val pm = context.packageManager
             val handlers = pm.queryIntentActivities(
                 intent,
                 PackageManager.GET_RESOLVED_FILTER
             )
-            if (handlers == null || handlers.size == 0) {
+            if (handlers.size == 0) {
                 return false
             }
             for (resolveInfo in handlers) {

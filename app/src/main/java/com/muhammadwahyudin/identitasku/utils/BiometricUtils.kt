@@ -10,12 +10,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 
-
 object BiometricUtils {
 
     val isBiometricPromptEnabled: Boolean
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-
 
     /*
      * Condition I: Check if the android version in device is greater than
@@ -27,7 +25,6 @@ object BiometricUtils {
      * */
     val isSdkVersionSupported: Boolean
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-
 
     /*
      * Condition II: Check if the device has fingerprint sensors.
@@ -41,7 +38,6 @@ object BiometricUtils {
         return fingerprintManager.isHardwareDetected
     }
 
-
     /*
      * Condition III: Fingerprint authentication can be matched with a
      * registered fingerprint of the user. So we need to perform this check
@@ -52,7 +48,6 @@ object BiometricUtils {
         val fingerprintManager = FingerprintManagerCompat.from(context)
         return fingerprintManager.hasEnrolledFingerprints()
     }
-
 
     /*
      * Condition IV: Check if the permission has been added to

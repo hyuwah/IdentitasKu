@@ -106,5 +106,4 @@ object InputDataset {
     // https://stackoverflow.com/questions/28207252/regex-for-determining-credit-cards-in-android
     // https://stackoverflow.com/questions/11790102/format-credit-card-in-edit-text-in-android
     val CC_TYPE = ""
-
 }

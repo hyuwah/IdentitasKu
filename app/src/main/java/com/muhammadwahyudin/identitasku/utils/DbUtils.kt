@@ -3,7 +3,6 @@ package com.muhammadwahyudin.identitasku.utils
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
-import org.jetbrains.anko.doAsync
 import timber.log.Timber
 
 /**
@@ -34,39 +33,36 @@ object DbUtils {
      * Pre-populate Data Type on [appDB]
      * @param appDB App database object
      */
-    fun populateDataType(appDB: AppDatabase) {
+    suspend fun populateDataType(appDB: AppDatabase) {
         val dataTypeDao = appDB.dataTypeDao()
-        doAsync {
-            dataTypeDao.deleteAll()
-            dataTypeDao.insert(DataType("Nomor KTP", true, isCustom = false))
-            dataTypeDao.insert(DataType("Nomor Handphone", isUnique = false, isCustom = false))
-            dataTypeDao.insert(DataType("Alamat", isUnique = false, isCustom = false))
-            dataTypeDao.insert(DataType("Nomor PLN", isUnique = false, isCustom = false))
-            dataTypeDao.insert(DataType("Nomor PDAM", isUnique = false, isCustom = false))
-            dataTypeDao.insert(DataType("Nomor NPWP", isUnique = true, isCustom = false))
-            dataTypeDao.insert(DataType("Nomor Rekening Bank", isUnique = false, isCustom = false))
-            dataTypeDao.insert(DataType("Nomor Kartu Keluarga", isUnique = true, isCustom = false))
-            dataTypeDao.insert(DataType("Nomor STNK", isUnique = false, isCustom = false))
-            dataTypeDao.insert(DataType("Nomor Kartu Kredit", isUnique = false, isCustom = false))
-            dataTypeDao.insert(DataType("Nomor BPJS", isUnique = false, isCustom = false))
-            dataTypeDao.insert(DataType("Alamat Email", isUnique = false, isCustom = false))
-        }
-        Timber.d("Prepopulated DB")
+        Timber.d("Prepopulate DataType Start")
+        dataTypeDao.deleteAll()
+        dataTypeDao.insert(DataType("Nomor KTP", true, isCustom = false))
+        dataTypeDao.insert(DataType("Nomor Handphone", isUnique = false, isCustom = false))
+        dataTypeDao.insert(DataType("Alamat", isUnique = false, isCustom = false))
+        dataTypeDao.insert(DataType("Nomor PLN", isUnique = false, isCustom = false))
+        dataTypeDao.insert(DataType("Nomor PDAM", isUnique = false, isCustom = false))
+        dataTypeDao.insert(DataType("Nomor NPWP", isUnique = true, isCustom = false))
+        dataTypeDao.insert(DataType("Nomor Rekening Bank", isUnique = false, isCustom = false))
+        dataTypeDao.insert(DataType("Nomor Kartu Keluarga", isUnique = true, isCustom = false))
+        dataTypeDao.insert(DataType("Nomor STNK", isUnique = false, isCustom = false))
+        dataTypeDao.insert(DataType("Nomor Kartu Kredit", isUnique = false, isCustom = false))
+        dataTypeDao.insert(DataType("Nomor BPJS", isUnique = false, isCustom = false))
+        dataTypeDao.insert(DataType("Alamat Email", isUnique = false, isCustom = false))
+        Timber.d("Prepopulate DataType Finish")
     }
 
     /**
      * Pre-populate Data on [appDB]
      * @param appDB App database object
      */
-    fun populateData(appDB: AppDatabase) {
-        Timber.d("Prepopulate Data")
+    suspend fun populateData(appDB: AppDatabase) {
         val dataDao = appDB.dataDao()
-        doAsync {
-            dataDao.deleteAll()
-            DUMMY_DATAS.forEach {
-                dataDao.insert(it)
-            }
+        Timber.d("Prepopulate Data Start")
+        dataDao.deleteAll()
+        DUMMY_DATAS.forEach {
+            dataDao.insert(it)
         }
-        Timber.d("Prepopulated Data")
+        Timber.d("Prepopulate Data Finish")
     }
 }

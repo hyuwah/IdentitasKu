@@ -6,14 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
-import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
 import kotlinx.android.synthetic.main.data_input_address_fragment.*
 
 // TODO
 // Scroll issue on alamat value multiline
-class AddressInputFragment : BaseDataInputFragment<HomeActivity>() {
-    override fun inflateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+class AddressInputFragment : BaseDataInputFragment() {
+    override fun inflateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.data_input_address_fragment, container, false)
     }
 

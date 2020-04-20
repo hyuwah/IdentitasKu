@@ -18,7 +18,10 @@ import com.muhammadwahyudin.identitasku.data.repository.IAppRepository
 import com.muhammadwahyudin.identitasku.ui.home.HomeViewModelFactory
 import com.muhammadwahyudin.identitasku.utils.DbUtils
 import com.orhanobut.hawk.Hawk
+import com.yariksoffice.lingver.Lingver
 import io.fabric.sdk.android.Fabric
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.*
@@ -32,14 +35,20 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
     override val kodein: Kodein = Kodein.lazy {
         bind<AppDatabase>() with eagerSingleton {
             Room.databaseBuilder(applicationContext, AppDatabase::class.java, Constants.DB_NAME)
-                .openHelperFactory(SafeHelperFactory(Hawk.get<String>(Constants.SP_PASSWORD, "123456").toCharArray()))
+                .openHelperFactory(
+                    SafeHelperFactory(
+                        Hawk.get<String>(Constants.SP_PASSWORD, "123456").toCharArray()
+                    )
+                )
                 .fallbackToDestructiveMigration()
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         val appDB = instance<AppDatabase>()
-                        DbUtils.populateDataType(appDB)
-                        if (BuildConfig.DEBUG) DbUtils.populateData(appDB)
+                        GlobalScope.launch {
+                            DbUtils.populateDataType(appDB)
+                            if (BuildConfig.DEBUG) DbUtils.populateData(appDB)
+                        }
                     }
                 })
                 .build()
@@ -61,6 +70,7 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
         } else {
             Timber.plant(CrashReleaseTree())
         }
+        Lingver.init(this, "id")
     }
 
     inner class CrashReleaseTree : Timber.Tree() {
@@ -76,7 +86,5 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
             Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
             Crashlytics.logException(throwable)
         }
-
     }
-
 }
