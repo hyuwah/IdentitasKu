@@ -4,10 +4,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Handler
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.widget.PopupMenu
+import androidx.recyclerview.widget.DiffUtil
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.snackbar.Snackbar
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants.TYPE_ALAMAT
@@ -23,24 +25,45 @@ import com.muhammadwahyudin.identitasku.data.Constants.TYPE_PLN
 import com.muhammadwahyudin.identitasku.data.Constants.TYPE_REK_BANK
 import com.muhammadwahyudin.identitasku.data.Constants.TYPE_STNK
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
-import com.muhammadwahyudin.identitasku.ui._helper.SwipeItemTouchHelper
+import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.CREDIT_CARD
+import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.DEFAULT
+import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.GENERIC_1
+import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.GENERIC_2
+import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.GENERIC_3
 import com.muhammadwahyudin.identitasku.utils.Commons
 import com.muhammadwahyudin.identitasku.utils.Commons.shortVibrate
+import com.muhammadwahyudin.identitasku.utils.showIcons
 
-class HomeDataAdapter(data: List<DataWithDataType>) :
-    BaseMultiItemQuickAdapter<DataWithDataType, BaseViewHolder>(data),
-    SwipeItemTouchHelper.SwipeHelperAdapter {
+class HomeDataAdapter(data: MutableList<DataWithDataType>) :
+    BaseMultiItemQuickAdapter<DataWithDataType, BaseViewHolder>(data) {
 
-    companion object LAYOUT {
-        const val GENERIC_1 = 0
-        const val GENERIC_2 = 1
-        const val GENERIC_3 = 2
-        const val CREDIT_CARD = 3
-        const val DEFAULT = -1
+    companion object {
+        object LAYOUT {
+            const val GENERIC_1 = 0
+            const val GENERIC_2 = 1
+            const val GENERIC_3 = 2
+            const val CREDIT_CARD = 3
+            const val DEFAULT = -1
+        }
+
+        fun diffCallback() = object : DiffUtil.ItemCallback<DataWithDataType>() {
+            override fun areItemsTheSame(
+                oldItem: DataWithDataType,
+                newItem: DataWithDataType
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: DataWithDataType,
+                newItem: DataWithDataType
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
     private var deleteHandler = Handler() // should make this global
-    private var _swipedDatas = ArrayList<DataWithDataType>()
     private var datasToDelete = arrayListOf<DataWithDataType>()
     private lateinit var aty: HomeActivity
 
@@ -68,87 +91,111 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         }
     }
 
-    override fun convert(helper: BaseViewHolder, item: DataWithDataType) {
-        aty = mContext as HomeActivity
-        // Edit
-        helper.itemView.setOnLongClickListener {
-            val bs = AddEditDataBottomSheet
-                .newInstance(AddEditDataBottomSheet.EDIT, item)
-            bs.show(aty.supportFragmentManager, bs.tag)
-            true
-        }
-
+    override fun convert(holder: BaseViewHolder, item: DataWithDataType) {
+        aty = context as HomeActivity
         // Commons (BEWARE! DEFAULT ITEM TYPE ALSO AFFECTED)
         // item.typeName doesn't respect Locale languange!
-        helper.setText(R.id.tv_data_type, item.typeName)
-        helper.setText(R.id.tv_data_value, item.value)
-        helper.setOnClickListener(R.id.btn_copy_value) {
-            Commons.copyToClipboard(mContext, item.value, item.typeName)
+        holder.setText(R.id.tv_data_type, item.typeName)
+        holder.setText(R.id.tv_data_value, item.value)
+        holder.getView<ImageButton>(R.id.btn_copy_value).setOnClickListener {
+            Commons.copyToClipboard(context, item.value, item.typeName)
         }
+        val popupMenu = setupPopupMenu(holder, item)
+        holder.getView<ImageButton>(R.id.btn_more).setOnClickListener {
+            popupMenu.show()
+        }
+        setupDataView(holder, item)
+    }
 
-        // Specific data
-        when (helper.itemViewType) {
+    private fun setupPopupMenu(holder: BaseViewHolder, item: DataWithDataType): PopupMenu {
+        return PopupMenu(context, holder.getView(R.id.btn_more)).apply {
+            inflate(R.menu.home_item_action_menu)
+            showIcons()
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_edit -> {
+                        val bs = AddEditDataBottomSheet
+                            .newInstance(AddEditDataBottomSheet.EDIT, item)
+                        bs.show(aty.supportFragmentManager, bs.tag)
+                        true
+                    }
+                    R.id.action_share -> {
+                        onItemShare(holder.adapterPosition)
+                        true
+                    }
+                    R.id.action_delete -> {
+                        onItemDismiss(holder.adapterPosition)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+    }
+
+    private fun setupDataView(holder: BaseViewHolder, item: DataWithDataType) {
+        when (holder.itemViewType) {
             GENERIC_1 -> {
                 when (item.typeId) {
                     TYPE_KTP -> {
-                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_ktp)
+                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_ktp)
                     }
                     TYPE_NPWP -> {
-                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_npwp)
+                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_npwp)
                     }
                     TYPE_KK -> {
-                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_kk)
+                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_kk)
                     }
                     TYPE_BPJS -> {
-                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_bpjs)
+                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_bpjs)
                     }
                 }
             }
             GENERIC_2 -> {
                 if (!item.attr1.isNullOrEmpty()) {
-                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.VISIBLE
-                    helper.setText(R.id.tv_data_keterangan, item.attr1)
+                    holder.getView<TextView>(R.id.tv_data_keterangan).visibility = View.VISIBLE
+                    holder.setText(R.id.tv_data_keterangan, item.attr1)
                 } else {
-                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
+                    holder.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
                 }
                 when (item.typeId) {
-                    TYPE_ALAMAT -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_address)
-                    TYPE_PDAM -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_pdam)
-                    TYPE_STNK -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_stnk)
-                    TYPE_EMAIL -> helper.setImageResource(R.id.iv_icon, R.drawable.ic_email)
+                    TYPE_ALAMAT -> holder.setImageResource(R.id.iv_icon, R.drawable.ic_address)
+                    TYPE_PDAM -> holder.setImageResource(R.id.iv_icon, R.drawable.ic_pdam)
+                    TYPE_STNK -> holder.setImageResource(R.id.iv_icon, R.drawable.ic_stnk)
+                    TYPE_EMAIL -> holder.setImageResource(R.id.iv_icon, R.drawable.ic_email)
                 }
             }
             GENERIC_3 -> {
                 if (!item.attr1.isNullOrEmpty()) {
-                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.VISIBLE
-                    helper.setText(R.id.tv_data_keterangan, item.attr1)
+                    holder.getView<TextView>(R.id.tv_data_keterangan).visibility = View.VISIBLE
+                    holder.setText(R.id.tv_data_keterangan, item.attr1)
                 } else {
-                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
+                    holder.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
                 }
                 if (!item.attr2.isNullOrEmpty()) {
-                    helper.getView<TextView>(R.id.tv_data_attr2).visibility = View.VISIBLE
-                    helper.setText(R.id.tv_data_attr2, item.attr2)
-                    helper.setTextColor(R.id.tv_data_attr2, Color.BLACK)
+                    holder.getView<TextView>(R.id.tv_data_attr2).visibility = View.VISIBLE
+                    holder.setText(R.id.tv_data_attr2, item.attr2)
+                    holder.setTextColor(R.id.tv_data_attr2, Color.BLACK)
                 } else {
-                    helper.getView<TextView>(R.id.tv_data_attr2).visibility = View.GONE
+                    holder.getView<TextView>(R.id.tv_data_attr2).visibility = View.INVISIBLE
                 }
                 when (item.typeId) {
                     TYPE_HANDPHONE ->
-                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_handphone)
+                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_handphone)
                     TYPE_PLN ->
-                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_pln)
+                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_pln)
                     TYPE_REK_BANK ->
-                        helper.setImageResource(R.id.iv_icon, R.drawable.ic_bank_account)
+                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_bank_account)
                 }
             }
             CREDIT_CARD -> {
                 if (!item.attr1.isNullOrEmpty()) {
-                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.VISIBLE
-                    helper.setText(R.id.tv_data_keterangan, item.attr1)
+                    holder.getView<TextView>(R.id.tv_data_keterangan).visibility = View.VISIBLE
+                    holder.setText(R.id.tv_data_keterangan, item.attr1)
                 } else {
-                    helper.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
+                    holder.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
                 }
-                helper.setImageResource(R.id.iv_icon, R.drawable.ic_credit_card)
+                holder.setImageResource(R.id.iv_icon, R.drawable.ic_credit_card)
             }
             DEFAULT -> {
                 // NO TYPE WILL USE THIS
@@ -156,31 +203,10 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         }
     }
 
-    // SWIPE & DRAG
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                for (item in _swipedDatas) {
-                    val index_removed = data.indexOf(item)
-                    if (index_removed != -1) {
-                        data.removeAt(index_removed)
-                        notifyItemRemoved(index_removed)
-                    }
-                }
-                _swipedDatas.clear()
-                super.onScrollStateChanged(recyclerView, newState)
-            }
-        })
-        super.onAttachedToRecyclerView(recyclerView)
-    }
-
-    override fun onItemShare(position: Int) {
-        // Vibrate
-        shortVibrate(mContext)
+    private fun onItemShare(position: Int) {
 
         notifyItemChanged(position)
-        // Need to takout from adapter and implement on activity
+        // Need to takeout from adapter and implement on activity
         // ShareItem(category,message)
         val dataToShare = data[position]
         // Share Intent
@@ -210,9 +236,9 @@ class HomeDataAdapter(data: List<DataWithDataType>) :
         )
     }
 
-    override fun onItemDismiss(position: Int) {
+    private fun onItemDismiss(position: Int) {
         // Vibrate
-        shortVibrate(mContext)
+        shortVibrate(context)
 
         val dataToDelete = data[position]
         data.removeAt(position)

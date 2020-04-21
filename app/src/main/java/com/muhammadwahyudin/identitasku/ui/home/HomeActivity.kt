@@ -3,7 +3,6 @@ package com.muhammadwahyudin.identitasku.ui.home
 import android.animation.LayoutTransition
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity
@@ -12,18 +11,15 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
-import com.muhammadwahyudin.identitasku.ui._helper.SwipeItemTouchHelper
 import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
 import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_home.*
@@ -47,13 +43,9 @@ class HomeActivity : BaseActivity(), KodeinAware {
         parent_home_activity.layoutTransition = LayoutTransition().apply {
             this.enableTransitionType(LayoutTransition.CHANGING)
         }
-        dataAdapter = HomeDataAdapter(emptyList())
-        val callback = SwipeItemTouchHelper(dataAdapter)
-        callback.deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white_24dp)
-        callback.shareIcon = ContextCompat.getDrawable(this, R.drawable.ic_share_white_24dp)
-        callback.bgColorCode = Color.RED
-        val mItemTouchHelper = ItemTouchHelper(callback)
-        mItemTouchHelper.attachToRecyclerView(rv_data)
+        dataAdapter = HomeDataAdapter(mutableListOf()).apply {
+            setDiffCallback(HomeDataAdapter.diffCallback())
+        }
 
         initializeUI()
         initializeRecyclerView()
@@ -120,7 +112,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
                 else
                     ListOfDataWithType
 
-            dataAdapter.setNewData(listToDisplay)
+            dataAdapter.setDiffNewData(listToDisplay.toMutableList())
 
             if (ListOfDataWithType.isNullOrEmpty()) showEmptyView()
             else {

@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.inputmethod.InputMethodManager
+import com.muhammadwahyudin.identitasku.R
 import java.util.*
 
 /**
@@ -22,10 +23,12 @@ object Commons {
      * @param type String to show on toast
      */
     fun copyToClipboard(ctx: Context, value: String, type: String) {
-        val clipboard = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard = ctx.getSystemService(Context.CLIPBOARD_SERVICE)
+                as ClipboardManager
         val clip: ClipData = ClipData.newPlainText(ctx.packageName, value)
         clipboard.setPrimaryClip(clip)
-        (ctx as Activity).toast("$type copied to clipboard")
+        val message = ctx.getString(R.string.success_copy_to_clipboard, type)
+        (ctx as Activity).toast(message)
     }
 
     /**
@@ -44,7 +47,8 @@ object Commons {
         // Check if no view has focus:
         val view = activity.currentFocus
         view?.let { v ->
-            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE)
+                    as? InputMethodManager
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
     }

@@ -21,13 +21,12 @@ data class DataWithDataType(
     @ColumnInfo(name = "is_custom") var isCustom: Boolean
 ) : Parcelable, MultiItemEntity {
 
-    override fun getItemType(): Int {
-        return when (typeId) {
+    override val itemType: Int
+        get() = when (typeId) {
             Constants.TYPE_KTP,
             Constants.TYPE_REK_BANK -> typeId
             else -> Constants.TYPE_DEFAULT
         }
-    }
 
     override fun toString(): String {
         return """

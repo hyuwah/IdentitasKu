@@ -83,6 +83,9 @@
     <string name="pref_category_information">Informasi</string>
     <string name="pref_privacy_policy">Kebijakan Privasi</string>
     <string name="pref_about">Tentang</string>
-    <string name="share_intent_chooser_title">Kirim data %s ke :</string>
-
+    <string name="share_intent_chooser_title">Bagikan data %s ke :</string>
+    <string name="popupmenu_edit">Ubah</string>
+    <string name="popupmenu_share">Bagikan</string>
+    <string name="popupmenu_delete">Hapus</string>
+    <string name="success_copy_to_clipboard">%s disalin ke clipboard</string>
 </resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/action_edit"
+            android:icon="@drawable/ic_edit_white_24dp"
+            android:title="@string/popupmenu_edit"
+            app:iconTint="@color/grey_500" />
+    <item
+            android:id="@+id/action_share"
+            android:icon="@drawable/ic_share_white_24dp"
+            android:title="@string/popupmenu_share"
+            app:iconTint="@color/grey_500" />
+    <item
+            android:id="@+id/action_delete"
+            android:icon="@drawable/ic_delete_white_24dp"
+            android:title="@string/popupmenu_delete"
+            app:iconTint="@color/red_500" />
+</menu>
