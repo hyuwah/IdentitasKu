@@ -72,6 +72,7 @@ abstract class BaseDataInputFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View
+
     abstract fun setupInputUI()
     abstract fun setupAddType()
     abstract fun setupEditType()
@@ -92,7 +93,7 @@ abstract class BaseDataInputFragment : Fragment() {
     fun saveAddData() {
         parentViewModel.addData(
             Data(
-                parentDialog.selectedDataTypeId,
+                parentDialog.selectedDataTypeId.value,
                 dataInput,
                 attr1Input,
                 attr2Input,
@@ -101,7 +102,13 @@ abstract class BaseDataInputFragment : Fragment() {
                 attr5Input
             )
         )
-        Snackbar.make(parent_view, "$_typeName successfully added", Snackbar.LENGTH_SHORT).show()
+        Snackbar
+            .make(
+                parent_view,
+                "$_typeName successfully added",
+                Snackbar.LENGTH_SHORT
+            )
+            .show()
         parentDialog.dismiss()
     }
 
@@ -118,7 +125,11 @@ abstract class BaseDataInputFragment : Fragment() {
         modifiedData.id = _data!!.id
         parentViewModel.updateData(modifiedData)
         Snackbar
-            .make(parent_view, "${_data?.typeName} successfully updated", Snackbar.LENGTH_SHORT)
+            .make(
+                parent_view,
+                "${_data?.typeName} successfully updated",
+                Snackbar.LENGTH_SHORT
+            )
             .show()
         parentDialog.dismiss()
     }

@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.muhammadwahyudin.identitasku.R
-import com.muhammadwahyudin.identitasku.data.Constants
+import com.muhammadwahyudin.identitasku.data.Constants.TYPE
 import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui._views.RoundedBottomSheetDialogFragment
@@ -45,7 +45,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
     private var _data: DataWithDataType? = null
     private var _selectedDataTypeName: String = ""
     private val vm by activityViewModels<HomeViewModel>()
-    var selectedDataTypeId: Int = -1
+    var selectedDataTypeId: TYPE = TYPE.DEFAULT
     var type: Int = 0
 
     private lateinit var _parent_view: CoordinatorLayout
@@ -92,7 +92,7 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
         spinner_data_type.adapter = dataTypeAdapter
         spinner_data_type.onSearchableItemClicked(_data?.typeName.orEmpty(), 0)
         spinner_data_type.isEnabled = false
-        updateUIBySelectedType(_data?.typeId ?: 0)
+        updateUIBySelectedType(_data?.type() ?: TYPE.DEFAULT)
 
         // Change Bottomsheet state to Expand
         (dialog as BottomSheetDialog?)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
@@ -138,87 +138,97 @@ class AddEditDataBottomSheet : RoundedBottomSheetDialogFragment() {
 
             override fun onItemSelected(adapterView: AdapterView<*>, view: View?, i: Int, l: Long) {
                 dataType.find { it.name == adapterView.adapter.getItem(i) }
-                    ?.let { selectedDataTypeId = it.id }
+                    ?.let { dataType ->
+                        selectedDataTypeId = TYPE.values().first { it.value == dataType.id }
+                    }
                 updateUIBySelectedType(selectedDataTypeId)
             }
         }
     }
 
-    private fun updateUIBySelectedType(type: Int) {
+    private fun updateUIBySelectedType(type: TYPE) {
         if (spinner_data_type.selectedItem != null)
             _selectedDataTypeName = spinner_data_type.selectedItem as String
         childFragmentManager.popBackStack()
         when (type) {
-            Constants.TYPE_ALAMAT -> {
+            TYPE.ALAMAT -> {
                 changeFragment(
                     AddressInputFragment(),
                     getString(R.string.data_type_name_address),
                     "alamat"
                 )
             }
-            Constants.TYPE_KTP -> {
+            TYPE.KTP -> {
                 changeFragment(
                     Generic1InputFragment(),
                     getString(R.string.data_type_name_ktp),
                     "ktp"
                 )
             }
-            Constants.TYPE_EMAIL -> {
+            TYPE.EMAIL -> {
                 changeFragment(
                     EmailInputFragment(),
                     getString(R.string.data_type_name_email),
                     "email"
                 )
             }
-            Constants.TYPE_HANDPHONE -> {
+            TYPE.HANDPHONE -> {
                 changeFragment(
                     PhoneNumInputFragment(),
                     getString(R.string.data_type_name_phonenum),
                     "phonenum"
                 )
             }
-            Constants.TYPE_REK_BANK -> {
+            TYPE.REK_BANK -> {
                 changeFragment(
                     BankAccountInputFragment(),
                     getString(R.string.data_type_name_bank_acc),
                     "bank_account"
                 )
             }
-            Constants.TYPE_CC -> {
+            TYPE.CC -> {
                 changeFragment(
                     CreditCardInputFragment(),
                     getString(R.string.data_type_name_credit_card),
                     "credit_card"
                 )
             }
-            Constants.TYPE_BPJS -> {
+            TYPE.BPJS -> {
                 changeFragment(
                     Generic1InputFragment(),
                     getString(R.string.data_type_name_bpjs),
                     "bpjs"
                 )
             }
-            Constants.TYPE_KK -> {
-                changeFragment(Generic1InputFragment(), getString(R.string.data_type_name_kk), "kk")
+            TYPE.KK -> {
+                changeFragment(
+                    Generic1InputFragment(),
+                    getString(R.string.data_type_name_kk),
+                    "kk"
+                )
             }
-            Constants.TYPE_NPWP -> {
+            TYPE.NPWP -> {
                 changeFragment(
                     Generic1InputFragment(),
                     getString(R.string.data_type_name_npwp),
                     "npwp"
                 )
             }
-            Constants.TYPE_PDAM -> {
+            TYPE.PDAM -> {
                 changeFragment(
                     Generic2InputFragment(),
                     getString(R.string.data_type_name_pdam),
                     "pdam"
                 )
             }
-            Constants.TYPE_PLN -> {
-                changeFragment(PlnInputFragment(), getString(R.string.data_type_name_pln), "pln")
+            TYPE.PLN -> {
+                changeFragment(
+                    PlnInputFragment(),
+                    getString(R.string.data_type_name_pln),
+                    "pln"
+                )
             }
-            Constants.TYPE_STNK -> {
+            TYPE.STNK -> {
                 changeFragment(
                     Generic2InputFragment(),
                     getString(R.string.data_type_name_stnk),

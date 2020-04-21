@@ -1,25 +1,30 @@
 package com.muhammadwahyudin.identitasku.data
 
+import androidx.annotation.DrawableRes
+import com.muhammadwahyudin.identitasku.R
+
 /**
  * Contain all primitive value constants
  */
 object Constants {
-        const val DB_NAME = "identitasku-db"
-        const val SP_PASSWORD = "password"
+    const val DB_NAME = "identitasku-db"
+    const val SP_PASSWORD = "password"
 
-        const val TYPE_KTP = 1
-        const val TYPE_HANDPHONE = 2
-        const val TYPE_ALAMAT = 3
-        const val TYPE_PLN = 4
-        const val TYPE_PDAM = 5
-        const val TYPE_NPWP = 6
-        const val TYPE_REK_BANK = 7
-        const val TYPE_KK = 8
-        const val TYPE_STNK = 9
-        const val TYPE_CC = 10
-        const val TYPE_BPJS = 11
-        const val TYPE_EMAIL = 12
-        const val TYPE_DEFAULT = -1
+    enum class TYPE(val value: Int, @DrawableRes val iconRes: Int) {
+        DEFAULT(-1, -1),
+        KTP(1, R.drawable.ic_ktp),
+        HANDPHONE(2, R.drawable.ic_handphone),
+        ALAMAT(3, R.drawable.ic_address),
+        PLN(4, R.drawable.ic_pln),
+        PDAM(5, R.drawable.ic_pdam),
+        NPWP(6, R.drawable.ic_npwp),
+        REK_BANK(7, R.drawable.ic_bank_account),
+        KK(8, R.drawable.ic_kk),
+        STNK(9, R.drawable.ic_stnk),
+        CC(10, R.drawable.ic_credit_card),
+        BPJS(11, R.drawable.ic_bpjs),
+        EMAIL(12, R.drawable.ic_email),
+    }
 
-        const val PRIVACY_POLICY_URL = "https://sites.google.com/view/identitasku/beranda"
+    const val PRIVACY_POLICY_URL = "https://sites.google.com/view/identitasku/beranda"
 }

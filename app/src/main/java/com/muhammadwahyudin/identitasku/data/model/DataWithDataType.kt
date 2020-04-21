@@ -3,7 +3,7 @@ package com.muhammadwahyudin.identitasku.data.model
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.muhammadwahyudin.identitasku.data.Constants
+import com.muhammadwahyudin.identitasku.data.Constants.TYPE
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -21,11 +21,13 @@ data class DataWithDataType(
     @ColumnInfo(name = "is_custom") var isCustom: Boolean
 ) : Parcelable, MultiItemEntity {
 
+    fun type(): TYPE = TYPE.values().find { it.value == typeId } ?: TYPE.DEFAULT
+
     override val itemType: Int
         get() = when (typeId) {
-            Constants.TYPE_KTP,
-            Constants.TYPE_REK_BANK -> typeId
-            else -> Constants.TYPE_DEFAULT
+            TYPE.KTP.value,
+            TYPE.REK_BANK.value -> typeId
+            else -> TYPE.DEFAULT.value
         }
 
     override fun toString(): String {

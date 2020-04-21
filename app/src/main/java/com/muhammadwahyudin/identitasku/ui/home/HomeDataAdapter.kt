@@ -12,18 +12,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.snackbar.Snackbar
 import com.muhammadwahyudin.identitasku.R
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_ALAMAT
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_BPJS
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_CC
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_EMAIL
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_HANDPHONE
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_KK
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_KTP
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_NPWP
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_PDAM
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_PLN
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_REK_BANK
-import com.muhammadwahyudin.identitasku.data.Constants.TYPE_STNK
+import com.muhammadwahyudin.identitasku.data.Constants.TYPE
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.CREDIT_CARD
 import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.DEFAULT
@@ -83,10 +72,10 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
 
     override fun getItemViewType(position: Int): Int {
         return when (data[position].typeId) {
-            TYPE_KTP, TYPE_NPWP, TYPE_KK, TYPE_BPJS -> GENERIC_1
-            TYPE_ALAMAT, TYPE_PDAM, TYPE_STNK, TYPE_EMAIL -> GENERIC_2
-            TYPE_HANDPHONE, TYPE_PLN, TYPE_REK_BANK -> GENERIC_3
-            TYPE_CC -> CREDIT_CARD
+            TYPE.KTP.value, TYPE.NPWP.value, TYPE.KK.value, TYPE.BPJS.value -> GENERIC_1
+            TYPE.ALAMAT.value, TYPE.PDAM.value, TYPE.STNK.value, TYPE.EMAIL.value -> GENERIC_2
+            TYPE.HANDPHONE.value, TYPE.PLN.value, TYPE.REK_BANK.value -> GENERIC_3
+            TYPE.CC.value -> CREDIT_CARD
             else -> DEFAULT
         }
     }
@@ -97,6 +86,7 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
         // item.typeName doesn't respect Locale languange!
         holder.setText(R.id.tv_data_type, item.typeName)
         holder.setText(R.id.tv_data_value, item.value)
+        holder.setImageResource(R.id.iv_icon, item.type().iconRes)
         holder.getView<ImageButton>(R.id.btn_copy_value).setOnClickListener {
             Commons.copyToClipboard(context, item.value, item.typeName)
         }
@@ -136,20 +126,7 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
     private fun setupDataView(holder: BaseViewHolder, item: DataWithDataType) {
         when (holder.itemViewType) {
             GENERIC_1 -> {
-                when (item.typeId) {
-                    TYPE_KTP -> {
-                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_ktp)
-                    }
-                    TYPE_NPWP -> {
-                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_npwp)
-                    }
-                    TYPE_KK -> {
-                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_kk)
-                    }
-                    TYPE_BPJS -> {
-                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_bpjs)
-                    }
-                }
+                // No additional setup
             }
             GENERIC_2 -> {
                 if (!item.attr1.isNullOrEmpty()) {
@@ -157,12 +134,6 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
                     holder.setText(R.id.tv_data_keterangan, item.attr1)
                 } else {
                     holder.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
-                }
-                when (item.typeId) {
-                    TYPE_ALAMAT -> holder.setImageResource(R.id.iv_icon, R.drawable.ic_address)
-                    TYPE_PDAM -> holder.setImageResource(R.id.iv_icon, R.drawable.ic_pdam)
-                    TYPE_STNK -> holder.setImageResource(R.id.iv_icon, R.drawable.ic_stnk)
-                    TYPE_EMAIL -> holder.setImageResource(R.id.iv_icon, R.drawable.ic_email)
                 }
             }
             GENERIC_3 -> {
@@ -179,14 +150,6 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
                 } else {
                     holder.getView<TextView>(R.id.tv_data_attr2).visibility = View.INVISIBLE
                 }
-                when (item.typeId) {
-                    TYPE_HANDPHONE ->
-                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_handphone)
-                    TYPE_PLN ->
-                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_pln)
-                    TYPE_REK_BANK ->
-                        holder.setImageResource(R.id.iv_icon, R.drawable.ic_bank_account)
-                }
             }
             CREDIT_CARD -> {
                 if (!item.attr1.isNullOrEmpty()) {
@@ -195,7 +158,6 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
                 } else {
                     holder.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
                 }
-                holder.setImageResource(R.id.iv_icon, R.drawable.ic_credit_card)
             }
             DEFAULT -> {
                 // NO TYPE WILL USE THIS
@@ -212,11 +174,11 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
         // Share Intent
         // TODO differentiate based on data category
         var message = "${dataToShare.typeName}: ${dataToShare.value}"
-        when (dataToShare.typeId) {
-            TYPE_REK_BANK -> message =
+        when (dataToShare.type()) {
+            TYPE.REK_BANK -> message =
                 "${dataToShare.typeName}: (${dataToShare.attr2}) ${dataToShare.value}"
-            TYPE_HANDPHONE,
-            TYPE_ALAMAT -> {
+            TYPE.HANDPHONE,
+            TYPE.ALAMAT -> {
                 if (!dataToShare.attr1.isNullOrEmpty()) message =
                     "${dataToShare.typeName} (${dataToShare.attr1}) : ${dataToShare.value}"
             }
