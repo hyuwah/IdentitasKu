@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/menu_action_sort_filter"
+            android:icon="@drawable/ic_filter_list_white_24dp"
+            android:title="Sort &amp; Filter"
+            app:showAsAction="always" />
+    <item
+            android:id="@+id/menu_action_search"
+            android:icon="@drawable/ic_search_white_24dp"
+            android:title="Search"
+            app:showAsAction="always" />
+
+    <item
+            android:id="@+id/menu_action_setting"
+            android:icon="@drawable/ic_settings_24dp"
+            android:title="Setting"
+            app:showAsAction="always" />
+</menu>

@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/parent_home_activity"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context=".ui.home.HomeActivity" android:background="#f0f0f0">
+        android:layout_height="match_parent"
+        android:background="#f0f0f0"
+        tools:context=".ui.home.HomeActivity">
 
     <include
             android:id="@+id/layout_empty_home_list"
+            layout="@layout/empty_home_data_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            layout="@layout/empty_home_data_list"/>
+            android:layout_height="match_parent" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_data"
-            android:layout_weight="1"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingVertical="8dp"
-            android:layoutAnimation="@anim/layout_animation_fall_down"
-            android:layout_height="match_parent" tools:listitem="@layout/item_home_data_list_generic_2"
-    />
+            android:paddingTop="8dp"
+            android:paddingBottom="?actionBarSize"
+            tools:listitem="@layout/item_home_data_list_generic_2" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/main_bottom_bar"
+            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:fabAlignmentMode="center"
+            app:navigationIcon="@mipmap/ic_launcher" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add_data"
             style="@style/Widget.MaterialComponents.FloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            app:fabSize="auto"
-            android:src="@drawable/ic_add" app:backgroundTint="@color/colorAccent"/>
+            android:src="@drawable/ic_add"
+            app:backgroundTint="@color/colorAccent"
+            app:layout_anchor="@id/main_bottom_bar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

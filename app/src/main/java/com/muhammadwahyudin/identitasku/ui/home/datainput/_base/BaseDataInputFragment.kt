@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.Data
@@ -108,6 +109,7 @@ abstract class BaseDataInputFragment : Fragment() {
                 "$_typeName successfully added",
                 Snackbar.LENGTH_SHORT
             )
+            .setAnchorView(requireActivity().findViewById<FloatingActionButton>(R.id.fab_add_data))
             .show()
         parentDialog.dismiss()
     }
@@ -130,6 +132,7 @@ abstract class BaseDataInputFragment : Fragment() {
                 "${_data?.typeName} successfully updated",
                 Snackbar.LENGTH_SHORT
             )
+            .setAnchorView(requireActivity().findViewById<FloatingActionButton>(R.id.fab_add_data))
             .show()
         parentDialog.dismiss()
     }

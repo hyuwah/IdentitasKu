@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <SwitchPreferenceCompat
-            app:key="setting_pref_list_sort_by_category"
-            app:title="@string/pref_sort_by_category"/>
-
-    <PreferenceCategory
-            app:title="@string/pref_category_information">
-    <Preference
-            app:key="setting_pref_privacy_policy"
-            app:title="@string/pref_privacy_policy"
-            app:singleLineTitle="true"/>
-    <Preference
-            app:key="setting_pref_about"
-            app:title="@string/pref_about"
-            app:singleLineTitle="true"/>
+    <PreferenceCategory app:title="@string/pref_category_information">
+        <Preference
+                app:key="setting_pref_privacy_policy"
+                app:singleLineTitle="true"
+                app:title="@string/pref_privacy_policy" />
+        <Preference
+                app:key="setting_pref_about"
+                app:singleLineTitle="true"
+                app:title="@string/pref_about" />
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

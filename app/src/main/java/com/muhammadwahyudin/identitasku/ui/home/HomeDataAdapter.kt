@@ -10,6 +10,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants.TYPE
@@ -219,11 +220,12 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
         ) // delete list of data
 
         // Show snackbar with undo button
-        Snackbar.make(
-            aty.findViewById(R.id.parent_home_activity),
-            dataToDelete.typeName + aty.getString(R.string.snackbar_data_deleted),
-            Snackbar.LENGTH_LONG
-        )
+        Snackbar
+            .make(
+                aty.findViewById(R.id.parent_home_activity),
+                dataToDelete.typeName + aty.getString(R.string.snackbar_data_deleted),
+                Snackbar.LENGTH_LONG
+            )
             .setAction(aty.getString(R.string.snackbar_btn_undo)) {
                 data.add(position, dataToDelete)
                 notifyItemInserted(position)
@@ -236,6 +238,8 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
                     // cancel Handler
                     deleteHandler.removeCallbacksAndMessages(null)
                 }
-            }.show()
+            }
+            .setAnchorView(aty.findViewById<FloatingActionButton>(R.id.fab_add_data))
+            .show()
     }
 }

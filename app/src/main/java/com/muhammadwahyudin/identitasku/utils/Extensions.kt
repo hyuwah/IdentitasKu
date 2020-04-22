@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 
-fun View.visible() {
+fun View.setVisible() {
     visibility = View.VISIBLE
 }
 
-fun View.invisible() {
+fun View.setInvisible() {
     visibility = View.INVISIBLE
 }
 
-fun View.gone() {
+fun View.setGone() {
     visibility = View.GONE
 }
 
