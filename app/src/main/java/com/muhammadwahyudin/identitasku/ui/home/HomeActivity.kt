@@ -24,7 +24,7 @@ import org.kodein.di.generic.instance
 class HomeActivity : BaseActivity(), KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory: HomeViewModelFactory by instance()
-    val viewModel: HomeViewModel by viewModels { viewModelFactory }
+    val viewModel: HomeViewModelImpl by viewModels { viewModelFactory }
 
     lateinit var dataAdapter: HomeDataAdapter
 
@@ -52,7 +52,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
         main_bottom_bar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_action_sort_filter -> {
-                    toast("Sort & Filter")
+                    SortFilterBottomSheet.newInstance().show(supportFragmentManager)
                 }
                 R.id.menu_action_search -> {
                     toast("To Search Activity")
@@ -84,6 +84,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
                 } else {
                     hideEmptyView()
                     showTutorial()
+                    scrollRecyclerViewToTop()
                 }
             })
 
@@ -98,6 +99,12 @@ class HomeActivity : BaseActivity(), KodeinAware {
                 true
             }
         }
+    }
+
+    private fun scrollRecyclerViewToTop() {
+        Handler().postDelayed({
+            rv_data.smoothScrollToPosition(0)
+        }, 300)
     }
 
     private fun showTutorial() {

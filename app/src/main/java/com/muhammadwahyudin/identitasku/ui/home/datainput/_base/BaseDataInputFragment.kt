@@ -14,8 +14,10 @@ import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui.home.AddEditDataBottomSheet
+import com.muhammadwahyudin.identitasku.ui.home.AddEditDataBottomSheet.Companion.ADD
 import com.muhammadwahyudin.identitasku.ui.home.AddEditDataBottomSheet.Companion.EDIT
-import com.muhammadwahyudin.identitasku.ui.home.HomeViewModel
+import com.muhammadwahyudin.identitasku.ui.home.HomeViewModelImpl
+import com.muhammadwahyudin.identitasku.ui.home.contract.HomeViewModel
 
 abstract class BaseDataInputFragment : Fragment() {
 
@@ -24,12 +26,12 @@ abstract class BaseDataInputFragment : Fragment() {
         const val TYPE_NAME_KEY = "type_name_key"
     }
 
-    var _type: Int = 0
-    var _data: DataWithDataType? = null
-    var _typeName: String? = null
-    lateinit var parentDialog: AddEditDataBottomSheet
+    protected var data: DataWithDataType? = null
+    protected var typeName: String? = null
+    protected lateinit var parentDialog: AddEditDataBottomSheet
+    private var dialogType: Int = 0
     private lateinit var parent_view: View
-    private val parentViewModel: HomeViewModel by activityViewModels()
+    private val parentViewModel: HomeViewModel by activityViewModels<HomeViewModelImpl>()
 
     // DATA ATTR
     var dataInput = ""
@@ -44,26 +46,25 @@ abstract class BaseDataInputFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val mView = inflateView(inflater, container, savedInstanceState)
-        _data = arguments?.getParcelable(DATA_PARCEL_KEY)
-        _typeName = arguments?.getString(TYPE_NAME_KEY)
+        arguments?.let {
+            data = it.getParcelable(DATA_PARCEL_KEY)
+            typeName = it.getString(TYPE_NAME_KEY)
+        }
         parentDialog = (parentFragment as AddEditDataBottomSheet)
-        _type = parentDialog.type
+        dialogType = parentDialog.type
         parent_view = requireActivity().findViewById(R.id.parent_home_activity)
-        return mView
+        return inflateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupInputUI()
-        when (_type) {
-            AddEditDataBottomSheet.ADD -> {
+        when (dialogType) {
+            ADD -> {
                 setupAddType()
             }
-            AddEditDataBottomSheet.EDIT -> {
+            EDIT -> {
                 setupEditType()
-                _data?.let {
-                    setupUIwithData(it)
-                }
+                data?.let { setupUIwithData(it) }
             }
         }
     }
@@ -86,7 +87,7 @@ abstract class BaseDataInputFragment : Fragment() {
         value: String?,
         isOptional: Boolean = false
     ) {
-        if (_type == EDIT && text != value && (text.isNotEmpty() || isOptional)) {
+        if (dialogType == EDIT && text != value && (text.isNotEmpty() || isOptional)) {
             buttonSave.isEnabled = true
         }
     }
@@ -104,11 +105,7 @@ abstract class BaseDataInputFragment : Fragment() {
             )
         )
         Snackbar
-            .make(
-                parent_view,
-                "$_typeName successfully added",
-                Snackbar.LENGTH_SHORT
-            )
+            .make(parent_view, "$typeName successfully added", Snackbar.LENGTH_SHORT)
             .setAnchorView(requireActivity().findViewById<FloatingActionButton>(R.id.fab_add_data))
             .show()
         parentDialog.dismiss()
@@ -116,7 +113,7 @@ abstract class BaseDataInputFragment : Fragment() {
 
     fun saveUpdateData() {
         val modifiedData = Data(
-            _data!!.typeId,
+            data!!.typeId,
             dataInput,
             attr1Input,
             attr2Input,
@@ -124,14 +121,10 @@ abstract class BaseDataInputFragment : Fragment() {
             attr4Input,
             attr5Input
         )
-        modifiedData.id = _data!!.id
+        modifiedData.id = data!!.id
         parentViewModel.updateData(modifiedData)
         Snackbar
-            .make(
-                parent_view,
-                "${_data?.typeName} successfully updated",
-                Snackbar.LENGTH_SHORT
-            )
+            .make(parent_view, "${data?.typeName} successfully updated", Snackbar.LENGTH_SHORT)
             .setAnchorView(requireActivity().findViewById<FloatingActionButton>(R.id.fab_add_data))
             .show()
         parentDialog.dismiss()

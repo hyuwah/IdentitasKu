@@ -74,7 +74,7 @@ class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: D
     }
 
     override suspend fun getAllDataWithType(): List<DataWithDataType> {
-        return dataDao.getAllWithDataType()
+        return dataDao.getAllWithDataType().asReversed()
     }
 
     override suspend fun getAllExistingUniqueType(): List<DataType> {

@@ -20,6 +20,7 @@ import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT
 import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.GENERIC_1
 import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.GENERIC_2
 import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.GENERIC_3
+import com.muhammadwahyudin.identitasku.ui.home.contract.HomeViewModel
 import com.muhammadwahyudin.identitasku.utils.Commons
 import com.muhammadwahyudin.identitasku.utils.Commons.shortVibrate
 import com.muhammadwahyudin.identitasku.utils.showIcons
@@ -56,6 +57,7 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
     private var deleteHandler = Handler() // should make this global
     private var datasToDelete = arrayListOf<DataWithDataType>()
     private lateinit var aty: HomeActivity
+    private lateinit var parentViewModel: HomeViewModel
 
     init {
         // Init item type
@@ -83,6 +85,7 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
 
     override fun convert(holder: BaseViewHolder, item: DataWithDataType) {
         aty = context as HomeActivity
+        parentViewModel = aty.viewModel
         // Commons (BEWARE! DEFAULT ITEM TYPE ALSO AFFECTED)
         // item.typeName doesn't respect Locale languange!
         holder.setText(R.id.tv_data_type, item.typeName)
@@ -215,7 +218,7 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
 
         // Handler to run data deletion on db after snackbar disappear
         deleteHandler.postDelayed(
-            { aty.viewModel.deleteDatas(datasToDelete) },
+            { parentViewModel.deleteDatas(datasToDelete) },
             3500
         ) // delete list of data
 
