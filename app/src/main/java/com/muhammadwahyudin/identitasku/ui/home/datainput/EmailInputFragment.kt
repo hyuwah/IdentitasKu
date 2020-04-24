@@ -23,13 +23,13 @@ class EmailInputFragment : BaseDataInputFragment() {
             til_email_data.editText,
             btn_save,
             { newText -> dataInput = newText; dataInput },
-            _data?.value
+            data?.value
         )
         dataOnTextChanged(
             til_email_ket.editText,
             btn_save,
             { newText -> attr1Input = newText; attr1Input },
-            _data?.attr1
+            data?.attr1
         )
     }
 

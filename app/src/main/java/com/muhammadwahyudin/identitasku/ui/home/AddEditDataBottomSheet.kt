@@ -1,9 +1,7 @@
 package com.muhammadwahyudin.identitasku.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -17,10 +15,9 @@ import com.muhammadwahyudin.identitasku.ui._base.BaseBottomSheetFragment
 import com.muhammadwahyudin.identitasku.ui.home.contract.HomeViewModel
 import com.muhammadwahyudin.identitasku.ui.home.datainput.*
 import com.muhammadwahyudin.identitasku.ui.home.datainput._base.BaseDataInputFragment
-import kotlinx.android.synthetic.main.bottom_sheet_add_edit_data.*
-import timber.log.Timber
+import com.muhammadwahyudin.identitasku.databinding.BottomSheetAddEditDataBinding as Binding
 
-class AddEditDataBottomSheet : BaseBottomSheetFragment() {
+class AddEditDataBottomSheet : BaseBottomSheetFragment<Binding>(Binding::inflate) {
 
     companion object {
         const val ADD = 0
@@ -49,29 +46,20 @@ class AddEditDataBottomSheet : BaseBottomSheetFragment() {
 
     private lateinit var parent_view: CoordinatorLayout
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             type = it.getInt(KEY.TYPE, 0)
             data = it.getParcelable(KEY.DATA)
         }
         parent_view = requireActivity().findViewById(R.id.parent_home_activity)
-        Timber.d("type: $type\n_data: $data")
-        return inflater.inflate(R.layout.bottom_sheet_add_edit_data, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         when (type) {
             ADD -> {
-                tv_title.text = getString(R.string.add_new_data_title)
+                binding.tvTitle.text = getString(R.string.add_new_data_title)
                 setupAddDataTypeSpinner()
             }
             EDIT -> {
-                tv_title.text = getString(R.string.edit_data_title)
+                binding.tvTitle.text = getString(R.string.edit_data_title)
                 setupEditDataTypeSpinner()
             }
         }
@@ -87,10 +75,12 @@ class AddEditDataBottomSheet : BaseBottomSheetFragment() {
                 dataTypeStr
             )
         dataTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner_data_type.setTitle(getString(R.string.spinner_category_title))
-        spinner_data_type.adapter = dataTypeAdapter
-        spinner_data_type.onSearchableItemClicked(data?.typeName.orEmpty(), 0)
-        spinner_data_type.isEnabled = false
+        binding.spinnerDataType.apply {
+            setTitle(getString(R.string.spinner_category_title))
+            adapter = dataTypeAdapter
+            onSearchableItemClicked(data?.typeName.orEmpty(), 0)
+            isEnabled = false
+        }
         updateUIBySelectedType(data?.type() ?: TYPE.DEFAULT)
     }
 
@@ -102,19 +92,15 @@ class AddEditDataBottomSheet : BaseBottomSheetFragment() {
             .observe(viewLifecycleOwner, Observer {
                 it.toCollection(dataType)
                 dataTypeStr.clear()
-                Timber.d("All DataType $it")
                 it.forEach { dataTypeItem ->
                     dataTypeStr.add(dataTypeItem.name)
                 }
-                Timber.d("DataType Raw $dataTypeStr")
                 // Filter unique data type that exists on data table
                 parentViewModel.getAllExistingUniqueType()
                     .observe(viewLifecycleOwner, Observer { existingUniqueType ->
-                        Timber.d("existingUniqueType $existingUniqueType")
                         existingUniqueType.forEach { item ->
                             dataTypeStr.remove(item.name)
                         }
-                        Timber.d("DataType Filtered $dataTypeStr")
                     })
             })
 
@@ -125,26 +111,33 @@ class AddEditDataBottomSheet : BaseBottomSheetFragment() {
                 dataTypeStr
             )
         dataTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner_data_type.setTitle(resources.getString(R.string.spinner_category_title))
-        spinner_data_type.setPositiveButton(getString(R.string.btn_close))
-        spinner_data_type.adapter = dataTypeAdapter
-        spinner_data_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
+        binding.spinnerDataType.apply {
+            setTitle(resources.getString(R.string.spinner_category_title))
+            setPositiveButton(getString(R.string.btn_close))
+            adapter = dataTypeAdapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
 
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View?, i: Int, l: Long) {
-                dataType.find { it.name == adapterView.adapter.getItem(i) }
-                    ?.let { dataType ->
-                        selectedDataTypeId = TYPE.values().first { it.value == dataType.id }
-                    }
-                updateUIBySelectedType(selectedDataTypeId)
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>,
+                    view: View?,
+                    i: Int,
+                    l: Long
+                ) {
+                    dataType.find { it.name == adapterView.adapter.getItem(i) }
+                        ?.let { dataType ->
+                            selectedDataTypeId = TYPE.values().first { it.value == dataType.id }
+                        }
+                    updateUIBySelectedType(selectedDataTypeId)
+                }
             }
         }
     }
 
     private fun updateUIBySelectedType(type: TYPE) {
-        if (spinner_data_type.selectedItem != null)
-            selectedDataTypeName = spinner_data_type.selectedItem as String
+        if (binding.spinnerDataType.selectedItem != null)
+            selectedDataTypeName = binding.spinnerDataType.selectedItem as String
         childFragmentManager.popBackStack()
         when (type) {
             TYPE.ALAMAT -> {

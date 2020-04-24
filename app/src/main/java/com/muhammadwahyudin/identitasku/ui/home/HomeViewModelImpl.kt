@@ -30,26 +30,16 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
 
     override fun addData(data: Data) = ioLaunch(spv) {
         appRepository.insert(data)
+        // TODO should scroll to position of newly created data instead of to top
+        // TODO should respect filter, informs user of active filter (might not shows/filtered)
         dataWithType.postValue(
             sortData(appRepository.getAllDataWithType(), currentSort)
         )
     }
 
-    fun getAllData() = ioLaunch(spv) { appRepository.getAllData() }
-    fun deleteAllData() = ioLaunch(spv) { appRepository.deleteAllData() }
-    fun deleteData(data: Data) = ioLaunch(spv) { appRepository.delete(data) }
-    fun deleteData(dataWithDataType: DataWithDataType) {
-        ioLaunch(spv) { appRepository.deleteById(dataWithDataType.id) }
-        Timber.d("Delete ${dataWithDataType.id} - ${dataWithDataType.value}")
-    }
-
     override fun deleteDatas(datasWithDataType: List<DataWithDataType>) {
-        val listOfId = arrayListOf<Int>()
-        for (data in datasWithDataType) {
-            listOfId.add(data.id)
-        }
         ioLaunch(spv) {
-            appRepository.deleteDatasById(listOfId)
+            appRepository.deleteDatasById(datasWithDataType.map { it.id })
             dataWithType.postValue(
                 sortData(appRepository.getAllDataWithType(), currentSort)
             )
@@ -64,7 +54,6 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
         }
     }
 
-    fun addDataType(dataType: DataType) = ioLaunch(spv) { appRepository.insert(dataType) }
     override fun getAllDataType(): LiveData<List<DataType>> {
         ioLaunch(spv) {
             dataType.postValue(
@@ -73,9 +62,6 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
         }
         return dataType
     }
-
-    fun deleteAllDataType() = ioLaunch(spv) { appRepository.deleteAllDataType() }
-    fun deleteDataType(dataType: DataType) = ioLaunch(spv) { appRepository.delete(dataType) }
 
     override fun getAllDataWithType(): LiveData<List<DataWithDataType>> {
         ioLaunch(spv) {

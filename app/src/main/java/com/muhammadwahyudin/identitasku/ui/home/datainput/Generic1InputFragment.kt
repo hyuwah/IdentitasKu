@@ -20,12 +20,12 @@ class Generic1InputFragment : BaseDataInputFragment() {
     }
 
     override fun setupInputUI() {
-        til_generic_data.hint = _typeName
+        til_generic_data.hint = typeName
         dataOnTextChanged(
             til_generic_data.editText,
             btn_save,
             { txt -> dataInput = txt; dataInput },
-            _data?.value
+            data?.value
         )
     }
 

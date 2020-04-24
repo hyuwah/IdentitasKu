@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         tools:context=".ui.home.SortFilterBottomSheet">
 
@@ -160,14 +160,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginBottom="12dp"
-                android:orientation="vertical">
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
 
             <Button
-                    android:id="@+id/btn_apply"
-                    android:layout_width="match_parent"
+                    android:id="@+id/btn_reset"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Reset" />
+            <Button
+                    android:id="@+id/btn_apply"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Apply" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

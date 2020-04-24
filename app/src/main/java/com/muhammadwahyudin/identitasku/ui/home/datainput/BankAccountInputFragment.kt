@@ -46,13 +46,13 @@ class BankAccountInputFragment : BaseDataInputFragment() {
             til_rek_bank_data.editText,
             btn_save,
             { newText -> dataInput = newText; dataInput },
-            _data?.value
+            data?.value
         )
         dataOnTextChanged(
             til_rek_bank_ket.editText,
             btn_save,
             { newText -> attr1Input = newText; attr1Input },
-            _data?.attr1,
+            data?.attr1,
             true
         )
         spinner_rek_bank_provider.setTitle("Bank")
@@ -65,7 +65,7 @@ class BankAccountInputFragment : BaseDataInputFragment() {
             )
         spinner_rek_bank_provider.setOnSearchTextChangedListener { value ->
             attr2Input = value
-            checkIfDataIsModified(btn_save, attr2Input, _data?.attr2, true)
+            checkIfDataIsModified(btn_save, attr2Input, data?.attr2, true)
         }
     }
 }

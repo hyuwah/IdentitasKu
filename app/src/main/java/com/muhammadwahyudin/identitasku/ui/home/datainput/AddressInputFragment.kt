@@ -43,13 +43,13 @@ class AddressInputFragment : BaseDataInputFragment() {
             til_address_data.editText,
             btn_save,
             { newText -> dataInput = newText; dataInput },
-            _data?.value
+            data?.value
         )
         dataOnTextChanged(
             til_address_ket.editText,
             btn_save,
             { newText -> attr1Input = newText; attr1Input },
-            _data?.attr1,
+            data?.attr1,
             true
         )
     }

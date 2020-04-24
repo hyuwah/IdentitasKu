@@ -38,7 +38,7 @@ class CreditCardInputFragment : BaseDataInputFragment() {
             etCardNumber,
             btn_save,
             { newText -> dataInput = newText; dataInput },
-            _data?.value
+            data?.value
         )
 
         etCardholderName = ccv.findViewById(R.id.card_name)
@@ -46,7 +46,7 @@ class CreditCardInputFragment : BaseDataInputFragment() {
             etCardholderName,
             btn_save,
             { newText -> attr2Input = newText; attr2Input },
-            _data?.attr2,
+            data?.attr2,
             true
         )
 
@@ -55,7 +55,7 @@ class CreditCardInputFragment : BaseDataInputFragment() {
             etCardExpireDate,
             btn_save,
             { newText -> attr3Input = newText; attr3Input },
-            _data?.attr3,
+            data?.attr3,
             true
         )
 
@@ -64,7 +64,7 @@ class CreditCardInputFragment : BaseDataInputFragment() {
             etCardCvv,
             btn_save,
             { newText -> attr4Input = newText; attr4Input },
-            _data?.attr4,
+            data?.attr4,
             true
         )
 
@@ -72,7 +72,7 @@ class CreditCardInputFragment : BaseDataInputFragment() {
             til_cc_ket.editText,
             btn_save,
             { newText -> attr1Input = newText; attr1Input },
-            _data?.attr1,
+            data?.attr1,
             true
         )
     }
