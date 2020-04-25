@@ -24,9 +24,7 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
     private val dataType = MutableLiveData<List<DataType>>(listOf())
     private val existingUniqueDataType = MutableLiveData<List<DataType>>(listOf())
 
-    private val _uiState = dataWithType.map {
-        mapListToUiState(it, 0)
-    } as MutableLiveData
+    private val _uiState = dataWithType.map { it.mapToUiState(0) } as MutableLiveData
     val uiState get() = _uiState as LiveData<HomeUiState>
 
     override var currentSort = DEFAULT_SORT
@@ -41,7 +39,7 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
             postSnackbar(message)
             val list = appRepository.getAllDataWithType()
             val scrollPos = list.indexOfFirst { it.id == newDataId }
-            _uiState.postValue(mapListToUiState(list, if (scrollPos == -1) 0 else scrollPos))
+            _uiState.postValue(list.mapToUiState(if (scrollPos == -1) 0 else scrollPos))
         }
     }
 
@@ -57,7 +55,9 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
             appRepository.update(data)
             val message = "$typeName successfully updated"
             postSnackbar(message)
-            loadAllData()
+            val list = appRepository.getAllDataWithType()
+            val scrollPos = list.indexOfFirst { it.id == data.id }
+            _uiState.postValue(list.mapToUiState(if (scrollPos == -1) 0 else scrollPos))
         }
     }
 
@@ -85,22 +85,19 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
         return existingUniqueDataType
     }
 
-    override fun sortData(datas: List<DataWithDataType>, sort: SORT): List<DataWithDataType> {
+    override fun List<DataWithDataType>.sort(sort: SORT): List<DataWithDataType> {
         return when (sort) {
-            SORT.NEWEST -> datas
-            SORT.OLDEST -> datas.asReversed()
-            SORT.CATEGORY -> datas.sortedBy { it.typeId }
+            SORT.NEWEST -> this
+            SORT.OLDEST -> this.asReversed()
+            SORT.CATEGORY -> this.sortedBy { it.typeId }
         }
     }
 
-    override fun filterData(
-        datas: List<DataWithDataType>,
-        filter: List<Int>
-    ): List<DataWithDataType> {
-        return if (filter.isNotEmpty()) {
-            datas.filter { filter.contains(it.typeId) }
+    override fun List<DataWithDataType>.filter(filters: List<Int>): List<DataWithDataType> {
+        return if (filters.isNotEmpty()) {
+            this.filter { filters.contains(it.typeId) }
         } else {
-            datas
+            this
         }
     }
 
@@ -110,14 +107,14 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
         loadAllData()
     }
 
-    private fun mapListToUiState(list: List<DataWithDataType>, scrollPos: Int): HomeUiState {
-        return if (list.isEmpty()) {
+    private fun List<DataWithDataType>.mapToUiState(scrollPos: Int): HomeUiState {
+        return if (this.isEmpty()) {
             HomeUiState.EmptyNoData
         } else {
             val filters = currentFilter.map { typeId ->
                 Constants.TYPE.values().find { it.value == typeId } ?: Constants.TYPE.DEFAULT
             }
-            val uiList = filterData(sortData(list, currentSort), currentFilter)
+            val uiList = this.sort(currentSort).filter(currentFilter)
             if (uiList.isEmpty())
                 HomeUiState.EmptyFiltered(filters)
             else

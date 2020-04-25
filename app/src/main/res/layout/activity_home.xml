@@ -20,14 +20,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_data"
+
+    <include
+            android:id="@+id/layout_home_content"
+            layout="@layout/content_home_data_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingTop="8dp"
-            android:paddingBottom="?actionBarSize"
-            tools:listitem="@layout/item_home_data_list_generic_2" />
+            android:layout_height="match_parent" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/main_bottom_bar"
@@ -36,7 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:fabAlignmentMode="center"
-            app:navigationIcon="@mipmap/ic_launcher" />
+            app:fabCradleMargin="8dp"
+            app:logo="@mipmap/ic_launcher_round"
+            app:fabCradleRoundedCornerRadius="16dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add_data"

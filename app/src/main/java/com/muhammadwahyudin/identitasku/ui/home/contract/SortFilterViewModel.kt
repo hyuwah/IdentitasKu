@@ -15,7 +15,7 @@ interface SortFilterViewModel {
 
     val currentSort: SORT
     val currentFilter: List<Int>
-    fun sortData(datas: List<DataWithDataType>, sort: SORT): List<DataWithDataType>
-    fun filterData(datas: List<DataWithDataType>, filter: List<Int>): List<DataWithDataType>
     fun sortAndFilter(sort: SORT, filter: List<Int>)
+    fun List<DataWithDataType>.sort(sort: SORT): List<DataWithDataType>
+    fun List<DataWithDataType>.filter(filters: List<Int>): List<DataWithDataType>
 }

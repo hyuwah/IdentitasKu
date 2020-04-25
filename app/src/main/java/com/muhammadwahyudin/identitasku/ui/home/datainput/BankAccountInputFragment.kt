@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.InputDataset
@@ -63,9 +64,20 @@ class BankAccountInputFragment : BaseDataInputFragment() {
                 R.layout.support_simple_spinner_dropdown_item,
                 InputDataset.BANK_LIST
             )
-        spinner_rek_bank_provider.setOnSearchTextChangedListener { value ->
-            attr2Input = value
-            checkIfDataIsModified(btn_save, attr2Input, data?.attr2, true)
+        spinner_rek_bank_provider.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View?,
+                    i: Int,
+                    l: Long
+                ) {
+                    attr2Input = adapterView?.getItemAtPosition(i).toString()
+                    checkIfDataIsModified(btn_save, attr2Input, data?.attr2, true)
+                }
         }
     }
 }

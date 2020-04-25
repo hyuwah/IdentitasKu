@@ -4,6 +4,7 @@ import android.animation.LayoutTransition
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
@@ -21,9 +22,11 @@ import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiState
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel
 import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
 import com.muhammadwahyudin.identitasku.utils.setGone
+import com.muhammadwahyudin.identitasku.utils.setSafeOnMenuItemClickListener
 import com.muhammadwahyudin.identitasku.utils.setVisible
 import com.muhammadwahyudin.identitasku.utils.toast
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.content_home_data_list.view.*
 import kotlinx.android.synthetic.main.empty_home_data_list_filtered.view.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -37,6 +40,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
     private lateinit var dataAdapter: HomeDataAdapter
 
     private val bsFragment = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.ADD)
+    private lateinit var menu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +61,8 @@ class HomeActivity : BaseActivity(), KodeinAware {
 
     private fun setupBottomBarMenu() {
         main_bottom_bar.replaceMenu(R.menu.home_bottombar_menu)
-        main_bottom_bar.setOnMenuItemClickListener {
+        menu = main_bottom_bar.menu
+        main_bottom_bar.setSafeOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_action_sort_filter -> {
                     SortFilterBottomSheet.newInstance().show(supportFragmentManager)
@@ -69,7 +74,6 @@ class HomeActivity : BaseActivity(), KodeinAware {
                     startActivity(Intent(this, SettingsActivity::class.java))
                 }
             }
-            true
         }
     }
 
@@ -78,9 +82,9 @@ class HomeActivity : BaseActivity(), KodeinAware {
     }
 
     private fun initializeRecyclerView() {
-        rv_data.layoutManager = LinearLayoutManager(this)
-        rv_data.adapter = dataAdapter
-        rv_data.itemAnimator = DefaultItemAnimator()
+        layout_home_content.rv_data.layoutManager = LinearLayoutManager(this)
+        layout_home_content.rv_data.adapter = dataAdapter
+        layout_home_content.rv_data.itemAnimator = DefaultItemAnimator()
     }
 
     private fun initializeUI() {
@@ -114,6 +118,8 @@ class HomeActivity : BaseActivity(), KodeinAware {
         scrollToPosition: Int
     ) {
         dataAdapter.setDiffNewData(datas.toMutableList())
+        setFilterIcon(filters)
+        setActiveFilterView(filters)
         hideEmptyView()
         showTutorial()
         scrollToItemPos(scrollToPosition)
@@ -129,7 +135,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
 
     private fun scrollToItemPos(pos: Int = 0) {
         Handler().postDelayed({
-            rv_data.smoothScrollToPosition(pos)
+            layout_home_content.rv_data.smoothScrollToPosition(pos)
         }, 300)
     }
 
@@ -137,7 +143,7 @@ class HomeActivity : BaseActivity(), KodeinAware {
         Handler().postDelayed(
             {
                 if (dataAdapter.itemCount > 0)
-                    TutorialHelper.initFirstDataItem(this, rv_data)
+                    TutorialHelper.initFirstDataItem(this, layout_home_content.rv_data)
             },
             1000
         )
@@ -149,17 +155,40 @@ class HomeActivity : BaseActivity(), KodeinAware {
             layout_empty_home_list_filtered.setGone()
         } else {
             layout_empty_home_list_filtered.tv_filters.text = filters.joinToString(", ") {
-                getString(it.stringRes)
+                getString(it.stringRes).replace("Nomor ", "", true)
             }
             layout_empty_home_list.setGone()
             layout_empty_home_list_filtered.setVisible()
         }
-        rv_data.setGone()
+        setFilterIcon(filters)
+        layout_home_content.setGone()
     }
 
     private fun hideEmptyView() {
         layout_empty_home_list.setGone()
         layout_empty_home_list_filtered.setGone()
-        rv_data.setVisible()
+        layout_home_content.setVisible()
+    }
+
+    private fun setFilterIcon(filters: List<Constants.TYPE>) {
+        val sortFilterMenu = menu.findItem(R.id.menu_action_sort_filter)
+        if (filters.isEmpty())
+            sortFilterMenu.setIcon(R.drawable.ic_filter_list_white_24dp)
+        else
+            sortFilterMenu.setIcon(R.drawable.ic_filter_list_active_white)
+    }
+
+    private fun setActiveFilterView(filters: List<Constants.TYPE>) {
+        if (filters.isEmpty()) {
+            layout_home_content.container_topbar.setGone()
+        } else {
+            layout_home_content.container_topbar.setVisible()
+            layout_home_content.tv_filters_active.apply {
+                text = filters.joinToString(", ") {
+                    getString(it.stringRes).replace("Nomor ", "", true)
+                }
+                isSelected = true
+            }
+        }
     }
 }

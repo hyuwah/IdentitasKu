@@ -23,6 +23,7 @@ import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT
 import com.muhammadwahyudin.identitasku.ui.home.contract.HomeViewModel
 import com.muhammadwahyudin.identitasku.utils.Commons
 import com.muhammadwahyudin.identitasku.utils.Commons.shortVibrate
+import com.muhammadwahyudin.identitasku.utils.setVisible
 import com.muhammadwahyudin.identitasku.utils.showIcons
 
 class HomeDataAdapter(data: MutableList<DataWithDataType>) :
@@ -148,9 +149,12 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
                     holder.getView<TextView>(R.id.tv_data_keterangan).visibility = View.GONE
                 }
                 if (!item.attr2.isNullOrEmpty()) {
-                    holder.getView<TextView>(R.id.tv_data_attr2).visibility = View.VISIBLE
-                    holder.setText(R.id.tv_data_attr2, item.attr2)
-                    holder.setTextColor(R.id.tv_data_attr2, Color.BLACK)
+                    holder.getView<TextView>(R.id.tv_data_attr2).apply {
+                        setVisible()
+                        isSelected = true
+                        text = item.attr2
+                        setTextColor(Color.BLACK)
+                    }
                 } else {
                     holder.getView<TextView>(R.id.tv_data_attr2).visibility = View.INVISIBLE
                 }
@@ -171,7 +175,6 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
 
     private fun onItemShare(position: Int) {
 
-        notifyItemChanged(position)
         // Need to takeout from adapter and implement on activity
         // ShareItem(category,message)
         val dataToShare = data[position]
