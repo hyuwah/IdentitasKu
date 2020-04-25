@@ -47,6 +47,8 @@
     <string name="img_cd_splash_logo">Splash Logo</string>
     <string name="list_data_empty_title">There\'s nothing here yet</string>
     <string name="list_data_empty_desc">Start adding some data by clicking the (+) button below</string>
+    <string name="list_data_empty_filtered_title">There\'s nothing in these categories yet</string>
+    <string name="list_data_empty_filtered_desc">Change the filter or add new data by clicking the (+) button below</string>
     <string name="til_hint_keterangan">Description</string>
     <string name="data_input_pln_value_hint">Customer / Meteran Number</string>
     <string name="data_input_stnk_value_hint">STNK Number</string>

@@ -8,7 +8,7 @@ import com.muhammadwahyudin.identitasku.utils.DbUtils
 @Dao
 abstract class DataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insert(data: Data)
+    abstract suspend fun insert(data: Data): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun update(data: Data)

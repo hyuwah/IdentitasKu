@@ -2,19 +2,20 @@ package com.muhammadwahyudin.identitasku.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.data.repository.IAppRepository
 import com.muhammadwahyudin.identitasku.ui._base.BaseViewModel
+import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiState
 import com.muhammadwahyudin.identitasku.ui.home.contract.HomeViewModel
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.Companion.DEFAULT_SORT
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.Companion.SORT
 import com.muhammadwahyudin.identitasku.utils.ioLaunch
-import timber.log.Timber
 
-// TODO implement state ui instead langsung list data (Empty Data, Has Data, Filtered, etc)
 class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewModel(),
     HomeViewModel,
     SortFilterViewModel {
@@ -23,34 +24,40 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
     private val dataType = MutableLiveData<List<DataType>>(listOf())
     private val existingUniqueDataType = MutableLiveData<List<DataType>>(listOf())
 
+    private val _uiState = dataWithType.map {
+        mapListToUiState(it, 0)
+    } as MutableLiveData
+    val uiState get() = _uiState as LiveData<HomeUiState>
+
     override var currentSort = DEFAULT_SORT
         private set
     override var currentFilter: List<Int> = listOf()
         private set
 
-    override fun addData(data: Data) = ioLaunch(spv) {
-        appRepository.insert(data)
-        // TODO should scroll to position of newly created data instead of to top
-        // TODO should respect filter, informs user of active filter (might not shows/filtered)
-        dataWithType.postValue(
-            sortData(appRepository.getAllDataWithType(), currentSort)
-        )
+    override fun addData(data: Data, typeName: String) {
+        ioLaunch(spv) {
+            val newDataId = appRepository.insert(data).toInt()
+            val message = "$typeName successfully added"
+            postSnackbar(message)
+            val list = appRepository.getAllDataWithType()
+            val scrollPos = list.indexOfFirst { it.id == newDataId }
+            _uiState.postValue(mapListToUiState(list, if (scrollPos == -1) 0 else scrollPos))
+        }
     }
 
     override fun deleteDatas(datasWithDataType: List<DataWithDataType>) {
         ioLaunch(spv) {
             appRepository.deleteDatasById(datasWithDataType.map { it.id })
-            dataWithType.postValue(
-                sortData(appRepository.getAllDataWithType(), currentSort)
-            )
+            loadAllData()
         }
     }
 
-    override fun updateData(data: Data) {
-        Timber.d("Update $data")
+    override fun updateData(data: Data, typeName: String) {
         ioLaunch(spv) {
             appRepository.update(data)
-            sortAndFilter(currentSort, currentFilter)
+            val message = "$typeName successfully updated"
+            postSnackbar(message)
+            loadAllData()
         }
     }
 
@@ -63,13 +70,10 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
         return dataType
     }
 
-    override fun getAllDataWithType(): LiveData<List<DataWithDataType>> {
+    override fun loadAllData() {
         ioLaunch(spv) {
-            dataWithType.postValue(
-                sortData(appRepository.getAllDataWithType(), currentSort)
-            )
+            dataWithType.postValue(appRepository.getAllDataWithType())
         }
-        return dataWithType
     }
 
     override fun getAllExistingUniqueType(): LiveData<List<DataType>> {
@@ -101,18 +105,23 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
     }
 
     override fun sortAndFilter(sort: SORT, filter: List<Int>) {
-        // Original full list keep di viewmodel
-        // ... disini bisa ada manipulasi / proses
-        // Expose display list ke view
         currentSort = sort
         currentFilter = filter
-        ioLaunch(spv) {
-            var datas = appRepository.getAllDataWithType()
-            datas = sortData(datas, currentSort)
-            datas = filterData(datas, currentFilter)
+        loadAllData()
+    }
 
-            // TODO mesti ubah ke *state* livedata biar gampang
-            dataWithType.postValue(datas)
+    private fun mapListToUiState(list: List<DataWithDataType>, scrollPos: Int): HomeUiState {
+        return if (list.isEmpty()) {
+            HomeUiState.EmptyNoData
+        } else {
+            val filters = currentFilter.map { typeId ->
+                Constants.TYPE.values().find { it.value == typeId } ?: Constants.TYPE.DEFAULT
+            }
+            val uiList = filterData(sortData(list, currentSort), currentFilter)
+            if (uiList.isEmpty())
+                HomeUiState.EmptyFiltered(filters)
+            else
+                HomeUiState.HasData(uiList, currentSort, filters, scrollPos)
         }
     }
 
@@ -122,9 +131,7 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
             appRepository.deleteAllData()
             appRepository.resetDataType()
             appRepository.prepopulateData()
-            dataWithType.postValue(
-                sortData(appRepository.getAllDataWithType(), currentSort)
-            )
+            loadAllData()
         }
     }
 }

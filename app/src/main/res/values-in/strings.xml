@@ -49,6 +49,8 @@
     <string name="img_cd_splash_logo">Splash Logo</string>
     <string name="list_data_empty_title">Belum ada apa-apa disini</string>
     <string name="list_data_empty_desc">Mulai tambah data dengan menyentuh tombol (+) dibawah</string>
+    <string name="list_data_empty_filtered_title">Belum ada data dengan kategori berikut</string>
+    <string name="list_data_empty_filtered_desc">Ganti filternya atau tambah data baru dengan menyentuh tombol (+) dibawah</string>
     <string name="til_hint_keterangan">Keterangan</string>
     <string name="data_input_pln_value_hint">Nomor Pelanggan / Meteran</string>
     <string name="data_input_stnk_value_hint">Nomor STNK</string>

@@ -14,7 +14,7 @@ interface IAppRepository {
     suspend fun resetDataType()
     suspend fun getAllExistingUniqueType(): List<DataType>
 
-    suspend fun insert(data: Data)
+    suspend fun insert(data: Data): Long
     suspend fun update(data: Data)
     suspend fun delete(data: Data)
     suspend fun deleteById(id: Int)

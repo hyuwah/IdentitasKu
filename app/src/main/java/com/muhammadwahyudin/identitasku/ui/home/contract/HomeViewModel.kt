@@ -6,10 +6,10 @@ import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 
 interface HomeViewModel {
-    fun addData(data: Data)
+    fun loadAllData()
+    fun addData(data: Data, typeName: String)
     fun deleteDatas(datasWithDataType: List<DataWithDataType>)
-    fun updateData(data: Data)
+    fun updateData(data: Data, typeName: String)
     fun getAllDataType(): LiveData<List<DataType>>
-    fun getAllDataWithType(): LiveData<List<DataWithDataType>>
     fun getAllExistingUniqueType(): LiveData<List<DataType>>
 }

@@ -29,8 +29,8 @@ class AppRepository(private val dataTypeDao: DataTypeDao, private val dataDao: D
         return dataTypeDao.getAll()
     }
 
-    override suspend fun insert(data: Data) {
-        dataDao.insert(data)
+    override suspend fun insert(data: Data): Long {
+        return dataDao.insert(data)
     }
 
     override suspend fun update(data: Data) {

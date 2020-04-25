@@ -153,14 +153,13 @@
 
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
             app:cardElevation="12dp">
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="@dimen/dp_4"
                 android:orientation="horizontal">
 
             <Button
@@ -171,7 +170,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
                     android:text="Reset" />
             <Button
                     android:id="@+id/btn_apply"
@@ -180,7 +179,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
                     android:text="Apply" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

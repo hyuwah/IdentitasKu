@@ -8,9 +8,6 @@ import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui.home.AddEditDataBottomSheet
@@ -30,7 +27,6 @@ abstract class BaseDataInputFragment : Fragment() {
     protected var typeName: String? = null
     protected lateinit var parentDialog: AddEditDataBottomSheet
     private var dialogType: Int = 0
-    private lateinit var parent_view: View
     private val parentViewModel: HomeViewModel by activityViewModels<HomeViewModelImpl>()
 
     // DATA ATTR
@@ -52,7 +48,6 @@ abstract class BaseDataInputFragment : Fragment() {
         }
         parentDialog = (parentFragment as AddEditDataBottomSheet)
         dialogType = parentDialog.type
-        parent_view = requireActivity().findViewById(R.id.parent_home_activity)
         return inflateView(inflater, container, savedInstanceState)
     }
 
@@ -102,12 +97,9 @@ abstract class BaseDataInputFragment : Fragment() {
                 attr3Input,
                 attr4Input,
                 attr5Input
-            )
+            ),
+            typeName.orEmpty()
         )
-        Snackbar
-            .make(parent_view, "$typeName successfully added", Snackbar.LENGTH_SHORT)
-            .setAnchorView(requireActivity().findViewById<FloatingActionButton>(R.id.fab_add_data))
-            .show()
         parentDialog.dismiss()
     }
 
@@ -122,11 +114,7 @@ abstract class BaseDataInputFragment : Fragment() {
             attr5Input
         )
         modifiedData.id = data!!.id
-        parentViewModel.updateData(modifiedData)
-        Snackbar
-            .make(parent_view, "${data?.typeName} successfully updated", Snackbar.LENGTH_SHORT)
-            .setAnchorView(requireActivity().findViewById<FloatingActionButton>(R.id.fab_add_data))
-            .show()
+        parentViewModel.updateData(modifiedData, typeName.orEmpty())
         parentDialog.dismiss()
     }
 
