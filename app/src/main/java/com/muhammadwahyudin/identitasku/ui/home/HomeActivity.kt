@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
-import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -28,14 +27,11 @@ import com.muhammadwahyudin.identitasku.utils.toast
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.content_home_data_list.view.*
 import kotlinx.android.synthetic.main.empty_home_data_list_filtered.view.*
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.closestKodein
-import org.kodein.di.generic.instance
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class HomeActivity : BaseActivity(), KodeinAware {
-    override val kodein by closestKodein()
-    private val viewModelFactory: HomeViewModelFactory by instance()
-    val viewModel: HomeViewModelImpl by viewModels { viewModelFactory }
+class HomeActivity : BaseActivity() {
+
+    val viewModel: HomeViewModelImpl by viewModel()
 
     private lateinit var dataAdapter: HomeDataAdapter
 

@@ -2,62 +2,23 @@ package com.muhammadwahyudin.identitasku
 
 import android.util.Log
 import androidx.multidex.MultiDexApplication
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.commonsware.cwac.saferoom.SafeHelperFactory
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.muhammadwahyudin.identitasku.data.Constants
-import com.muhammadwahyudin.identitasku.data.db.AppDatabase
-import com.muhammadwahyudin.identitasku.data.db.DataDao
-import com.muhammadwahyudin.identitasku.data.db.DataTypeDao
-import com.muhammadwahyudin.identitasku.data.repository.AppRepository
-import com.muhammadwahyudin.identitasku.data.repository.IAppRepository
-import com.muhammadwahyudin.identitasku.ui.home.HomeViewModelFactory
-import com.muhammadwahyudin.identitasku.utils.DbUtils
+import com.muhammadwahyudin.identitasku.di.appModule
+import com.muhammadwahyudin.identitasku.di.dataModule
 import com.orhanobut.hawk.Hawk
 import com.yariksoffice.lingver.Lingver
 import io.fabric.sdk.android.Fabric
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.generic.*
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 /**
  * Main entry of project app
  */
-class IdentitasKuApp : MultiDexApplication(), KodeinAware {
-    override val kodein: Kodein = Kodein.lazy {
-        bind<AppDatabase>() with eagerSingleton {
-            Room.databaseBuilder(applicationContext, AppDatabase::class.java, Constants.DB_NAME)
-                .openHelperFactory(
-                    SafeHelperFactory(
-                        Hawk.get<String>(Constants.SP_PASSWORD, "123456").toCharArray()
-                    )
-                )
-                .fallbackToDestructiveMigration()
-                .addCallback(object : RoomDatabase.Callback() {
-                    override fun onCreate(db: SupportSQLiteDatabase) {
-                        super.onCreate(db)
-                        val appDB = instance<AppDatabase>()
-                        GlobalScope.launch {
-                            DbUtils.populateDataType(appDB)
-                            if (BuildConfig.DEBUG) DbUtils.populateData(appDB)
-                        }
-                    }
-                })
-                .build()
-        }
-        bind<DataTypeDao>() with singleton { instance<AppDatabase>().dataTypeDao() }
-        bind<DataDao>() with singleton { instance<AppDatabase>().dataDao() }
-        bind<IAppRepository>() with singleton { AppRepository(instance(), instance()) }
-        bind() from provider { HomeViewModelFactory(instance()) }
-    }
+class IdentitasKuApp : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
@@ -71,6 +32,14 @@ class IdentitasKuApp : MultiDexApplication(), KodeinAware {
             Timber.plant(CrashReleaseTree())
         }
         Lingver.init(this, "id")
+
+        startKoin {
+            androidContext(this@IdentitasKuApp)
+            modules(
+                dataModule,
+                appModule
+            )
+        }
     }
 
     inner class CrashReleaseTree : Timber.Tree() {

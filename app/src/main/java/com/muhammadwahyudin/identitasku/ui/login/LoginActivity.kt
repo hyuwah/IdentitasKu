@@ -29,19 +29,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.closestKodein
-import org.kodein.di.generic.instance
+import org.koin.android.ext.android.inject
 import kotlin.coroutines.CoroutineContext
 
 /**
  * A register & login screen that offers login via password/fingerprint.
  */
-class LoginActivity : BaseActivity(), KodeinAware, CoroutineScope {
-    override val kodein by closestKodein()
+class LoginActivity : BaseActivity(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Job()
-    private val appDatabase by instance<AppDatabase>()
+    private val appDatabase by inject<AppDatabase>()
 
     private var isRegistered = false
     private var wrongPasswordInputAttempt = 0
