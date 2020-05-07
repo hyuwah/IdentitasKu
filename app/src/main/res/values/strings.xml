@@ -77,7 +77,8 @@
     <string name="exit_double_tap_message">Press back again to exit</string>
     <string name="biometric_failed">Fingerprint not recognized</string>
     <string name="tutorial_btn_add_data">Add your first data! Click this button to open input dialog</string>
-    <string name="tutorial_item_list">Hold to edit, Swipe right to share, Swipe left to delete</string>
+    <string name="tutorial_item_list">Click here to edit, share, or delete this data</string>
+    <string name="tutorial_menu_filter">You can filter by category &amp; sort the list via this menu</string>
     <string name="pref_sort_by_category">Sort by category</string>
     <string name="pref_category_information">Information</string>
     <string name="pref_privacy_policy">Privacy Policy</string>
@@ -87,4 +88,10 @@
     <string name="popupmenu_share">Share</string>
     <string name="popupmenu_delete">Delete</string>
     <string name="success_copy_to_clipboard">%s copied to clipboard</string>
+    <string name="dialog_title_unsaved_changes">Unsaved changes</string>
+    <string name="dialog_message_unsaved_changes">Do you want to continue adding data or leave?</string>
+    <string name="dialog_positive_unsaved_changes">Stay Here</string>
+    <string name="dialog_negative_unsaved_changes">Leave</string>
+    <string name="kategori_title">Category</string>
+    <string name="input_choose_category">Choose Category</string>
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:padding="12dp">
 
@@ -37,12 +37,14 @@
             android:id="@+id/tv_filters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginHorizontal="12dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginVertical="12dp"
+            android:background="@drawable/bg_row_main_value"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="12dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
             tools:text="Ktp, Alamat, NPWP, BPJS" />
 
     <TextView

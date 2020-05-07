@@ -76,6 +76,13 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
         }
     }
 
+    override fun refreshData() {
+        ioLaunch(spv) {
+            val list = appRepository.getAllDataWithType()
+            _uiState.postValue(list.mapToUiState(-1))
+        }
+    }
+
     override fun getAllExistingUniqueType(): LiveData<List<DataType>> {
         ioLaunch(spv) {
             existingUniqueDataType.postValue(

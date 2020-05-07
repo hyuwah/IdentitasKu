@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -8,22 +9,24 @@
     <androidx.cardview.widget.CardView
             android:id="@+id/container_topbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize">
+            android:layout_height="?actionBarSize"
+            app:cardElevation="4dp">
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="16dp">
 
             <TextView
                     android:id="@+id/tv_filters_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:textStyle="bold"
-                    android:text="Filter Active:" />
+                    android:text="Filter Aktif:"
+                    android:textColor="@color/grey_900"
+                    android:textStyle="bold" />
 
             <TextView
                     android:id="@+id/tv_filters_active"
@@ -31,8 +34,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="marquee"
-                    android:singleLine="true"
                     android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_900"
                     tools:text="KTP, Nomor Handphone, Kartu Keluarga" />
 
         </LinearLayout>

@@ -7,6 +7,7 @@ import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 
 interface HomeViewModel {
     fun loadAllData()
+    fun refreshData()
     fun addData(data: Data, typeName: String)
     fun deleteDatas(datasWithDataType: List<DataWithDataType>)
     fun updateData(data: Data, typeName: String)

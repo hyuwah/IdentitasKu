@@ -41,9 +41,8 @@ object TutorialHelper {
      * @param activity
      * @param view RecyclerView
      */
-    fun initFirstDataItem(activity: Activity, view: RecyclerView) {
+    fun initFirstDataItem(activity: Activity, view: RecyclerView, filterView: View) {
         MaterialIntroView.Builder(activity)
-            .enableDotAnimation(true)
             .setFocusGravity(FocusGravity.CENTER)
             .setFocusType(Focus.MINIMUM)
             .setDelayMillis(500)
@@ -51,8 +50,26 @@ object TutorialHelper {
             .enableFadeAnimation(true)
             .setInfoText(activity.getString(R.string.tutorial_item_list))
             .setShape(ShapeType.RECTANGLE)
-            .setTarget(view.getChildAt(0))
+            .setTarget(view.getChildAt(0).findViewById(R.id.btn_more))
             .setUsageId("bsc_rv_item") // THIS SHOULD BE UNIQUE ID
+            .setListener {
+                if (it == "bsc_rv_item")
+                    initFilterMenu(activity, filterView)
+            }
+            .show()
+    }
+
+    fun initFilterMenu(activity: Activity, view: View) {
+        MaterialIntroView.Builder(activity)
+            .setFocusGravity(FocusGravity.CENTER)
+            .setFocusType(Focus.MINIMUM)
+            .setDelayMillis(1000)
+            .setIdempotent(true)
+            .enableFadeAnimation(true)
+            .setInfoText(activity.getString(R.string.tutorial_menu_filter))
+            .setShape(ShapeType.CIRCLE)
+            .setTarget(view)
+            .setUsageId("bsc_filter_menu") // THIS SHOULD BE UNIQUE ID
             .show()
     }
 

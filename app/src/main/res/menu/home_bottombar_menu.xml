@@ -10,6 +10,7 @@
             android:id="@+id/menu_action_search"
             android:icon="@drawable/ic_search_white_24dp"
             android:title="Search"
+            android:visible="false"
             app:showAsAction="always" />
 
     <item
