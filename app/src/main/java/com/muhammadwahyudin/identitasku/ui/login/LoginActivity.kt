@@ -3,10 +3,12 @@ package com.muhammadwahyudin.identitasku.ui.login
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.commonsware.cwac.saferoom.SafeHelperFactory
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -16,7 +18,6 @@ import com.muhammadwahyudin.identitasku.biometric.BiometricCallback
 import com.muhammadwahyudin.identitasku.biometric.BiometricManager
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
-import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
 import com.muhammadwahyudin.identitasku.ui._views.RegisterSuccessDialogs
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
@@ -35,10 +36,12 @@ import kotlin.coroutines.CoroutineContext
 /**
  * A register & login screen that offers login via password/fingerprint.
  */
-class LoginActivity : BaseActivity(), CoroutineScope {
+class LoginActivity : AppCompatActivity(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Job()
     private val appDatabase by inject<AppDatabase>()
+
+    private var backToExitPressed = false
 
     private var isRegistered = false
     private var wrongPasswordInputAttempt = 0
@@ -161,6 +164,7 @@ class LoginActivity : BaseActivity(), CoroutineScope {
     }
 
     private fun goToHomeActivity() {
+        btn_login_fp.isEnabled = false
         SafeHelperFactory.rekey(
             appDatabase.openHelper.writableDatabase,
             Hawk.get<String>(Constants.SP_PASSWORD).toCharArray()
@@ -269,5 +273,16 @@ class LoginActivity : BaseActivity(), CoroutineScope {
             }
             .create()
         dialog.show()
+    }
+
+    // Double back to exit
+    override fun onBackPressed() {
+        if (backToExitPressed || supportFragmentManager.backStackEntryCount != 0) {
+            super.onBackPressed()
+            return
+        }
+        this.backToExitPressed = true
+        toast(getString(R.string.exit_double_tap_message))
+        Handler().postDelayed({ backToExitPressed = false }, 2000)
     }
 }

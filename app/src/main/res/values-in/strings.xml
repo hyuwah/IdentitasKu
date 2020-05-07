@@ -79,8 +79,8 @@
     <string name="exit_double_tap_message">Tap sekali lagi untuk keluar</string>
     <string name="biometric_failed">Fingerprint tak dikenal</string>
     <string name="tutorial_btn_add_data">Klik disini untuk mulai menambahkan data!</string>
-    <string name="tutorial_item_list">Tahan untuk mengedit, Geser kanan untuk membagikan, Geser kiri untuk menghapus
-    </string>
+    <string name="tutorial_item_list">Klik disini untuk mengedit, membagikan, atau menghapus data ini</string>
+    <string name="tutorial_menu_filter">Kamu bisa mem-filter berdasarkan kategori &amp; mengurut daftar datanya lewat menu ini</string>
     <string name="pref_sort_by_category">Urut berdasarkan kategori</string>
     <string name="pref_category_information">Informasi</string>
     <string name="pref_privacy_policy">Kebijakan Privasi</string>
@@ -90,4 +90,10 @@
     <string name="popupmenu_share">Bagikan</string>
     <string name="popupmenu_delete">Hapus</string>
     <string name="success_copy_to_clipboard">%s disalin ke clipboard</string>
+    <string name="dialog_title_unsaved_changes">Data belum tersimpan</string>
+    <string name="dialog_message_unsaved_changes">Apakah kamu akan melanjutkan penambahan data atau membuangnya?</string>
+    <string name="dialog_positive_unsaved_changes">Lanjutkan</string>
+    <string name="dialog_negative_unsaved_changes">Buang</string>
+    <string name="kategori_title">Kategori</string>
+    <string name="input_choose_category">Pilih Kategori</string>
 </resources>

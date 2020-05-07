@@ -17,6 +17,9 @@ import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._helper.Event
 import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
+import com.muhammadwahyudin.identitasku.ui.datainput.DataInputActivity
+import com.muhammadwahyudin.identitasku.ui.datainput.DataInputActivity.Companion.RC_NEW_DATA
+import com.muhammadwahyudin.identitasku.ui.datainput.DataInputActivity.Companion.RC_REFRESH_DATA
 import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiState
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel
 import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
@@ -33,9 +36,8 @@ class HomeActivity : BaseActivity() {
 
     val viewModel: HomeViewModelImpl by viewModel()
 
+    private var backToExitPressed = false
     private lateinit var dataAdapter: HomeDataAdapter
-
-    private val bsFragment = AddEditDataBottomSheet.newInstance(AddEditDataBottomSheet.ADD)
     private lateinit var menu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,20 @@ class HomeActivity : BaseActivity() {
         initializeRecyclerView()
         initTutorial()
         setupBottomBarMenu()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            RC_NEW_DATA -> {
+                // Reload list & scroll
+                viewModel.loadAllData()
+            }
+            RC_REFRESH_DATA -> {
+                // Refresh without scroll
+                viewModel.refreshData()
+            }
+        }
     }
 
     private fun setupBottomBarMenu() {
@@ -95,8 +111,7 @@ class HomeActivity : BaseActivity() {
         viewModel.loadAllData()
 
         fab_add_data.setOnClickListener {
-            if (!bsFragment.isAdded)
-                bsFragment.show(supportFragmentManager, bsFragment.tag)
+            DataInputActivity.launch(this, DataInputActivity.ADD)
         }
 
         if (BuildConfig.DEBUG) {
@@ -130,16 +145,21 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun scrollToItemPos(pos: Int = 0) {
-        Handler().postDelayed({
-            layout_home_content.rv_data.smoothScrollToPosition(pos)
-        }, 300)
+        if (pos != -1)
+            Handler().postDelayed({
+                layout_home_content.rv_data.smoothScrollToPosition(pos)
+            }, 300)
     }
 
     private fun showTutorial() {
         Handler().postDelayed(
             {
                 if (dataAdapter.itemCount > 0)
-                    TutorialHelper.initFirstDataItem(this, layout_home_content.rv_data)
+                    TutorialHelper.initFirstDataItem(
+                        this,
+                        layout_home_content.rv_data,
+                        main_bottom_bar.findViewById(R.id.menu_action_sort_filter)
+                    )
             },
             1000
         )
@@ -186,5 +206,16 @@ class HomeActivity : BaseActivity() {
                 isSelected = true
             }
         }
+    }
+
+    // Double back to exit
+    override fun onBackPressed() {
+        if (backToExitPressed || supportFragmentManager.backStackEntryCount != 0) {
+            super.onBackPressed()
+            return
+        }
+        this.backToExitPressed = true
+        toast(getString(R.string.exit_double_tap_message))
+        Handler().postDelayed({ backToExitPressed = false }, 2000)
     }
 }

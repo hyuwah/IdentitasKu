@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="horizontal">
+
+    <RadioButton
+            android:id="@+id/rb_category_option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Category option"
+            android:layout_weight="1" />
+
+    <ImageView
+            android:id="@+id/iv_category_option"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            tools:src="@drawable/ic_ktp" />
+
+
+</LinearLayout>

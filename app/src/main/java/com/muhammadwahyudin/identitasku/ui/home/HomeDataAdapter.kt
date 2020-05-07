@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants.TYPE
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
+import com.muhammadwahyudin.identitasku.ui.datainput.DataInputActivity
 import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.CREDIT_CARD
 import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.DEFAULT
 import com.muhammadwahyudin.identitasku.ui.home.HomeDataAdapter.Companion.LAYOUT.GENERIC_1
@@ -55,7 +56,7 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
         }
     }
 
-    private var deleteHandler = Handler() // should make this global
+    private var deleteHandler = Handler()
     private var datasToDelete = arrayListOf<DataWithDataType>()
     private lateinit var aty: HomeActivity
     private lateinit var parentViewModel: HomeViewModel
@@ -68,16 +69,17 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
         addItemType(CREDIT_CARD, R.layout.item_home_data_list_generic_2)
         addItemType(DEFAULT, R.layout.item_home_data_list_generic_2)
 
-        // itemType generic 1 value [ktp, npwp, kk, bpjs]
-        // itemType generic 2 value [address, pdam, stnk, email]
+        // itemType generic 1 value []
+        // itemType generic 2 value [ktp, npwp, kk, bpjs, address, pdam, stnk, email]
         // itemType generic 3 (2 value + 1 spinner data) [hp, pln, rekbank]
         // itemType cc
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (data[position].typeId) {
-            TYPE.KTP.value, TYPE.NPWP.value, TYPE.KK.value, TYPE.BPJS.value -> GENERIC_1
-            TYPE.ALAMAT.value, TYPE.PDAM.value, TYPE.STNK.value, TYPE.EMAIL.value -> GENERIC_2
+            TYPE.NPWP.value, TYPE.KK.value, TYPE.BPJS.value,
+            TYPE.KTP.value, TYPE.ALAMAT.value, TYPE.PDAM.value,
+            TYPE.STNK.value, TYPE.EMAIL.value -> GENERIC_2
             TYPE.HANDPHONE.value, TYPE.PLN.value, TYPE.REK_BANK.value -> GENERIC_3
             TYPE.CC.value -> CREDIT_CARD
             else -> DEFAULT
@@ -109,9 +111,7 @@ class HomeDataAdapter(data: MutableList<DataWithDataType>) :
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.action_edit -> {
-                        val bs = AddEditDataBottomSheet
-                            .newInstance(AddEditDataBottomSheet.EDIT, item)
-                        bs.show(aty.supportFragmentManager, bs.tag)
+                        DataInputActivity.launch(aty, DataInputActivity.EDIT, item)
                         true
                     }
                     R.id.action_share -> {

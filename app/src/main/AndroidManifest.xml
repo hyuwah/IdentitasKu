@@ -15,6 +15,7 @@
             android:required="false" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
             android:name=".IdentitasKuApp"
             android:allowBackup="true"
@@ -24,7 +25,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:replace="android:label">
-
         <activity
                 android:name=".ui.splash.SplashActivity"
                 android:theme="@style/AppTheme.NoActionBar">
@@ -42,7 +42,7 @@
                 android:windowSoftInputMode="adjustResize" />
         <activity
                 android:name=".ui.home.HomeActivity"
-                android:theme="@style/AppTheme.NoActionBar"></activity>
+                android:theme="@style/AppTheme.NoActionBar" />
         <activity
                 android:name=".ui.settings.SettingsActivity"
                 android:parentActivityName=".ui.home.HomeActivity">
@@ -50,6 +50,9 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".ui.home.HomeActivity" />
         </activity>
+        <activity
+                android:name=".ui.datainput.DataInputActivity"
+                android:parentActivityName=".ui.home.HomeActivity" />
     </application>
 
 </manifest>
