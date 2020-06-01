@@ -56,8 +56,8 @@ android {
             manifestPlaceholders = [appName: "IdentitasKu", crashlyticsEnabled: true]
         }
     }
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
     androidExtensions {
         experimental = true

@@ -7,6 +7,14 @@ import androidx.appcompat.widget.PopupMenu
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.muhammadwahyudin.identitasku.ui._helper.SafeClickListener
 
+fun View.setVisibleIf(predicate: Boolean, invisible: Boolean = false) {
+    when {
+        predicate -> setVisible()
+        invisible -> setInvisible()
+        else -> setGone()
+    }
+}
+
 fun View.setVisible() {
     visibility = View.VISIBLE
 }
@@ -34,14 +42,14 @@ fun PopupMenu.showIcons() {
     }
 }
 
-fun View.setSafeOnClickListener(callback: () -> Unit) =
+inline fun View.setSafeOnClickListener(crossinline callback: () -> Unit) =
     setOnClickListener(object : SafeClickListener() {
         override fun onClick() {
             callback()
         }
     })
 
-fun BottomAppBar.setSafeOnMenuItemClickListener(callback: (item: MenuItem) -> Unit) =
+inline fun BottomAppBar.setSafeOnMenuItemClickListener(crossinline callback: (item: MenuItem) -> Unit) =
     setOnMenuItemClickListener(object : SafeClickListener() {
         override fun onClick(item: MenuItem) {
             callback(item)

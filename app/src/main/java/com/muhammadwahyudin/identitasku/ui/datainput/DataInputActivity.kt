@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -274,6 +275,7 @@ class DataInputActivity : BaseActivity() {
 
     private fun changeFragment(inputFragment: Fragment) {
         supportFragmentManager.beginTransaction()
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .replace(R.id.fragment_container, inputFragment)
             .commit()
     }

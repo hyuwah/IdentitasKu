@@ -23,22 +23,22 @@ import com.muhammadwahyudin.identitasku.ui.datainput.DataInputActivity.Companion
 import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiState
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel
 import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
-import com.muhammadwahyudin.identitasku.utils.setGone
-import com.muhammadwahyudin.identitasku.utils.setSafeOnMenuItemClickListener
-import com.muhammadwahyudin.identitasku.utils.setVisible
-import com.muhammadwahyudin.identitasku.utils.toast
+import com.muhammadwahyudin.identitasku.utils.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.content_home_data_list.view.*
 import kotlinx.android.synthetic.main.empty_home_data_list_filtered.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
 
-    val viewModel: HomeViewModelImpl by viewModel()
+    private val viewModel: HomeViewModelImpl by viewModel()
 
     private var backToExitPressed = false
     private lateinit var dataAdapter: HomeDataAdapter
     private lateinit var menu: Menu
+
+    private var deleteHandler = Handler()
+    private var datasToDelete = arrayListOf<DataWithDataType>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +49,7 @@ class HomeActivity : BaseActivity() {
         }
         dataAdapter = HomeDataAdapter(mutableListOf()).apply {
             setDiffCallback(HomeDataAdapter.diffCallback())
+            popupMenuListener = this@HomeActivity
         }
 
         initializeUI()
@@ -69,6 +70,77 @@ class HomeActivity : BaseActivity() {
                 viewModel.refreshData()
             }
         }
+    }
+
+    override fun onEditItem(dataToEdit: DataWithDataType) {
+        DataInputActivity.launch(this, DataInputActivity.EDIT, dataToEdit)
+    }
+
+    override fun onShareItem(dataToShare: DataWithDataType) {
+        // TODO differentiate based on data category
+        var message = "${dataToShare.typeName}: ${dataToShare.value}"
+        when (dataToShare.type()) {
+            Constants.TYPE.REK_BANK -> message =
+                "${dataToShare.typeName}: (${dataToShare.attr2}) ${dataToShare.value}"
+            Constants.TYPE.HANDPHONE,
+            Constants.TYPE.ALAMAT -> {
+                if (!dataToShare.attr1.isNullOrEmpty()) message =
+                    "${dataToShare.typeName} (${dataToShare.attr1}) : ${dataToShare.value}"
+            }
+        }
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, message)
+            type = "text/plain"
+        }
+        startActivity(
+            Intent.createChooser(
+                sendIntent, String.format(
+                    getString(R.string.share_intent_chooser_title),
+                    dataToShare.typeName
+                )
+            )
+        )
+    }
+
+    override fun onDeleteItem(pos: Int, dataToDelete: DataWithDataType) {
+        Commons.shortVibrate(this)
+
+        dataAdapter.data.removeAt(pos)
+        dataAdapter.notifyItemRemoved(pos)
+
+        // clear handler callback first to avoid bug when swiping >1 data in short duration
+        deleteHandler.removeCallbacksAndMessages(null)
+
+        // should add to list of datasToDelete
+        datasToDelete.add(dataToDelete)
+
+        // Handler to run data deletion on db after snackbar disappear
+        deleteHandler.postDelayed({ viewModel.deleteDatas(datasToDelete) }, 3500)
+        // delete list of data
+
+        // Show snackbar with undo button
+        Snackbar
+            .make(
+                parent_home_activity,
+                dataToDelete.typeName + getString(R.string.snackbar_data_deleted),
+                Snackbar.LENGTH_LONG
+            )
+            .setAction(getString(R.string.snackbar_btn_undo)) {
+                dataAdapter.data.add(pos, dataToDelete)
+                dataAdapter.notifyItemInserted(pos)
+                // check if datasToDelete > 1
+                if (datasToDelete.size > 1) {
+                    // don't cancel the handler,
+                    // just remove canceled / last data from list of datasToDelete
+                    datasToDelete.remove(dataToDelete)
+                } else {
+                    // cancel Handler
+                    deleteHandler.removeCallbacksAndMessages(null)
+                }
+            }
+            .setAnchorView(fab_add_data)
+            .show()
     }
 
     private fun setupBottomBarMenu() {
