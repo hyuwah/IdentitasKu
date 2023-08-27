@@ -6,24 +6,24 @@ import androidx.room.*
 import com.muhammadwahyudin.identitasku.data.model.DataType
 
 @Dao
-abstract class DataTypeDao {
+interface DataTypeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insert(dataType: DataType)
+    suspend fun insert(dataType: DataType)
 
     @Update
-    abstract suspend fun update(dataType: DataType)
+    suspend fun update(dataType: DataType)
 
     @Delete
-    abstract suspend fun delete(dataType: DataType)
+    suspend fun delete(dataType: DataType)
 
     @Query("SELECT * FROM data_type")
-    abstract suspend fun getAll(): List<DataType>
+    suspend fun getAll(): List<DataType>
 
     @Query("DElETE FROM data_type")
-    abstract suspend fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("DELETE FROM SQLITE_SEQUENCE WHERE name = 'data_type'")
-    abstract suspend fun resetAutoincrementId()
+    suspend fun resetAutoincrementId()
 
     @Query(
         """
@@ -32,10 +32,10 @@ abstract class DataTypeDao {
         WHERE data_type.is_unique=1
     """
     )
-    abstract suspend fun getAllExistingUniqueType(): List<DataType>
+    suspend fun getAllExistingUniqueType(): List<DataType>
 
     @Transaction
-    open suspend fun reset() {
+    suspend fun reset() {
         deleteAll()
         resetAutoincrementId()
         insert(DataType("KTP", isUnique = true, isCustom = false))

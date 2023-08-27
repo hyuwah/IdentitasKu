@@ -60,44 +60,45 @@ android {
         viewBinding = true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
+    namespace 'com.muhammadwahyudin.identitasku'
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // Android Jetpack
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
     implementation 'androidx.multidex:multidex:2.0.1'
     // KTX
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation "androidx.fragment:fragment-ktx:1.5.5"
+    implementation "androidx.fragment:fragment-ktx:1.6.1"
 
     // Coroutine
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
-    implementation 'androidx.room:room-runtime:2.4.3'
-    kapt "androidx.room:room-compiler:2.4.3"
-    implementation "androidx.room:room-ktx:2.4.3"
+    implementation 'androidx.room:room-runtime:2.5.2'
+    kapt "androidx.room:room-compiler:2.5.2"
+    implementation "androidx.room:room-ktx:2.5.2"
 
     // Lifecycle Arch
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 
 
     // DI
@@ -105,14 +106,14 @@ dependencies {
     implementation 'org.koin:koin-android-viewmodel:2.1.5'
     // Firebase
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.3.0'
 
     // Crashlytics
-    implementation 'com.google.firebase:firebase-crashlytics:18.3.2'
+    implementation 'com.google.firebase:firebase-crashlytics:18.4.1'
     // Chrome custom tab
-    implementation 'androidx.browser:browser:1.4.0'
+    implementation 'androidx.browser:browser:1.5.0'
     // Image
-    implementation "io.coil-kt:coil:2.2.1"
+    implementation "io.coil-kt:coil:2.3.0"
     // Language
     implementation "com.github.YarikSOffice:lingver:1.2.2"
     // Log
@@ -134,8 +135,8 @@ dependencies {
     // https://github.com/iammert/MaterialIntroView/issues/84
     // Test
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.5.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
 ktlint {
