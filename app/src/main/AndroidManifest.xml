@@ -27,6 +27,7 @@
             tools:replace="android:label">
         <activity
                 android:name=".ui.splash.SplashActivity"
+                android:exported="true"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,20 +40,24 @@
         <activity
                 android:name=".ui.login.LoginActivity"
                 android:theme="@style/AppTheme.NoActionBar"
-                android:windowSoftInputMode="adjustResize" />
+                android:windowSoftInputMode="adjustResize"
+                android:exported="false"/>
         <activity
                 android:name=".ui.home.HomeActivity"
-                android:theme="@style/AppTheme.NoActionBar" />
+                android:theme="@style/AppTheme.NoActionBar"
+                android:exported="false" />
         <activity
                 android:name=".ui.settings.SettingsActivity"
-                android:parentActivityName=".ui.home.HomeActivity">
+                android:parentActivityName=".ui.home.HomeActivity"
+                android:exported="false">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".ui.home.HomeActivity" />
         </activity>
         <activity
                 android:name=".ui.datainput.DataInputActivity"
-                android:parentActivityName=".ui.home.HomeActivity" />
+                android:parentActivityName=".ui.home.HomeActivity"
+                android:exported="false" />
     </application>
 
 </manifest>

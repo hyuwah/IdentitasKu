@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "147653343724-19banrh6mnlhj0q50rhft1l46vskbv6g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muhammadwahyudin.identitasku",
+            "certificate_hash": "f7466a23f9971dc46f537d439c0373c8831a3aa7"
+          }
+        },
+        {
           "client_id": "147653343724-kg8mk25ofmjd9r3ptccanfjfls7daeds.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -25,15 +33,42 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147653343724-kg8mk25ofmjd9r3ptccanfjfls7daeds.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147653343724:android:de4c41f0032a5b9a0368c9",
+        "android_client_info": {
+          "package_name": "com.muhammadwahyudin.identitasku.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147653343724-kg8mk25ofmjd9r3ptccanfjfls7daeds.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNLqTc88JM8-Yq1Hl2JSQbtAy3tsJP_Mo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147653343724-kg8mk25ofmjd9r3ptccanfjfls7daeds.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

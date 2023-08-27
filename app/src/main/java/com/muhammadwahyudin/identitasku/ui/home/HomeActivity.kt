@@ -78,15 +78,17 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
 
     override fun onShareItem(dataToShare: DataWithDataType) {
         // TODO differentiate based on data category
-        var message = "${dataToShare.typeName}: ${dataToShare.value}"
-        when (dataToShare.type()) {
-            Constants.TYPE.REK_BANK -> message =
-                "${dataToShare.typeName}: (${dataToShare.attr2}) ${dataToShare.value}"
-            Constants.TYPE.HANDPHONE,
-            Constants.TYPE.ALAMAT -> {
-                if (!dataToShare.attr1.isNullOrEmpty()) message =
-                    "${dataToShare.typeName} (${dataToShare.attr1}) : ${dataToShare.value}"
+        val attr1 = dataToShare.attr1.orEmpty()
+        val attr2 = dataToShare.attr2.orEmpty()
+        val message = buildString {
+            append("${dataToShare.typeName}:")
+            if (attr1.isNotEmpty()) {
+                append(" ($attr1)")
             }
+            if (attr2.isNotEmpty()) {
+                append(" ($attr2)")
+            }
+            append(" ${dataToShare.value}")
         }
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
