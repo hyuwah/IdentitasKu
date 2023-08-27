@@ -18,14 +18,15 @@ import com.muhammadwahyudin.identitasku.biometric.BiometricCallback
 import com.muhammadwahyudin.identitasku.biometric.BiometricManager
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
+import com.muhammadwahyudin.identitasku.databinding.ActivityLoginBinding
 import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
 import com.muhammadwahyudin.identitasku.ui._views.RegisterSuccessDialogs
 import com.muhammadwahyudin.identitasku.ui.home.HomeActivity
 import com.muhammadwahyudin.identitasku.utils.BiometricUtils
 import com.muhammadwahyudin.identitasku.utils.Commons
 import com.muhammadwahyudin.identitasku.utils.toast
+import com.muhammadwahyudin.identitasku.utils.viewBinding
 import com.orhanobut.hawk.Hawk
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,14 +47,16 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     private var isRegistered = false
     private var wrongPasswordInputAttempt = 0
 
+    private val binding by viewBinding(ActivityLoginBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(binding.root)
 
         isRegistered = Hawk.contains(Constants.SP_PASSWORD)
 
         if (BuildConfig.DEBUG)
-            btn_login.setOnLongClickListener {
+            binding.btnLogin.setOnLongClickListener {
                 val dialog = RegisterSuccessDialogs()
                 dialog.show(supportFragmentManager) {
                     dialog.dismiss()
@@ -62,8 +65,8 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
             }
 
         if (isRegistered) { // Login
-            btn_login.isEnabled = false
-            btn_login.setOnClickListener {
+            binding.btnLogin.isEnabled = false
+            binding.btnLogin.setOnClickListener {
                 if (wrongPasswordInputAttempt > 3) {
                     Commons.hideSoftKeyboard(this)
                     showForgotPasswordDialog()
@@ -72,34 +75,34 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
                     validateLogin()
             }
         } else { // First open / register
-            tv_title.text = getString(R.string.register_title)
-            btn_login.text = getString(R.string.button_register)
-            textView2.visibility = View.GONE
-            til_password_confirm.visibility = View.VISIBLE
-            til_password_confirm.isEnabled = false
-            btn_login.isEnabled = false
-            btn_login_fp.hide()
-            btn_login.setOnClickListener {
+            binding.tvTitle.text = getString(R.string.register_title)
+            binding.btnLogin.text = getString(R.string.button_register)
+            binding.textView2.visibility = View.GONE
+            binding.tilPasswordConfirm.visibility = View.VISIBLE
+            binding.tilPasswordConfirm.isEnabled = false
+            binding.btnLogin.isEnabled = false
+            binding.btnLoginFp.hide()
+            binding.btnLogin.setOnClickListener {
                 register()
             }
         }
 
-        password.doOnTextChanged { text, _, _, _ ->
-            til_password.isErrorEnabled = false
+        binding.password.doOnTextChanged { text, _, _, _ ->
+            binding.tilPassword.isErrorEnabled = false
             if (!isRegistered) {
-                til_password_confirm.isEnabled = !text.isNullOrEmpty()
+                binding.tilPasswordConfirm.isEnabled = !text.isNullOrEmpty()
             } else {
-                btn_login.isEnabled = !text.isNullOrEmpty()
+                binding.btnLogin.isEnabled = !text.isNullOrEmpty()
             }
         }
-        password_confirm.doOnTextChanged { text, _, _, _ ->
-            til_password_confirm.isErrorEnabled = false
+        binding.passwordConfirm.doOnTextChanged { text, _, _, _ ->
+            binding.tilPasswordConfirm.isErrorEnabled = false
             if (!isRegistered) {
-                btn_login.isEnabled = !text.isNullOrEmpty()
+                binding.btnLogin.isEnabled = !text.isNullOrEmpty()
             }
         }
 
-        btn_login_fp.setOnClickListener {
+        binding.btnLoginFp.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (BiometricUtils.isFingerprintAvailable(this))
                     openFingerprintDialog()
@@ -110,15 +113,15 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
         // Hide login with fingerprint if device has no sensor
         if (!BiometricUtils.isHardwareSupported(this)) {
-            textView2.visibility = View.GONE
-            btn_login_fp.hide()
+            binding.textView2.visibility = View.GONE
+            binding.btnLoginFp.hide()
         } // Show fingerprint login, if has sensor, has enrolled & has registered
         else if (
             BiometricUtils.isHardwareSupported(this) &&
             BiometricUtils.isFingerprintAvailable(this) &&
             isRegistered
         ) {
-            btn_login_fp.performClick()
+            binding.btnLoginFp.performClick()
         }
     }
 
@@ -164,7 +167,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private fun goToHomeActivity() {
-        btn_login_fp.isEnabled = false
+        binding.btnLoginFp.isEnabled = false
         SafeHelperFactory.rekey(
             appDatabase.openHelper.writableDatabase,
             Hawk.get<String>(Constants.SP_PASSWORD).toCharArray()
@@ -176,21 +179,21 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private fun validateLogin() {
-        val passwordEdt = password.text!!
-        if (passwordEdt.isNotBlank() && passwordEdt.toString() == Hawk.get(Constants.SP_PASSWORD)) {
+        val passwordEdt = binding.password.text
+        if (!passwordEdt.isNullOrBlank() && passwordEdt.toString() == Hawk.get(Constants.SP_PASSWORD)) {
             goToHomeActivity()
         } else {
-            til_password.error = getString(R.string.text_hint_login_password_invalid)
-            til_password.isErrorEnabled = true
+            binding.tilPassword.error = getString(R.string.text_hint_login_password_invalid)
+            binding.tilPassword.isErrorEnabled = true
             wrongPasswordInputAttempt += 1
         }
     }
 
     private fun register() {
-        val passwordEdt = password.text!!
-        val passwordConfirmEdt = password_confirm.text!!
+        val passwordEdt = binding.password.text
+        val passwordConfirmEdt = binding.passwordConfirm.text
         when {
-            passwordEdt.isNotBlank() && passwordConfirmEdt.isNotBlank() -> {
+            !passwordEdt.isNullOrBlank() && !passwordConfirmEdt.isNullOrBlank() -> {
                 if (passwordEdt.toString() == passwordConfirmEdt.toString()) {
                     Hawk.put(Constants.SP_PASSWORD, passwordEdt.toString())
                     // Reencrypt using user pass
@@ -205,19 +208,19 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
                         finish()
                     }
                 } else {
-                    til_password_confirm.error =
+                    binding.tilPasswordConfirm.error =
                         getString(R.string.text_hint_register_password_confirmation_not_match)
-                    til_password_confirm.isErrorEnabled = true
+                    binding.tilPasswordConfirm.isErrorEnabled = true
                 }
             }
-            passwordEdt.isBlank() -> {
-                til_password.error = getString(R.string.text_hint_register_password_empty)
-                til_password.isErrorEnabled = true
+            passwordEdt.isNullOrBlank() -> {
+                binding.tilPassword.error = getString(R.string.text_hint_register_password_empty)
+                binding.tilPassword.isErrorEnabled = true
             }
-            passwordEdt.isNotBlank() && passwordConfirmEdt.isBlank() -> {
-                til_password_confirm.error =
+            passwordEdt.isNotBlank() && passwordConfirmEdt.isNullOrBlank() -> {
+                binding.tilPasswordConfirm.error =
                     getString(R.string.text_hint_register_password_confirmation_empty)
-                til_password_confirm.isErrorEnabled = true
+                binding.tilPasswordConfirm.isErrorEnabled = true
             }
         }
     }

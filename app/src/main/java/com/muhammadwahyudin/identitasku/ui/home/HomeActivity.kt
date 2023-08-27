@@ -14,6 +14,7 @@ import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
+import com.muhammadwahyudin.identitasku.databinding.ActivityHomeBinding
 import com.muhammadwahyudin.identitasku.ui._base.BaseActivity
 import com.muhammadwahyudin.identitasku.ui._helper.Event
 import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
@@ -24,12 +25,11 @@ import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiState
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel
 import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
 import com.muhammadwahyudin.identitasku.utils.*
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.content_home_data_list.view.*
-import kotlinx.android.synthetic.main.empty_home_data_list_filtered.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
+    
+    private val binding by viewBinding(ActivityHomeBinding::inflate)
 
     private val viewModel: HomeViewModelImpl by viewModel()
 
@@ -42,9 +42,9 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(binding.root)
 
-        parent_home_activity.layoutTransition = LayoutTransition().apply {
+        binding.root.layoutTransition = LayoutTransition().apply {
             enableTransitionType(LayoutTransition.CHANGING)
         }
         dataAdapter = HomeDataAdapter(mutableListOf()).apply {
@@ -124,7 +124,7 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
         // Show snackbar with undo button
         Snackbar
             .make(
-                parent_home_activity,
+                binding.root,
                 dataToDelete.typeName + getString(R.string.snackbar_data_deleted),
                 Snackbar.LENGTH_LONG
             )
@@ -141,14 +141,14 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
                     deleteHandler.removeCallbacksAndMessages(null)
                 }
             }
-            .setAnchorView(fab_add_data)
+            .setAnchorView(binding.fabAddData)
             .show()
     }
 
     private fun setupBottomBarMenu() {
-        main_bottom_bar.replaceMenu(R.menu.home_bottombar_menu)
-        menu = main_bottom_bar.menu
-        main_bottom_bar.setSafeOnMenuItemClickListener {
+        binding.mainBottomBar.replaceMenu(R.menu.home_bottombar_menu)
+        menu = binding.mainBottomBar.menu
+        binding.mainBottomBar.setSafeOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_action_sort_filter -> {
                     SortFilterBottomSheet.newInstance().show(supportFragmentManager)
@@ -164,13 +164,15 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
     }
 
     private fun initTutorial() {
-        TutorialHelper.initAddEditFab(this, fab_add_data)
+        TutorialHelper.initAddEditFab(this, binding.fabAddData)
     }
 
     private fun initializeRecyclerView() {
-        layout_home_content.rv_data.layoutManager = LinearLayoutManager(this)
-        layout_home_content.rv_data.adapter = dataAdapter
-        layout_home_content.rv_data.itemAnimator = DefaultItemAnimator()
+        binding.layoutHomeContent.rvData.run {
+            layoutManager = LinearLayoutManager(this@HomeActivity)
+            adapter = dataAdapter
+            itemAnimator = DefaultItemAnimator()
+        }
     }
 
     private fun initializeUI() {
@@ -184,12 +186,12 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
         viewModel.snackbarMessage.observe(this, ::showMessage)
         viewModel.loadAllData()
 
-        fab_add_data.setOnClickListener {
+        binding.fabAddData.setOnClickListener {
             DataInputActivity.launch(this, DataInputActivity.ADD)
         }
 
         if (BuildConfig.DEBUG) {
-            fab_add_data.setOnLongClickListener {
+            binding.fabAddData.setOnLongClickListener {
                 viewModel.debugPopulateData()
                 true
             }
@@ -212,8 +214,8 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
 
     private fun showMessage(message: Event<String>) {
         message.getContentIfNotHandled()?.let {
-            Snackbar.make(parent_home_activity, it, Snackbar.LENGTH_SHORT)
-                .setAnchorView(fab_add_data)
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                .setAnchorView(binding.fabAddData)
                 .show()
         }
     }
@@ -221,7 +223,7 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
     private fun scrollToItemPos(pos: Int = 0) {
         if (pos != -1)
             Handler().postDelayed({
-                layout_home_content.rv_data.smoothScrollToPosition(pos)
+                binding.layoutHomeContent.rvData.smoothScrollToPosition(pos)
             }, 300)
     }
 
@@ -231,8 +233,8 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
                 if (dataAdapter.itemCount > 0)
                     TutorialHelper.initFirstDataItem(
                         this,
-                        layout_home_content.rv_data,
-                        main_bottom_bar.findViewById(R.id.menu_action_sort_filter)
+                        binding.layoutHomeContent.rvData,
+                        binding.mainBottomBar.rootView.findViewById(R.id.menu_action_sort_filter)
                     )
             },
             1000
@@ -241,23 +243,23 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
 
     private fun showEmptyView(filters: List<Constants.TYPE> = listOf()) {
         if (filters.isEmpty()) {
-            layout_empty_home_list.setVisible()
-            layout_empty_home_list_filtered.setGone()
+            binding.layoutEmptyHomeList.root.setVisible()
+            binding.layoutEmptyHomeListFiltered.root.setGone()
         } else {
-            layout_empty_home_list_filtered.tv_filters.text = filters.joinToString(", ") {
+            binding.layoutEmptyHomeListFiltered.tvFilters.text = filters.joinToString(", ") {
                 getString(it.stringRes).replace("Nomor ", "", true)
             }
-            layout_empty_home_list.setGone()
-            layout_empty_home_list_filtered.setVisible()
+            binding.layoutEmptyHomeList.root.setGone()
+            binding.layoutEmptyHomeListFiltered.root.setVisible()
         }
         setFilterIcon(filters)
-        layout_home_content.setGone()
+        binding.layoutHomeContent.root.setGone()
     }
 
     private fun hideEmptyView() {
-        layout_empty_home_list.setGone()
-        layout_empty_home_list_filtered.setGone()
-        layout_home_content.setVisible()
+        binding.layoutEmptyHomeList.root.setGone()
+        binding.layoutEmptyHomeListFiltered.root.setGone()
+        binding.layoutHomeContent.root.setVisible()
     }
 
     private fun setFilterIcon(filters: List<Constants.TYPE>) {
@@ -270,10 +272,10 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
 
     private fun setActiveFilterView(filters: List<Constants.TYPE>) {
         if (filters.isEmpty()) {
-            layout_home_content.container_topbar.setGone()
+            binding.layoutHomeContent.containerTopbar.setGone()
         } else {
-            layout_home_content.container_topbar.setVisible()
-            layout_home_content.tv_filters_active.apply {
+            binding.layoutHomeContent.containerTopbar.setVisible()
+            binding.layoutHomeContent.tvFiltersActive.apply {
                 text = filters.joinToString(", ") {
                     getString(it.stringRes).replace("Nomor ", "", true)
                 }

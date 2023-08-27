@@ -7,7 +7,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants
-import kotlinx.android.synthetic.main.item_category_list.view.*
 
 class CategoryListAdapter(
     private val clickCallback: (item: Constants.TYPE) -> Unit
@@ -32,7 +31,7 @@ class CategoryListAdapter(
     }
 
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        val rbCategoryOption: RadioButton = itemView.rb_category_option
-        val ivCategoryOption: ImageView = itemView.iv_category_option
+        val rbCategoryOption: RadioButton = itemView.findViewById(R.id.rb_category_option)
+        val ivCategoryOption: ImageView = itemView.findViewById(R.id.iv_category_option)
     }
 }

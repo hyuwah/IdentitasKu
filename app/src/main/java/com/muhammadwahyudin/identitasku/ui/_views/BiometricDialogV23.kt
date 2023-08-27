@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.biometric.BiometricCallback
-import kotlinx.android.synthetic.main.bottom_sheet_biometric.*
+import com.muhammadwahyudin.identitasku.databinding.BottomSheetBiometricBinding
 
 class BiometricDialogV23(
     context: Context,
@@ -13,16 +13,18 @@ class BiometricDialogV23(
 
     private var biometricCallback: BiometricCallback? = biometricCallback
 
+    private var binding: BottomSheetBiometricBinding? = null
+
     init {
         setDialogView()
     }
 
     private fun setDialogView() {
-        val bottomSheetView = layoutInflater.inflate(
-            R.layout.bottom_sheet_biometric, null
-        )
-        setContentView(bottomSheetView)
-        btn_cancel.setOnClickListener {
+        BottomSheetBiometricBinding.inflate(layoutInflater).let {
+            binding = it
+            setContentView(it.root)
+        }
+        binding?.btnCancel?.setOnClickListener {
             dismiss()
             biometricCallback?.onAuthenticationCancelled()
         }
@@ -30,29 +32,29 @@ class BiometricDialogV23(
     }
 
     fun setTitle(title: String) {
-        item_title.text = title
+        binding?.itemTitle?.text = title
     }
 
     fun updateStatus(status: String) {
-        item_status.text = status
+        binding?.itemStatus?.text = status
     }
 
     fun setSubtitle(subtitle: String) {
-        item_subtitle.text = subtitle
+        binding?.itemSubtitle?.text = subtitle
     }
 
     fun setDescription(description: String) {
-        item_description.text = description
+        binding?.itemDescription?.text = description
     }
 
     fun setButtonText(negativeButtonText: String) {
-        btn_cancel.text = negativeButtonText
+        binding?.btnCancel?.text = negativeButtonText
     }
 
     private fun updateLogo() {
         try {
             val drawable = context.packageManager.getApplicationIcon(context.packageName)
-            img_logo.setImageDrawable(drawable)
+            binding?.imgLogo?.setImageDrawable(drawable)
         } catch (e: Exception) {
             e.printStackTrace()
         }

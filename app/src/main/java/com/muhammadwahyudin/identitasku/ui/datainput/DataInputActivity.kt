@@ -22,7 +22,6 @@ import com.muhammadwahyudin.identitasku.ui.datainput.fragment.CreditCardInputFra
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.DataInputLogic
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.GenericInputFragment
 import com.muhammadwahyudin.identitasku.utils.*
-import kotlinx.android.synthetic.main.activity_data_input.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
@@ -59,7 +58,7 @@ class DataInputActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(bind.root)
 
-        bsBehavior = BottomSheetBehavior.from(bottom_sheet)
+        bsBehavior = BottomSheetBehavior.from(bind.bottomSheet)
         bsBehavior.isHideable = false
         bsBehavior.isDraggable = false
         bsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED

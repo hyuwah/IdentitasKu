@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'org.jetbrains.kotlin.android.extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: "org.jlleitschuh.gradle.ktlint"
@@ -46,14 +45,12 @@ android {
         debug {
             applicationIdSuffix ".debug"
             debuggable true
-            zipAlignEnabled false
             minifyEnabled false
             manifestPlaceholders = [appName: "IdentitasKu-dev", crashlyticsEnabled: true]
         }
         release {
             minifyEnabled true
             shrinkResources true
-            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             manifestPlaceholders = [appName: "IdentitasKu", crashlyticsEnabled: true]
@@ -61,20 +58,6 @@ android {
     }
     buildFeatures {
         viewBinding = true
-    }
-    androidExtensions {
-        experimental = true
-    }
-    bundle {
-        language {
-            enableSplit = true
-        }
-        density {
-            enableSplit = true
-        }
-        abi {
-            enableSplit = true
-        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
