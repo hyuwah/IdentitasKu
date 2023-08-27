@@ -25,7 +25,7 @@ import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiState
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel
 import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
 import com.muhammadwahyudin.identitasku.utils.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
     

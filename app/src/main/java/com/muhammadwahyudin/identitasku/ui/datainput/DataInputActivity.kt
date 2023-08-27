@@ -22,7 +22,7 @@ import com.muhammadwahyudin.identitasku.ui.datainput.fragment.CreditCardInputFra
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.DataInputLogic
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.GenericInputFragment
 import com.muhammadwahyudin.identitasku.utils.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Need optimization
