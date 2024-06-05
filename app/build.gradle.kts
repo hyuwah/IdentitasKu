@@ -99,6 +99,7 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.multidex)
+    implementation(libs.androidx.recyclerview)
     // KTX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.fragment.ktx)

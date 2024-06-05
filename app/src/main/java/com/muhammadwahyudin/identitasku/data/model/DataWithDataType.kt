@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.muhammadwahyudin.identitasku.data.Constants.TYPE
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class DataWithDataType(
@@ -21,7 +21,7 @@ data class DataWithDataType(
     @ColumnInfo(name = "is_custom") var isCustom: Boolean
 ) : Parcelable, MultiItemEntity {
 
-    fun type(): TYPE = TYPE.values().find { it.value == typeId } ?: TYPE.DEFAULT
+    fun type(): TYPE = TYPE.entries.find { it.value == typeId } ?: TYPE.DEFAULT
 
     override val itemType: Int
         get() = when (typeId) {
