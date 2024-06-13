@@ -17,7 +17,7 @@ val versionBuild = 0
 
 android {
     namespace = "com.muhammadwahyudin.identitasku"
-    compileSdk = 33
+    compileSdk = 34
 
     signingConfigs {
         getByName("debug") {
@@ -136,7 +136,6 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.creditcardview)
     implementation(libs.vvalidator)
-    implementation(libs.kid.adapter)
     // ShowcaseView
     implementation(libs.material.intro.view)
     // Test

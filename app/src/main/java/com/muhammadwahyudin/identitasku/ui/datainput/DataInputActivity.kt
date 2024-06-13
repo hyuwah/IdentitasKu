@@ -7,7 +7,6 @@ import android.os.Handler
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
@@ -21,7 +20,12 @@ import com.muhammadwahyudin.identitasku.ui.datainput.contract.DataInputViewModel
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.CreditCardInputFragment
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.DataInputLogic
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.GenericInputFragment
-import com.muhammadwahyudin.identitasku.utils.*
+import com.muhammadwahyudin.identitasku.utils.getDrawable2
+import com.muhammadwahyudin.identitasku.utils.hideKeyboard
+import com.muhammadwahyudin.identitasku.utils.launchActivity
+import com.muhammadwahyudin.identitasku.utils.setGone
+import com.muhammadwahyudin.identitasku.utils.setVisible
+import com.muhammadwahyudin.identitasku.utils.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -101,16 +105,16 @@ class DataInputActivity : BaseActivity() {
     }
 
     private fun observeLiveData() {
-        viewModel.isOperationSuccess.observe(this, { (isSuccess, mode) ->
+        viewModel.isOperationSuccess.observe(this) { (isSuccess, mode) ->
             if (isSuccess) {
                 val rc = if (mode == ADD) RC_NEW_DATA else RC_REFRESH_DATA
                 setResult(rc)
                 finish()
             }
-        })
-        viewModel.isSaveButtonEnabled.observe(this, {
+        }
+        viewModel.isSaveButtonEnabled.observe(this) {
             bind.btnSave.isEnabled = it
-        })
+        }
     }
 
     private fun setupModeAddUi() {
@@ -154,7 +158,7 @@ class DataInputActivity : BaseActivity() {
 
         bind.rvCategory.itemAnimator = DefaultItemAnimator()
         bind.rvCategory.adapter = CategoryListAdapter(::onCategoryItemClick).apply {
-            addData(Constants.TYPE.values().filter { it != Constants.TYPE.DEFAULT }.toList())
+            addData(Constants.TYPE.entries.filter { it != Constants.TYPE.DEFAULT }.toList())
             addHeaderView(layoutInflater.inflate(R.layout.item_category_list_header, null), 0)
         }
 

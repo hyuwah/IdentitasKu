@@ -1,5 +1,7 @@
+@file:SuppressLint("RestrictedApi")
 package com.muhammadwahyudin.identitasku.biometric
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
@@ -45,20 +47,20 @@ open class BiometricManagerV23 {
             fingerprintManagerCompat.authenticate(
                 cryptoObject, 0, CancellationSignal(),
                 object : FingerprintManagerCompat.AuthenticationCallback() {
-                    override fun onAuthenticationError(errMsgId: Int, errString: CharSequence?) {
+                    override fun onAuthenticationError(errMsgId: Int, errString: CharSequence) {
                         super.onAuthenticationError(errMsgId, errString)
                         updateStatus(errString.toString())
-                        biometricCallback.onAuthenticationError(errMsgId, errString!!)
+                        biometricCallback.onAuthenticationError(errMsgId, errString)
                     }
 
-                    override fun onAuthenticationHelp(helpMsgId: Int, helpString: CharSequence?) {
+                    override fun onAuthenticationHelp(helpMsgId: Int, helpString: CharSequence) {
                         super.onAuthenticationHelp(helpMsgId, helpString)
                         updateStatus(helpString.toString())
-                        biometricCallback.onAuthenticationHelp(helpMsgId, helpString!!)
+                        biometricCallback.onAuthenticationHelp(helpMsgId, helpString)
                     }
 
                     override fun onAuthenticationSucceeded(
-                        result: FingerprintManagerCompat.AuthenticationResult?
+                        result: FingerprintManagerCompat.AuthenticationResult
                     ) {
                         super.onAuthenticationSucceeded(result)
                         dismissDialog()
