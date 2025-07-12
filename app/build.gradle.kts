@@ -13,7 +13,7 @@ plugins {
 val versionMajor = 1
 val versionMinor = 3
 val versionPatch = 1
-val versionBuild = 0
+val versionBuild = 1
 
 android {
     namespace = "com.muhammadwahyudin.identitasku"
