@@ -17,7 +17,7 @@ val versionBuild = 0
 
 android {
     namespace = "com.muhammadwahyudin.identitasku"
-    compileSdk = 34
+    compileSdk = 35
 
     signingConfigs {
         getByName("debug") {
@@ -36,7 +36,7 @@ android {
     defaultConfig {
         applicationId = "com.muhammadwahyudin.identitasku"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 35
         versionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10 + versionBuild
         versionName = "$versionMajor.$versionMinor.$versionPatch.$versionBuild"
         multiDexEnabled = true

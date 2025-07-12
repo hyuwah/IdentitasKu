@@ -1,47 +1,44 @@
 [versions]
-kotlin = "2.0.0"
-androidx_appcompat = "1.7.0"
-androidx_constraintlayout = "2.1.4"
+kotlin = "2.0.21"
+androidx_appcompat = "1.7.1"
+androidx_constraintlayout = "2.2.1"
 androidx_material = "1.12.0"
 androidx_cardview = "1.0.0"
 androidx_preference = "1.2.1"
 androidx_multidex = "2.0.1"
-androidx_core_ktx = "1.13.1"
-androidx_fragment_ktx = "1.8.0"
-kotlinx_coroutines_android = "1.7.3"
-androidx_room = "2.6.1"
+androidx_core_ktx = "1.16.0"
+androidx_fragment_ktx = "1.8.8"
+kotlinx_coroutines_android = "1.10.2"
+androidx_room = "2.7.2"
 androidx_lifecycle_extensions = "2.2.0"
-androidx_lifecycle_common_java8 = "2.8.2"
-androidx_lifecycle_runtime_ktx = "2.8.2"
-androidx_lifecycle_livedata_ktx = "2.8.2"
-androidx_lifecycle_viewmodel_ktx = "2.8.2"
+androidx_lifecycle = "2.9.1"
 koin_android = "3.4.3"
 firebase_core = "21.1.1"
-firebase_analytics_ktx = "22.0.1"
-firebase_crashlytics = "19.0.1"
+firebase_analytics_ktx = "22.5.0"
+firebase_crashlytics = "19.4.4"
 androidx_browser = "1.8.0"
-coil = "2.3.0"
-lingver = "1.2.2"
-timber = "4.7.1"
+coil = "2.7.0"
+lingver = "1.3.0"
+timber = "5.0.1"
 hawk = "2.0.1"
 saferoom_x = "1.0.1"
-stetho = "1.5.1"
-process_phoenix = "2.0.0"
+stetho = "1.6.0"
+process_phoenix = "3.0.0"
 base_recyclerview_adapter_helper = "3.0.14"
-lottie = "5.2.0"
+lottie = "6.6.7"
 creditcardview = "1.0.4"
 vvalidator = "0.5.2"
 material_intro_view = "2.0.2"
 junit = "4.13.2"
-androidx_test_runner = "1.5.2"
-espresso_core = "3.5.1"
+androidx_test_runner = "1.6.2"
+espresso_core = "3.6.1"
 
 # Plugin
-android-gradle-plugin = "8.4.1"
-google-services = "4.4.2"
-firebase-crashlytics-gradle = "3.0.1"
+android-gradle-plugin = "8.10.1"
+google-services = "4.4.3"
+firebase-crashlytics-gradle = "3.0.4"
 ktlint-gradle = "9.3.0"
-ksp = "2.0.0-1.0.22"
+ksp = "2.0.21-1.0.27"
 
 [libraries]
 kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin" }
@@ -53,7 +50,7 @@ androidx-material = { module = "com.google.android.material:material", version.r
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidx_cardview" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx_preference" }
 androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "androidx_multidex" }
-androidx-recyclerview = { module = "androidx.recyclerview:recyclerview" , version = "1.3.2" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview" , version = "1.4.0" }
 
 # KTX
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx_core_ktx" }
@@ -69,10 +66,10 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx
 
 # Lifecycle Arch
 androidx-lifecycle-extensions = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "androidx_lifecycle_extensions" }
-androidx-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "androidx_lifecycle_common_java8" }
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx_lifecycle_runtime_ktx" }
-androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidx_lifecycle_livedata_ktx" }
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx_lifecycle_viewmodel_ktx" }
+androidx-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "androidx_lifecycle" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx_lifecycle" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidx_lifecycle" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx_lifecycle" }
 
 # DI
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin_android" }
