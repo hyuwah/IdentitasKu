@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
@@ -35,7 +36,7 @@ android {
 
     defaultConfig {
         applicationId = "com.muhammadwahyudin.identitasku"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 35
         versionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10 + versionBuild
         versionName = "$versionMajor.$versionMinor.$versionPatch.$versionBuild"
@@ -93,21 +94,20 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.kotlin.stdlib.jdk7)
     // Android Jetpack
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.material)
-    implementation(libs.androidx.cardview)
-    implementation(libs.androidx.preference.ktx)
-    implementation(libs.androidx.multidex)
-    implementation(libs.androidx.recyclerview)
-    // KTX
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.bundles.jetpack)
     // Coroutine
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.bundles.room)
     ksp(libs.androidx.room.compiler)
+
+    val composeBom = platform(libs.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+    implementation(libs.bundles.compose)
+    debugImplementation(libs.compose.debug)
+    debugImplementation(libs.compose.ui.test.manifest)
+    androidTestImplementation(libs.compose.ui.test.junit)
 
     // Lifecycle Arch
     implementation(libs.bundles.lifecycle)

@@ -1,37 +1,15 @@
 [versions]
 kotlin = "2.0.21"
-androidx_appcompat = "1.7.1"
-androidx_constraintlayout = "2.2.1"
+androidx_activity = "1.10.1"
 androidx_material = "1.12.0"
-androidx_cardview = "1.0.0"
-androidx_preference = "1.2.1"
-androidx_multidex = "2.0.1"
-androidx_core_ktx = "1.16.0"
-androidx_fragment_ktx = "1.8.8"
-kotlinx_coroutines_android = "1.10.2"
 androidx_room = "2.7.2"
 androidx_lifecycle_extensions = "2.2.0"
-androidx_lifecycle = "2.9.1"
-koin_android = "3.4.3"
+androidx_lifecycle = "2.9.2"
+koin_android = "4.1.0"
 firebase_core = "21.1.1"
-firebase_analytics_ktx = "22.5.0"
-firebase_crashlytics = "19.4.4"
-androidx_browser = "1.8.0"
-coil = "2.7.0"
-lingver = "1.3.0"
-timber = "5.0.1"
-hawk = "2.0.1"
-saferoom_x = "1.3.0"
-stetho = "1.6.0"
-process_phoenix = "3.0.0"
-base_recyclerview_adapter_helper = "3.0.14"
+coil = "3.2.0"
 lottie = "6.6.7"
-creditcardview = "1.0.4"
-vvalidator = "0.5.2"
-material_intro_view = "2.0.2"
-junit = "4.13.2"
-androidx_test_runner = "1.6.2"
-espresso_core = "3.6.1"
+haze = "1.6.8"
 
 # Plugin
 android-gradle-plugin = "8.10.1"
@@ -44,20 +22,36 @@ ksp = "2.0.21-1.0.27"
 kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin" }
 
 # Android Jetpack
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx_appcompat" }
-androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx_constraintlayout" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.1" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.1" }
 androidx-material = { module = "com.google.android.material:material", version.ref = "androidx_material" }
-androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidx_cardview" }
-androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx_preference" }
-androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "androidx_multidex" }
+androidx-cardview = { module = "androidx.cardview:cardview", version = "1.0.0" }
+androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version = "1.2.1" }
+androidx-multidex = { module = "androidx.multidex:multidex", version = "2.0.1" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview" , version = "1.4.0" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidx_activity" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.16.0" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version = "1.8.8" }
 
-# KTX
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx_core_ktx" }
-androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx_fragment_ktx" }
+# Compose
+compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2025.07.00" }
+compose-material2 = { group = "androidx.compose.material", name = "material"}
+compose-material3 = { group = "androidx.compose.material3", name = "material3"}
+compose-material3-android = { group = "androidx.compose.material3", name = "material3-android" }
+compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
+compose-constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.1.1" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx_activity"}
+compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx_lifecycle"}
+compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview"}
+compose-debug = { group = "androidx.compose.ui", name = "ui-tooling"}
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-test-junit = { group = "androidx.compose.ui", name = "ui-test-junit4"}
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest"}
 
 # Coroutine
-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx_coroutines_android" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version = "1.10.2" }
 
 # Room
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx_room" }
@@ -76,40 +70,42 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin_and
 
 # Firebase
 firebase-core = { module = "com.google.firebase:firebase-core", version.ref = "firebase_core" }
-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version.ref = "firebase_analytics_ktx" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebase_crashlytics" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.5.0" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "19.4.4" }
 
 # Chrome custom tab
-androidx-browser = { module = "androidx.browser:browser", version.ref = "androidx_browser" }
+androidx-browser = { module = "androidx.browser:browser", version = "1.8.0" }
 
 # Image
-coil = { module = "io.coil-kt:coil", version.ref = "coil" }
-
+coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref ="coil" }
 # Language
-lingver = { module = "com.github.YarikSOffice:lingver", version.ref = "lingver" }
+lingver = { module = "com.github.YarikSOffice:lingver", version = "1.3.0" }
 
 # Log
-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
 # Pref & Storage
-hawk = { module = "com.orhanobut:hawk", version.ref = "hawk" }
-saferoom-x = { module = "com.commonsware.cwac:saferoom.x", version.ref = "saferoom_x" }
-stetho = { module = "com.facebook.stetho:stetho", version.ref = "stetho" }
+hawk = { module = "com.orhanobut:hawk", version = "2.0.1" }
+saferoom-x = { module = "com.commonsware.cwac:saferoom.x", version = "1.3.0" }
+stetho = { module = "com.facebook.stetho:stetho", version = "1.6.0" }
 
 # Process
-process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "process_phoenix" }
+process-phoenix = { module = "com.jakewharton:process-phoenix", version = "3.0.0" }
 
 # Custom View
-base-recyclerview-adapter-helper = { module = "io.github.cymchad:BaseRecyclerViewAdapterHelper", version.ref = "base_recyclerview_adapter_helper" }
+base-recyclerview-adapter-helper = { module = "io.github.cymchad:BaseRecyclerViewAdapterHelper", version = "3.0.14" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
-creditcardview = { module = "com.vinaygaba:creditcardview", version.ref = "creditcardview" }
-vvalidator = { module = "com.afollestad:vvalidator", version.ref = "vvalidator" }
-material-intro-view = { module = "com.github.DevDengChao:MaterialIntroView", version.ref = "material_intro_view" }
+creditcardview = { module = "com.vinaygaba:creditcardview", version = "1.0.4" }
+vvalidator = { module = "com.afollestad:vvalidator", version = "0.5.2" }
+material-intro-view = { module = "com.github.DevDengChao:MaterialIntroView", version = "2.0.2" }
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze"}
+haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze"}
 
 # Test
-junit = { module = "junit:junit", version.ref = "junit" }
-androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx_test_runner" }
-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso_core" }
+junit = { module = "junit:junit", version = "4.13.2" }
+androidx-test-runner = { module = "androidx.test:runner", version = "1.6.2" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version = "3.6.1" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -119,8 +115,38 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [bundles]
+jetpack = [
+    "androidx-activity",
+    "androidx-appcompat",
+    "androidx-browser",
+    "androidx-cardview",
+    "androidx-material",
+    "androidx-constraintlayout",
+    "androidx-multidex",
+    "androidx-recyclerview",
+    "androidx-core-ktx",
+    "androidx-fragment-ktx",
+    "androidx-preference-ktx",
+]
 room = ["androidx-room-ktx", "androidx-room-runtime"]
 lifecycle = ["androidx-lifecycle-common-java8", "androidx-lifecycle-extensions", "androidx-lifecycle-viewmodel-ktx", "androidx-lifecycle-livedata-ktx", "androidx-lifecycle-runtime-ktx"]
 firebase = ["firebase-core", "firebase-analytics-ktx", "firebase-crashlytics"]
+compose = [
+    "compose-material2",
+    "compose-material3",
+    "compose-material3-android",
+    "compose-activity",
+    "compose-viewmodel",
+    "compose-preview",
+    "compose-runtime",
+    "compose-ui",
+    "compose-ui-graphics",
+    "compose-material-icons",
+    "compose-constraint-layout",
+    "haze",
+    "haze-materials",
+    "coil-compose"
+]
