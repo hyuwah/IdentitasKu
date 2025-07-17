@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
-import com.commonsware.cwac.saferoom.SafeHelperFactory
+import androidx.lifecycle.lifecycleScope
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
@@ -27,20 +27,17 @@ import com.muhammadwahyudin.identitasku.utils.Commons
 import com.muhammadwahyudin.identitasku.utils.toast
 import com.muhammadwahyudin.identitasku.utils.viewBinding
 import com.orhanobut.hawk.Hawk
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import net.zetetic.database.sqlcipher.SQLiteDatabase
 import org.koin.android.ext.android.inject
-import kotlin.coroutines.CoroutineContext
 
 /**
  * A register & login screen that offers login via password/fingerprint.
  */
-class LoginActivity : AppCompatActivity(), CoroutineScope {
-    override val coroutineContext: CoroutineContext
-        get() = Job()
+class LoginActivity : AppCompatActivity() {
     private val appDatabase by inject<AppDatabase>()
+    private val writableDb: SQLiteDatabase? get() = appDatabase.openHelper.writableDatabase as? SQLiteDatabase
 
     private var backToExitPressed = false
 
@@ -168,10 +165,8 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
     private fun goToHomeActivity() {
         binding.btnLoginFp.isEnabled = false
-        SafeHelperFactory.rekey(
-            appDatabase.openHelper.writableDatabase,
-            Hawk.get<String>(Constants.SP_PASSWORD).toCharArray()
-        )
+        val password = Hawk.get<String>(Constants.SP_PASSWORD)
+        writableDb?.changePassword(password)
         startActivity(Intent(this, HomeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         })
@@ -197,7 +192,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
                 if (passwordEdt.toString() == passwordConfirmEdt.toString()) {
                     Hawk.put(Constants.SP_PASSWORD, passwordEdt.toString())
                     // Reencrypt using user pass
-                    SafeHelperFactory.rekey(appDatabase.openHelper.writableDatabase, passwordEdt)
+                    writableDb?.changePassword(passwordEdt.toString())
 
                     val dialog = RegisterSuccessDialogs()
                     dialog.show(supportFragmentManager) {
@@ -235,7 +230,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
             .setNegativeButton(getString(R.string.dialog_btn_yes)) { it, _ ->
                 Hawk.deleteAll()
                 TutorialHelper.resetTutorial(this)
-                launch(Dispatchers.IO) {
+                lifecycleScope.launch(Dispatchers.IO) {
                     appDatabase.dataDao().deleteAll()
                 }
                 deleteDatabase(appDatabase.openHelper.databaseName)

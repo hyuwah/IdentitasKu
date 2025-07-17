@@ -3,7 +3,6 @@ package com.muhammadwahyudin.identitasku.di
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.commonsware.cwac.saferoom.SafeHelperFactory
 import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
@@ -13,6 +12,7 @@ import com.muhammadwahyudin.identitasku.utils.DbUtils
 import com.orhanobut.hawk.Hawk
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -20,8 +20,8 @@ val dataModule = module {
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, Constants.DB_NAME)
             .openHelperFactory(
-                SafeHelperFactory(
-                    Hawk.get(Constants.SP_PASSWORD, "123456").toCharArray()
+                SupportOpenHelperFactory(
+                    Hawk.get(Constants.SP_PASSWORD, "123456").encodeToByteArray()
                 )
             )
             .fallbackToDestructiveMigration()

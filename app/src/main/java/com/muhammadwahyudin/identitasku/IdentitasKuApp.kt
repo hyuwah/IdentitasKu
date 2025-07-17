@@ -2,7 +2,6 @@ package com.muhammadwahyudin.identitasku
 
 import android.util.Log
 import androidx.multidex.MultiDexApplication
-import com.facebook.stetho.Stetho
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.muhammadwahyudin.identitasku.di.appModule
@@ -21,11 +20,11 @@ class IdentitasKuApp : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        System.loadLibrary("sqlcipher")
         Hawk.init(this).build()
         FirebaseAnalytics.getInstance(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
-            Stetho.initializeWithDefaults(this)
         } else {
             Timber.plant(CrashReleaseTree())
         }

@@ -127,8 +127,7 @@ dependencies {
     implementation(libs.timber)
     // Pref & Storage
     implementation(libs.hawk)
-    implementation(libs.saferoom.x)
-    implementation(libs.stetho)
+    implementation(libs.sqlcipher.android)
     // Process
     implementation(libs.process.phoenix)
     // Custom View
