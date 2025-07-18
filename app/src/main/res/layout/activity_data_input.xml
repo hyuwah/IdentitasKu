@@ -22,7 +22,7 @@
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:behavior_peekHeight="72dp"
+            app:behavior_peekHeight="92dp"
             app:cardElevation="12dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -61,22 +61,21 @@
                     android:layout_width="128dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="-4dp"
                     android:enabled="false"
                     android:text="@string/button_save"
-                    app:layout_constraintBottom_toBottomOf="@id/guide_divider"
+                    app:layout_constraintBottom_toBottomOf="@id/dropdown_category_container"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/dropdown_category_container"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/dropdown_category_container" />
 
             <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guide_divider"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="72dp" />
+                    app:layout_constraintGuide_begin="92dp" />
 
             <View
                     android:id="@+id/divider"
@@ -89,6 +88,7 @@
                     android:id="@+id/rv_category"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
+                    android:clipToPadding="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toTopOf="@id/guide_divider"
                     tools:listitem="@layout/item_category_list" />

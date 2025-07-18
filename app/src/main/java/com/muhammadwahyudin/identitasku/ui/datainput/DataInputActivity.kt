@@ -5,6 +5,8 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -20,6 +22,7 @@ import com.muhammadwahyudin.identitasku.ui.datainput.contract.DataInputViewModel
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.CreditCardInputFragment
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.DataInputLogic
 import com.muhammadwahyudin.identitasku.ui.datainput.fragment.GenericInputFragment
+import com.muhammadwahyudin.identitasku.utils.adjustInsets
 import com.muhammadwahyudin.identitasku.utils.getDrawable2
 import com.muhammadwahyudin.identitasku.utils.hideKeyboard
 import com.muhammadwahyudin.identitasku.utils.launchActivity
@@ -61,6 +64,11 @@ class DataInputActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(bind.root)
+
+        enableEdgeToEdge()
+        bind.bsDimBg.adjustInsets(statusBar = true)
+        bind.fragmentContainer.adjustInsets(statusBar = true, navigationBar = true)
+        bind.bottomSheet.adjustInsets(navigationBar = true)
 
         bsBehavior = BottomSheetBehavior.from(bind.bottomSheet)
         bsBehavior.isHideable = false

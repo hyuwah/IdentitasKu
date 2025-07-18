@@ -50,7 +50,7 @@
             android:layout_weight="1"
             android:clipToPadding="false"
             android:paddingTop="8dp"
-            android:paddingBottom="?actionBarSize"
+            android:paddingBottom="100dp"
             tools:listitem="@layout/item_home_data_list_generic_3" />
 
 

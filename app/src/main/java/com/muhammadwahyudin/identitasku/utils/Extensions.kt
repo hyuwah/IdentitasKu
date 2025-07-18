@@ -1,9 +1,14 @@
 package com.muhammadwahyudin.identitasku.utils
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.muhammadwahyudin.identitasku.ui._helper.SafeClickListener
 
@@ -55,3 +60,25 @@ inline fun BottomAppBar.setSafeOnMenuItemClickListener(crossinline callback: (it
             callback(item)
         }
     })
+
+fun View.adjustInsets(
+    statusBar: Boolean = false,
+    navigationBar: Boolean = false,
+    onApply: (View, Insets) -> Unit = { view, insets ->
+        view.updatePadding(top = insets.top, bottom = insets.bottom)
+    }
+) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+        ViewCompat.setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+            val typeMask = when {
+                statusBar && navigationBar -> WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.navigationBars()
+                statusBar -> WindowInsetsCompat.Type.statusBars()
+                navigationBar -> WindowInsetsCompat.Type.navigationBars()
+                else -> 0
+            }
+            val insets = windowInsets.getInsets(typeMask)
+            onApply(view, insets)
+            WindowInsetsCompat.CONSUMED
+        }
+    }
+}

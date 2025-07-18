@@ -3,6 +3,8 @@ package com.muhammadwahyudin.identitasku.ui.settings
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -12,6 +14,7 @@ import com.muhammadwahyudin.identitasku.BuildConfig
 import com.muhammadwahyudin.identitasku.R
 import com.muhammadwahyudin.identitasku.data.Constants.PRIVACY_POLICY_URL
 import com.muhammadwahyudin.identitasku.ui._helper.CustomTabHelper
+import com.muhammadwahyudin.identitasku.utils.adjustInsets
 import com.muhammadwahyudin.identitasku.utils.longToast
 
 class SettingsActivity : AppCompatActivity() {
@@ -19,9 +22,11 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title = "Settings"
+        enableEdgeToEdge()
         supportFragmentManager.beginTransaction()
             .replace(android.R.id.content, SettingsFragment())
             .commit()
+        findViewById<View>(android.R.id.content).adjustInsets(statusBar = true, navigationBar = true)
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {

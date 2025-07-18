@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
+import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -51,7 +52,7 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
             setDiffCallback(HomeDataAdapter.diffCallback())
             popupMenuListener = this@HomeActivity
         }
-
+        setupInsets()
         initializeUI()
         initializeRecyclerView()
         initTutorial()
@@ -195,6 +196,15 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
                 viewModel.debugPopulateData()
                 true
             }
+        }
+    }
+
+    private fun setupInsets() {
+        enableEdgeToEdge()
+        with(binding) {
+            layoutHomeContent.root.adjustInsets(statusBar = true)
+            layoutEmptyHomeList.root.adjustInsets(statusBar = true)
+            layoutEmptyHomeListFiltered.root.adjustInsets(statusBar = true)
         }
     }
 

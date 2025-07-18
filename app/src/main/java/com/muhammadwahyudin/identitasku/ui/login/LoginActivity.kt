@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -122,7 +121,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun openFingerprintDialog() {
         BiometricManager.BiometricBuilder(this)
             .setTitle(getString(R.string.login_fingerprint_title))
@@ -264,9 +262,11 @@ class LoginActivity : AppCompatActivity() {
             .setPositiveButton(
                 getString(R.string.dialog_btn_action_fingerprint_not_enrolled)
             ) { _, _ ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                    startActivity(Intent(Settings.ACTION_BIOMETRIC_ENROLL))
+                else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     startActivity(Intent(Settings.ACTION_FINGERPRINT_ENROLL))
-                else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                else
                     startActivity(Intent(Settings.ACTION_SECURITY_SETTINGS))
             }
             .create()
