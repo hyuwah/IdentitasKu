@@ -18,7 +18,7 @@ val versionBuild = 1
 
 android {
     namespace = "com.muhammadwahyudin.identitasku"
-    compileSdk = 35
+    compileSdk = 36
 
     signingConfigs {
         getByName("debug") {
@@ -37,7 +37,7 @@ android {
     defaultConfig {
         applicationId = "com.muhammadwahyudin.identitasku"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch * 10 + versionBuild
         versionName = "$versionMajor.$versionMinor.$versionPatch.$versionBuild"
         multiDexEnabled = true
@@ -99,6 +99,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.bundles.room)
+    implementation(libs.androidx.ui.text.google.fonts)
     ksp(libs.androidx.room.compiler)
 
     val composeBom = platform(libs.compose.bom)

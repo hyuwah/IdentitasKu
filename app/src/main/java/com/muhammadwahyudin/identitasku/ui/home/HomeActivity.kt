@@ -1,13 +1,16 @@
 package com.muhammadwahyudin.identitasku.ui.home
 
-import android.animation.LayoutTransition
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
+import android.view.View
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -22,6 +25,7 @@ import com.muhammadwahyudin.identitasku.ui._helper.TutorialHelper
 import com.muhammadwahyudin.identitasku.ui.datainput.DataInputActivity
 import com.muhammadwahyudin.identitasku.ui.datainput.DataInputActivity.Companion.RC_NEW_DATA
 import com.muhammadwahyudin.identitasku.ui.datainput.DataInputActivity.Companion.RC_REFRESH_DATA
+import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiEvent
 import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiState
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel
 import com.muhammadwahyudin.identitasku.ui.settings.SettingsActivity
@@ -32,7 +36,7 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
     
     private val binding by viewBinding(ActivityHomeBinding::inflate)
 
-    private val viewModel: HomeViewModelImpl by viewModel()
+    private val viewModel: HomeViewModel by viewModel()
 
     private var backToExitPressed = false
     private lateinit var dataAdapter: HomeDataAdapter
@@ -43,20 +47,14 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-
-        binding.root.layoutTransition = LayoutTransition().apply {
-            enableTransitionType(LayoutTransition.CHANGING)
+        enableEdgeToEdge()
+        setContent {
+            val uiState by viewModel.uiState2.collectAsStateWithLifecycle(HomeUiState.EmptyNoData)
+            LaunchedEffect(true) {
+                viewModel.loadAllData()
+            }
+            HomeScreen(uiState, ::handleEvent)
         }
-        dataAdapter = HomeDataAdapter(mutableListOf()).apply {
-            setDiffCallback(HomeDataAdapter.diffCallback())
-            popupMenuListener = this@HomeActivity
-        }
-        setupInsets()
-        initializeUI()
-        initializeRecyclerView()
-        initTutorial()
-        setupBottomBarMenu()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -69,6 +67,32 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
             RC_REFRESH_DATA -> {
                 // Refresh without scroll
                 viewModel.refreshData()
+            }
+        }
+    }
+
+    private fun handleEvent(event: HomeUiEvent) {
+        when (event) {
+            HomeUiEvent.AddNewItem -> {
+                DataInputActivity.launch(this, DataInputActivity.ADD)
+            }
+            is HomeUiEvent.OnItemAction.CopyValueToClipboard -> {
+                Commons.copyToClipboard(this, event.value, event.typeName)
+            }
+            is HomeUiEvent.OnItemAction.ShareItem -> {
+                onShareItem(event.data)
+            }
+            is HomeUiEvent.OnItemAction.DeleteItem -> {
+                onDeleteItem(event.pos, event.data)
+            }
+            is HomeUiEvent.OnItemAction.EditItem -> {
+                DataInputActivity.launch(this, DataInputActivity.EDIT, event.data)
+            }
+            HomeUiEvent.OpenFilterPage -> {
+                SortFilterBottomSheet.newInstance().show(supportFragmentManager)
+            }
+            HomeUiEvent.OpenSettingsPage -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
             }
         }
     }
@@ -109,8 +133,9 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
     override fun onDeleteItem(pos: Int, dataToDelete: DataWithDataType) {
         Commons.shortVibrate(this)
 
-        dataAdapter.data.removeAt(pos)
-        dataAdapter.notifyItemRemoved(pos)
+        //dataAdapter.data.removeAt(pos)
+        //dataAdapter.notifyItemRemoved(pos)
+        viewModel.deleteAt(pos)
 
         // clear handler callback first to avoid bug when swiping >1 data in short duration
         deleteHandler.removeCallbacksAndMessages(null)
@@ -125,13 +150,14 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
         // Show snackbar with undo button
         Snackbar
             .make(
-                binding.root,
+                findViewById<View>(android.R.id.content),
                 dataToDelete.typeName + getString(R.string.snackbar_data_deleted),
                 Snackbar.LENGTH_LONG
             )
             .setAction(getString(R.string.snackbar_btn_undo)) {
-                dataAdapter.data.add(pos, dataToDelete)
-                dataAdapter.notifyItemInserted(pos)
+                //dataAdapter.data.add(pos, dataToDelete)
+                viewModel.insertAt(pos, dataToDelete)
+                //dataAdapter.notifyItemInserted(pos)
                 // check if datasToDelete > 1
                 if (datasToDelete.size > 1) {
                     // don't cancel the handler,
@@ -199,18 +225,9 @@ class HomeActivity : BaseActivity(), HomeDataAdapter.PopupMenuListener {
         }
     }
 
-    private fun setupInsets() {
-        enableEdgeToEdge()
-        with(binding) {
-            layoutHomeContent.root.adjustInsets(statusBar = true)
-            layoutEmptyHomeList.root.adjustInsets(statusBar = true)
-            layoutEmptyHomeListFiltered.root.adjustInsets(statusBar = true)
-        }
-    }
-
     private fun showData(
         datas: List<DataWithDataType>,
-        sort: SortFilterViewModel.Companion.SORT,
+        sort: SortFilterViewModel.SORT,
         filters: List<Constants.TYPE>,
         scrollToPosition: Int
     ) {

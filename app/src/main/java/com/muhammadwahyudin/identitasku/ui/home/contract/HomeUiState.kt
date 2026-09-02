@@ -2,7 +2,7 @@ package com.muhammadwahyudin.identitasku.ui.home.contract
 
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
-import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.Companion.SORT
+import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.SORT
 
 sealed class HomeUiState {
     object EmptyNoData : HomeUiState()

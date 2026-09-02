@@ -2,6 +2,7 @@ package com.muhammadwahyudin.identitasku.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.map
 import com.muhammadwahyudin.identitasku.data.Constants
 import com.muhammadwahyudin.identitasku.data.model.Data
@@ -9,15 +10,14 @@ import com.muhammadwahyudin.identitasku.data.model.DataType
 import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import com.muhammadwahyudin.identitasku.data.repository.IAppRepository
 import com.muhammadwahyudin.identitasku.ui._base.BaseViewModel
+import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiEvent
 import com.muhammadwahyudin.identitasku.ui.home.contract.HomeUiState
-import com.muhammadwahyudin.identitasku.ui.home.contract.HomeViewModel
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.Companion.DEFAULT_SORT
-import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.Companion.SORT
+import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.SORT
 import com.muhammadwahyudin.identitasku.utils.ioLaunch
 
-class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewModel(),
-    HomeViewModel,
+class HomeViewModel(private val appRepository: IAppRepository) : BaseViewModel(),
     SortFilterViewModel {
 
     private val dataWithType = MutableLiveData<List<DataWithDataType>>(listOf())
@@ -26,13 +26,14 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
 
     private val _uiState = dataWithType.map { it.mapToUiState(0) } as MutableLiveData
     val uiState get() = _uiState as LiveData<HomeUiState>
+    val uiState2 get() = _uiState.asFlow()
 
     override var currentSort = DEFAULT_SORT
         private set
     override var currentFilter: List<Int> = listOf()
         private set
 
-    override fun addData(data: Data, typeName: String) {
+    fun addData(data: Data, typeName: String) {
         ioLaunch(spv) {
             val newDataId = appRepository.insert(data).toInt()
             val message = "$typeName successfully added"
@@ -43,14 +44,14 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
         }
     }
 
-    override fun deleteDatas(datasWithDataType: List<DataWithDataType>) {
+    fun deleteDatas(datasWithDataType: List<DataWithDataType>) {
         ioLaunch(spv) {
             appRepository.deleteDatasById(datasWithDataType.map { it.id })
             loadAllData()
         }
     }
 
-    override fun updateData(data: Data, typeName: String) {
+    fun updateData(data: Data, typeName: String) {
         ioLaunch(spv) {
             appRepository.update(data)
             val message = "$typeName successfully updated"
@@ -61,7 +62,7 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
         }
     }
 
-    override fun getAllDataType(): LiveData<List<DataType>> {
+    fun getAllDataType(): LiveData<List<DataType>> {
         ioLaunch(spv) {
             dataType.postValue(
                 appRepository.getAllDataType()
@@ -70,20 +71,34 @@ class HomeViewModelImpl(private val appRepository: IAppRepository) : BaseViewMod
         return dataType
     }
 
-    override fun loadAllData() {
+    fun loadAllData() {
         ioLaunch(spv) {
             dataWithType.postValue(appRepository.getAllDataWithType())
         }
     }
 
-    override fun refreshData() {
+    fun refreshData() {
         ioLaunch(spv) {
             val list = appRepository.getAllDataWithType()
             _uiState.postValue(list.mapToUiState(-1))
         }
     }
 
-    override fun getAllExistingUniqueType(): LiveData<List<DataType>> {
+    fun deleteAt(pos: Int) {
+        dataWithType.value?.let {
+            val newList = it.filterIndexed { index, _ -> index != pos }
+            dataWithType.postValue(newList)
+        }
+    }
+
+    fun insertAt(pos: Int, data: DataWithDataType) {
+        dataWithType.value?.let {
+            val newList = it.toMutableList().apply { add(pos, data) }
+            dataWithType.postValue(newList)
+        }
+    }
+
+    fun getAllExistingUniqueType(): LiveData<List<DataType>> {
         ioLaunch(spv) {
             existingUniqueDataType.postValue(
                 appRepository.getAllExistingUniqueType()

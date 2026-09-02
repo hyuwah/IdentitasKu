@@ -17,6 +17,7 @@ google-services = "4.4.3"
 firebase-crashlytics-gradle = "3.0.4"
 ktlint-gradle = "9.3.0"
 ksp = "2.0.21-1.0.27"
+ui-text-google-fonts = "1.8.3"
 
 [libraries]
 kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin" }
@@ -36,9 +37,8 @@ androidx-sqlite = { module = "androidx.sqlite:sqlite", version = "2.2.0" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2025.07.00" }
-compose-material2 = { group = "androidx.compose.material", name = "material"}
 compose-material3 = { group = "androidx.compose.material3", name = "material3"}
-compose-material3-android = { group = "androidx.compose.material3", name = "material3-android" }
+compose-material3-android = { group = "androidx.compose.material3", name = "material3-android", version = "1.4.0-alpha18"}
 compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.1.1" }
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx_activity"}
@@ -106,6 +106,7 @@ haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = 
 junit = { module = "junit:junit", version = "4.13.2" }
 androidx-test-runner = { module = "androidx.test:runner", version = "1.6.2" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version = "3.6.1" }
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "ui-text-google-fonts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -136,7 +137,6 @@ room = ["androidx-room-ktx", "androidx-room-runtime"]
 lifecycle = ["androidx-lifecycle-common-java8", "androidx-lifecycle-extensions", "androidx-lifecycle-viewmodel-ktx", "androidx-lifecycle-livedata-ktx", "androidx-lifecycle-runtime-ktx"]
 firebase = ["firebase-core", "firebase-analytics-ktx", "firebase-crashlytics"]
 compose = [
-    "compose-material2",
     "compose-material3",
     "compose-material3-android",
     "compose-activity",

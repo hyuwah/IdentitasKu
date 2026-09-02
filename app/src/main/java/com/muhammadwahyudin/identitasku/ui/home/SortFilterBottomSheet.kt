@@ -10,7 +10,7 @@ import com.muhammadwahyudin.identitasku.data.Constants.TYPE
 import com.muhammadwahyudin.identitasku.ui._base.BaseBottomSheetFragment
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel
 import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.Companion.DEFAULT_SORT
-import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.Companion.SORT
+import com.muhammadwahyudin.identitasku.ui.home.contract.SortFilterViewModel.SORT
 import com.muhammadwahyudin.identitasku.databinding.BottomSheetSortFilterBinding as Binding
 
 class SortFilterBottomSheet : BaseBottomSheetFragment<Binding>(Binding::inflate) {
@@ -21,7 +21,7 @@ class SortFilterBottomSheet : BaseBottomSheetFragment<Binding>(Binding::inflate)
         }
     }
 
-    private val parentViewModel: SortFilterViewModel by activityViewModels<HomeViewModelImpl>()
+    private val parentViewModel: SortFilterViewModel by activityViewModels<HomeViewModel>()
     private var selectedSort = DEFAULT_SORT
     private var selectedFilters = mutableListOf<Int>()
 
@@ -59,13 +59,13 @@ class SortFilterBottomSheet : BaseBottomSheetFragment<Binding>(Binding::inflate)
 
     private fun setupFilterView(view: View) {
         selectedFilters.forEach { typeId ->
-            val type = TYPE.values().first { it.value == typeId }
+            val type = TYPE.entries.first { it.value == typeId }
             view.findViewById<CheckBox>(type.viewId).isChecked = true
         }
         binding.containerInnerContent.children.forEach { childView ->
             if (childView is CheckBox) {
                 childView.setOnClickListener { _ ->
-                    val type = TYPE.values().first { it.viewId == childView.id }
+                    val type = TYPE.entries.first { it.viewId == childView.id }
                     setFilter(childView.isChecked, type)
                 }
             }

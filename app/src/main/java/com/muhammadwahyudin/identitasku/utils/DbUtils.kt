@@ -3,6 +3,7 @@ package com.muhammadwahyudin.identitasku.utils
 import com.muhammadwahyudin.identitasku.data.db.AppDatabase
 import com.muhammadwahyudin.identitasku.data.model.Data
 import com.muhammadwahyudin.identitasku.data.model.DataType
+import com.muhammadwahyudin.identitasku.data.model.DataWithDataType
 import timber.log.Timber
 
 /**
@@ -27,6 +28,19 @@ object DbUtils {
         add(Data(10, "904212345123"))
         add(Data(11, "4213515123"))
         add(Data(12, "contoso@gmail.com"))
+    }
+
+    val dataWithDataType get() =  DUMMY_DATAS[2].run {
+        DataWithDataType(
+            id = 1,
+            typeId = typeId,
+            value = value,
+            attr1 = attr1,
+            attr2 = attr2,
+            isUnique = false,
+            isCustom = false,
+            typeName = "Test Type"
+        )
     }
 
     /**
