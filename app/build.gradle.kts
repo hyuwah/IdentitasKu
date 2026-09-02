@@ -14,7 +14,7 @@ plugins {
 val versionMajor = 1
 val versionMinor = 3
 val versionPatch = 2
-val versionBuild = 1
+val versionBuild = 2
 
 android {
     namespace = "com.muhammadwahyudin.identitasku"
@@ -83,6 +83,10 @@ android {
     }
 
     packaging {
+        // armeabi (ARMv5) is dead, unsupported by Play, and only ships 4KB-aligned .so in conceal aar
+        jniLibs {
+            excludes += "lib/armeabi/**"
+        }
         resources {
             excludes.add("META-INF/atomicfu.kotlin_module")
         }
@@ -91,7 +95,7 @@ android {
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
     implementation(libs.kotlin.stdlib.jdk7)
     // Android Jetpack
     implementation(libs.bundles.jetpack)
@@ -127,7 +131,11 @@ dependencies {
     // Log
     implementation(libs.timber)
     // Pref & Storage
-    implementation(libs.hawk)
+    implementation(libs.hawk) {
+        // conceal 1.1.3 from maven ships 4KB-aligned libconceal.so; local aar in libs/ is a
+        // 16KB-aligned rebuild of the same version (same key format, existing data stays readable)
+        exclude(group = "com.facebook.conceal")
+    }
     implementation(libs.sqlcipher.android)
     // Process
     implementation(libs.process.phoenix)
